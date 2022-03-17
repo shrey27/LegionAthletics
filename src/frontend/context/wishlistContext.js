@@ -2,7 +2,6 @@ import axios from 'axios';
 import { createContext, useContext, useReducer, useEffect } from 'react';
 import { GET_WISHLIST, POST_WISHLIST } from '../../apiEndpoints';
 import { useAuthCtx } from './authenticationContext';
-// import { v4 as uuid } from 'uuid';
 
 const WishListContext = createContext();
 
@@ -56,11 +55,9 @@ const WishlistProvider = ({ children }) => {
         localStorage.getItem('userData')
       ).wishlist;
       if (storedWishlist) {
-        // console.log('wishlist from local', storedWishlist);
         dispatch({ type: 'API_RESPONSE', payload: storedWishlist });
       } else {
         const resp = await axios.get(GET_WISHLIST);
-        // console.log('wishlist from api', resp.data.wishlist);
         dispatch({ type: 'API_RESPONSE', payload: resp.data.wishlist });
       }
       dispatch({ type: 'UPDATE_WISHLIST_PID' });
@@ -75,8 +72,6 @@ const WishlistProvider = ({ children }) => {
     const index = wishlistData.findIndex((e) => e.pid === pid);
     if (index < 0) {
       try {
-        // const token = localStorage.getItem('token');
-        console.log(token, objectData);
         const resp = await axios.post(
           POST_WISHLIST,
           {
@@ -91,7 +86,6 @@ const WishlistProvider = ({ children }) => {
             }
           }
         );
-
         const dataList = resp.data.wishlist;
         dispatch({ type: 'API_RESPONSE', payload: dataList });
         dispatch({ type: 'UPDATE_WISHLIST_PID' });
@@ -133,7 +127,6 @@ const WishlistProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log('token in wishlist ', token);
     if (!token) {
       dispatch({ type: 'CLEAR_ALL' });
     } else {
