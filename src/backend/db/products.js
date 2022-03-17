@@ -1,0 +1,355 @@
+import { v4 as uuid } from 'uuid';
+
+/**
+ * Product Database can be added here.
+ * You can add products of your wish with different attributes
+ * */
+
+export const products = [
+  {
+    _id: uuid(),
+    pid: 'P1',
+    source:
+      'https://s1.thcdn.com/productimg/300/300/13598918-8744929379980696.jpg',
+    title: 'Fuel Ambition Gift Box',
+    price: 2500,
+    mrp: 4000,
+    discount: 30,
+    rating: 3.9,
+    count: 1,
+    nostock: false,
+    fastdelivery: true,
+    category: 'combo'
+  },
+  {
+    _id: uuid(),
+    pid: 'P2',
+    source:
+      'https://s1.thcdn.com/productimg/300/300/13598922-1394929380171673.jpg',
+    title: 'Vegan Bundle',
+    price: 4000,
+    mrp: 6500,
+    discount: 30,
+    rating: 4.5,
+    count: 1,
+    nostock: true,
+    category: 'supplements'
+  },
+  {
+    _id: uuid(),
+    pid: 'P3',
+    source:
+      'https://static.thcdn.com/images/xsmall/webp//productimg/original/12949455-1834924183341159.jpg',
+    title: 'Vegan Protein Bars',
+    price: 5000,
+    mrp: 6000,
+    discount: 30,
+    rating: 4.2,
+    count: 1,
+    fastdelivery: true,
+    category: 'snacks',
+    nostock: false
+  },
+  {
+    _id: uuid(),
+    pid: 'P4',
+    source:
+      'https://s1.thcdn.com/productimg/300/300/12708205-7894888116404280.jpg',
+    title: 'Protein Starter Pack Small',
+    price: 1500,
+    mrp: 4000,
+    discount: 30,
+    rating: 3.9,
+    count: 1,
+    category: 'combo',
+    nostock: false
+  },
+  {
+    _id: uuid(),
+    pid: 'P5',
+    source:
+      'https://static.thcdn.com/images/xsmall/webp//productimg/original/10530943-1224889444460882.jpg',
+    title: 'Whey Protein Isolate',
+    price: 6000,
+    mrp: 8000,
+    discount: 30,
+    rating: 4.5,
+    count: 1,
+    category: 'supplements',
+    nostock: false
+  },
+  {
+    _id: uuid(),
+    pid: 'P6',
+    source:
+      'https://static.thcdn.com/images/xsmall/webp//productimg/original/12764004-1754853136850314.jpg',
+    title: "MP Men's Gym T-Shirt",
+    price: 3000,
+    mrp: 4000,
+    discount: 30,
+    rating: 3.9,
+    count: 1,
+    category: 'clothing',
+    nostock: false
+  },
+  {
+    _id: uuid(),
+    pid: 'P7',
+    source:
+      'https://s1.thcdn.com/productimg/300/300/13598910-1234929379752087.jpg',
+    title: 'Travel Bundle',
+    price: 3500,
+    mrp: 5000,
+    discount: 30,
+    rating: 4.5,
+    count: 1,
+    fastdelivery: true,
+    category: 'combo'
+  },
+  {
+    _id: uuid(),
+    pid: 'P8',
+    source:
+      'https://s1.thcdn.com/productimg/300/300/12708205-7894888116404280.jpg',
+    title: 'Protein Starter Pack Medium',
+    price: 7000,
+    mrp: 8000,
+    discount: 30,
+    rating: 4.2,
+    count: 1,
+    category: 'combo',
+    nostock: false
+  },
+  {
+    _id: uuid(),
+    pid: 'P9',
+    source:
+      'https://s1.thcdn.com/productimg/300/300/13598918-8744929379980696.jpg',
+    title: 'Fuel Ambition Gift Box Ultra',
+    price: 5500,
+    mrp: 85000,
+    discount: 30,
+    rating: 3.9,
+    count: 1,
+    fastdelivery: true,
+    category: 'combo',
+    nostock: false
+  },
+  {
+    _id: uuid(),
+    pid: 'P10',
+    source:
+      'https://s1.thcdn.com/productimg/300/300/13598922-1394929380171673.jpg',
+    title: 'Vegan Bundle',
+    price: 9000,
+    mrp: 11000,
+    discount: 30,
+    rating: 4.2,
+    count: 1,
+    fastdelivery: true,
+    category: 'supplements',
+    nostock: false
+  },
+  {
+    _id: uuid(),
+    pid: 'P11',
+    source:
+      'https://static.thcdn.com/images/xsmall/webp//productimg/original/12949455-1834924183341159.jpg',
+    title: 'Vegan Brownie',
+    price: 8000,
+    mrp: 12000,
+    discount: 30,
+    rating: 4.2,
+    count: 1,
+    fastdelivery: true,
+    category: 'snacks',
+    nostock: false
+  },
+  {
+    _id: uuid(),
+    pid: 'P12',
+    source:
+      'https://s1.thcdn.com/productimg/300/300/12708205-7894888116404280.jpg',
+    title: 'Protein Starter Pack Large',
+    price: 10000,
+    mrp: 12000,
+    discount: 30,
+    rating: 4.5,
+    count: 1,
+    category: 'combo',
+    nostock: false
+  },
+  {
+    _id: uuid(),
+    pid: 'P13',
+    source:
+      'https://static.thcdn.com/images/xsmall/webp//productimg/original/10530943-1224889444460882.jpg',
+    title: 'Impact Whey Protein',
+    price: 3500,
+    mrp: 5000,
+    discount: 30,
+    rating: 4.2,
+    count: 1,
+    category: 'supplements',
+    nostock: false
+  },
+  {
+    _id: uuid(),
+    pid: 'P14',
+    source:
+      'https://static.thcdn.com/images/xsmall/webp//productimg/original/12764004-1754853136850314.jpg',
+    title: "MP Men's Gym T-Shirt",
+    price: 3000,
+    mrp: 5000,
+    discount: 30,
+    rating: 4.2,
+    count: 1,
+    nostock: true,
+    fastdelivery: true,
+    category: 'clothing'
+  },
+  {
+    _id: uuid(),
+    pid: 'P15',
+    source:
+      'https://s1.thcdn.com/productimg/300/300/13598910-1234929379752087.jpg',
+    title: 'Compact Travel Bundle',
+    price: 2000,
+    mrp: 4500,
+    discount: 30,
+    rating: 4.5,
+    count: 1,
+    nostock: true,
+    category: 'combo'
+  },
+  {
+    _id: uuid(),
+    pid: 'P16',
+    source:
+      'https://s1.thcdn.com/productimg/300/300/12708205-7894888116404280.jpg',
+    title: 'Protein Starter Pack',
+    price: 10000,
+    mrp: 12000,
+    discount: 30,
+    rating: 4.0,
+    count: 1,
+    nostock: true,
+    category: 'combo'
+  },
+  {
+    _id: uuid(),
+    pid: 'P17',
+    source:
+      'https://static.thcdn.com/images/xsmall/webp//productimg/1600/1600/12531549-1844789625377701.jpg',
+    title: "Men's Essential Cagoule",
+    price: 2500,
+    mrp: 6000,
+    discount: 30,
+    rating: 4.1,
+    count: 1,
+    fastdelivery: true,
+    nostock: false,
+    category: 'clothing'
+  },
+  {
+    _id: uuid(),
+    pid: 'P18',
+    source:
+      'https://static.thcdn.com/images/xsmall/webp//productimg/original/13111188-1184909884829884.jpg',
+    title: "Men's Tempo Zip Top",
+    price: 3000,
+    mrp: 5000,
+    discount: 30,
+    rating: 3.8,
+    count: 1,
+    fastdelivery: true,
+    nostock: false,
+    category: 'clothing'
+  },
+  {
+    _id: uuid(),
+    pid: 'P19',
+    source:
+      '	https://static.thcdn.com/images/large/webp//productimg/1600/1600/13122853-3814911984202806.jpg',
+    title: "Women's Ultra Bonded Gilet",
+    price: 3000,
+    mrp: 4000,
+    discount: 30,
+    rating: 4.4,
+    count: 1,
+    nostock: false,
+    category: 'clothing'
+  },
+  {
+    _id: uuid(),
+    pid: 'P20',
+    source:
+      'https://static.thcdn.com/images/xsmall/webp//productimg/original/12857754-1384884224379918.jpg',
+    title: "Women's Lightweight Jacket",
+    price: 6000,
+    mrp: 8000,
+    discount: 30,
+    rating: 4.8,
+    count: 1,
+    nostock: false,
+    fastdelivery: true,
+    category: 'clothing'
+  },
+  {
+    _id: uuid(),
+    pid: 'P21',
+    source:
+      'https://static.thcdn.com/images/large/webp//productimg/1600/1600/12692348-7474896385252590.jpg',
+    title: 'BCAA Energy Drink',
+    price: 2500,
+    mrp: 4000,
+    discount: 30,
+    rating: 2.9,
+    count: 1,
+    nostock: false,
+    fastdelivery: true,
+    category: 'supplements'
+  },
+  {
+    _id: uuid(),
+    pid: 'P22',
+    source:
+      'https://static.thcdn.com/images/large/webp//productimg/1600/1600/12041688-1124849555948395.jpg',
+    title: 'Protein Crisps',
+    price: 1000,
+    mrp: 1600,
+    discount: 30,
+    rating: 3.8,
+    count: 1,
+    nostock: false,
+    category: 'snacks'
+  },
+  {
+    _id: uuid(),
+    pid: 'P23',
+    source:
+      'https://static.thcdn.com/images/xsmall/webp//productimg/1600/1600/11691951-8324824869276820.jpg',
+    title: 'Protein Spread',
+    price: 1000,
+    mrp: 2500,
+    discount: 30,
+    rating: 4.2,
+    count: 1,
+    nostock: false,
+    category: 'snacks'
+  },
+  {
+    _id: uuid(),
+    pid: 'P24',
+    source:
+      'https://static.thcdn.com/images/xsmall/webp//productimg/original/10530743-1564859351688231.jpg',
+    title: 'All Natural Peanut Butter',
+    price: 1500,
+    mrp: 2000,
+    discount: 30,
+    rating: 3.9,
+    count: 1,
+    nostock: false,
+    category: 'snacks'
+  }
+];
