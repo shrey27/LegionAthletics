@@ -1,6 +1,6 @@
 import './deals.css';
 // import { useCartCtx, useCartAPICtx } from '../../context/cartContext';
-// import { useWishlistCtx } from '../../context/wishlistContext';
+import { useWishlistCtx } from '../../context/wishlistContext';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PRODUCTS } from '../../../routes';
@@ -24,19 +24,21 @@ export default function Deal(props) {
   } = props;
 
   // const { addToCart } = useCartCtx();
-  // const { addToWishlist, deleteFromWishlist, addedPID } = useWishlistCtx();
+  const { addToWishlist, deleteFromWishlist, addedPID } = useWishlistCtx();
   // const { addedCartPID } = useCartAPICtx();
 
   const [addedToWishlist, setAddedToWishlist] = useState(false);
   // const [addedToCart, setAddedToCart] = useState(false);
 
-  // useEffect(() => {
-  //   if (addedPID && addedPID.includes(pid)) setAddedToWishlist(true);
-  //   else setAddedToWishlist(false);
+  useEffect(() => {
+    if (addedPID && addedPID.includes(pid)) setAddedToWishlist(true);
+    else setAddedToWishlist(false);
+  }, [addedPID, pid]);
 
+  // useEffect(() => {
   //   if (addedCartPID && addedCartPID.includes(pid)) setAddedToCart(true);
   //   else setAddedToCart(false);
-  // }, [addedCartPID, addedPID, pid]);
+  // }, [addedCartPID, pid]);
 
   const handleAddToWishlistClick = () => {
     if (!addedToWishlist) {
