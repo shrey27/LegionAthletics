@@ -1,5 +1,6 @@
 import HomePage from './frontend/homepage';
 import Products from './frontend/products';
+import Product from './frontend/product';
 import Cart from './frontend/cart';
 import Wishlist from './frontend/wishlist';
 import Signin from './frontend/authentication/Signin';
@@ -20,6 +21,7 @@ export const availableRoutes = (
   <Routes>
     <Route path={HOMEPAGE} element={<HomePage />} />
     <Route path={PRODUCTS} element={<Products />} />
+    <Route path={`${PRODUCTS}/:productId`} element={<Product />} />
     <Route path={CART} element={<Cart />} />
     <Route path={WISHLIST} element={<Wishlist />} />
     <Route path={SIGNIN} element={<Signin />} />
