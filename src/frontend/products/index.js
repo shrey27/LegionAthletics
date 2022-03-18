@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './products.css';
 import Navbar from '../common/navbar';
 import Category from '../common/header/Category';
@@ -6,11 +6,13 @@ import Deals from '../common/deals';
 import Footer from '../common/footer';
 import { useProductsCtx } from '../context/productsContext';
 import Loader from '../common/Loader';
-// import { useWishlistCtx } from '../context/wishlistContext';
+import { useLocation } from 'react-router-dom';
 
 export default function Products() {
-  // const { wishListError } = useWishlistCtx();
+  const location = useLocation();
+  console.log(location);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [products, setProducts] = useState([]);
   const {
     productListing,
     priceLimit,
@@ -27,13 +29,22 @@ export default function Products() {
   };
 
   const handleClear = () => {
-    // selectedInputs.forEach((element) => {
-    //   element.target.checked = false;
-    // });
     handleChange({
       type: 'CLEAR_ALL'
     });
   };
+
+  useEffect(() => {
+    if (productListing) {
+      if (!location?.state?.category) {
+        setProducts([...productListing]);
+      } else {
+        setProducts(
+          productListing.filter((e) => e.category === location.state.category)
+        );
+      }
+    }
+  }, [productListing]);
 
   return (
     <div className='container'>
@@ -318,7 +329,7 @@ export default function Products() {
               {/* {wishListError && (
                 <h1 className='tag cen md sb'>{wishListError}</h1>
               )} */}
-              <Deals items={productListing} name='Products' wishlist={true} />
+              <Deals items={products} name='Products' wishlist={true} />
             </div>
           )}
         </main>
