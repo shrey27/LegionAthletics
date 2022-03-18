@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import './product.css';
-import Navbar from '../common/navbar';
+import Navbar from '../common/navbar/index';
 import Footer from '../common/footer';
 import Category from '../common/header/Category';
 import { useParams } from 'react-router-dom';

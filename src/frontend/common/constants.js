@@ -73,3 +73,9 @@ export const categoryList = [
   'Vegan',
   'Clothing'
 ];
+
+export const testCredentials = {
+  email: 'shreyp@gmail.com',
+  password: 'shreypandey',
+  confirmpassword: 'shreypandey'
+};

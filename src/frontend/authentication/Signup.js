@@ -4,19 +4,42 @@ import Footer from '../common/footer';
 import { useAuthCtx } from '../context/authenticationContext';
 import { Link } from 'react-router-dom';
 import { SIGNIN } from '../../routes';
+import { testCredentials } from '../common/constants';
 
 export default function Signup() {
-  const { email, password, dispatch, signupError, handleSignUp } = useAuthCtx();
+  const {
+    email,
+    password,
+    cnfPassword,
+    rememberMe,
+    dispatch,
+    signupError,
+    handleSignUp,
+    emailError,
+    passwordError,
+    cnfpasswordError
+  } = useAuthCtx();
 
   const onSignUpHandler = (e) => {
     e.preventDefault();
     handleSignUp();
   };
 
+  const onUsingTestCredentials = (e) => {
+    e.preventDefault();
+    dispatch({ type: 'SIGNIN-EMAIL', payload: testCredentials.email });
+    dispatch({ type: 'SIGNIN-PASSWORD', payload: testCredentials.password });
+    dispatch({
+      type: 'CONFIRM-PASSWORD',
+      payload: testCredentials.confirmpassword
+    });
+    dispatch({ type: 'REMEMBER-ME' });
+  };
+
   return (
     <>
       <Navbar noDrawer={true} />
-      {signupError && <h1 className='tag cen md sb'>{signupError}</h1>}
+      {<h1 className='tag cen md sb mg-full'>{signupError}</h1>}
       <div className='card authentication shdw'>
         <h1 className='lg sb cen xs-s mg-full'>SIGN UP</h1>
         <hr />
@@ -36,11 +59,10 @@ export default function Signup() {
               onChange={(e) =>
                 dispatch({ type: 'SIGNIN-EMAIL', payload: e.target.value })
               }
+              onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
               required
             />
-            {!email && (
-              <h1 className='input__error'>Enter a valid email address</h1>
-            )}
+            <h1 className='input__error'>{emailError}</h1>
           </div>
           <div className='authentication__input'>
             <label htmlFor='password__signup' className='label'>
@@ -57,11 +79,10 @@ export default function Signup() {
               onChange={(e) =>
                 dispatch({ type: 'SIGNIN-PASSWORD', payload: e.target.value })
               }
+              onBlur={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
               required
             />
-            {!password && (
-              <h1 className='input__error'>Enter a valid password</h1>
-            )}
+            <h1 className='input__error'>{passwordError}</h1>
           </div>
           <div className='authentication__input'>
             <label htmlFor='cnf__password__signup' className='label'>
@@ -74,11 +95,14 @@ export default function Signup() {
               id='cnf__password__signup'
               autoComplete='off'
               placeholder='Re-enter Password'
+              value={cnfPassword}
+              onChange={(e) =>
+                dispatch({ type: 'CONFIRM-PASSWORD', payload: e.target.value })
+              }
+              onBlur={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
               required
             />
-            {!email && (
-              <h1 className='input__error'>Enter a valid email address</h1>
-            )}
+            <h1 className='input__error'>{cnfpasswordError}</h1>
           </div>
           <div className='flex-ct-st signin__remember'>
             <input
@@ -86,6 +110,8 @@ export default function Signup() {
               type='checkbox'
               name='remember__signup'
               id='remember__signup'
+              checked={rememberMe}
+              onChange={(e) => dispatch({ type: 'REMEMBER-ME' })}
             />
             <label htmlFor='remember__signup' className='label'>
               Remember me
@@ -97,6 +123,12 @@ export default function Signup() {
             onClick={onSignUpHandler}
           >
             SIGN UP
+          </button>
+          <button
+            className='btn btn--wide btn--auth sb'
+            onClick={onUsingTestCredentials}
+          >
+            TEST-CREDENTIALS
           </button>
         </form>
         <div className='signin__links'>

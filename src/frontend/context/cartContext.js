@@ -14,6 +14,8 @@ const CartProvider = ({ children }) => {
     const index = cartListData.findIndex((e) => e.pid === item.pid);
     if (index < 0) {
       addItemToCart(item);
+    } else {
+      return;
     }
   };
 
