@@ -33,7 +33,8 @@ export default function Product() {
   const handleAddToWishlistClick = () => {
     if (!addedToWishlist && !addedToCart) {
       const productToAdd = {
-        ...product
+        ...product,
+        _id: product?.pid
       };
       addToWishlist(product?.pid, productToAdd);
       setAddedToWishlist(true);
@@ -44,6 +45,7 @@ export default function Product() {
     if (!addedToCart) {
       const productToAdd = {
         ...product,
+        _id: product?.pid,
         count: product?.count ?? 1
       };
       addToCart(productToAdd);
@@ -85,7 +87,7 @@ export default function Product() {
               </li>
               <li className='product__stack__item xs-s'>
                 <span className='type'>{product?.type}</span>
-                <span className='size'>{product?.size}</span>
+                {product?.size && <span className='size'>{product?.size}</span>}
               </li>
             </ul>
 

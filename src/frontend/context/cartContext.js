@@ -108,7 +108,6 @@ const CartAPIProvider = ({ children }) => {
   };
 
   const addItemToCart = async (objectData) => {
-    console.log(objectData);
     dispatch({ type: 'API_REQUEST' });
     try {
       const resp = await axios.post(
@@ -149,7 +148,7 @@ const CartAPIProvider = ({ children }) => {
       const dataList = resp.data.cart;
       const storedData = JSON.parse(localStorage.getItem('userData'));
       storedData.cart = [...dataList];
-
+      console.log(id, dataList);
       dispatch({ type: 'API_RESPONSE', payload: dataList });
       dispatch({ type: 'UPDATE_CART_PID' });
       localStorage.setItem('userData', JSON.stringify(storedData));
@@ -178,7 +177,6 @@ const CartAPIProvider = ({ children }) => {
       const dataList = resp.data.cart;
       const storedData = JSON.parse(localStorage.getItem('userData'));
       storedData.cart = [...dataList];
-      console.log(id, dataList);
 
       dispatch({ type: 'API_RESPONSE', payload: dataList });
       dispatch({ type: 'UPDATE_CART_PID' });

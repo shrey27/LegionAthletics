@@ -68,6 +68,7 @@ const WishlistProvider = ({ children }) => {
   };
 
   const addToWishlist = async (pid, objectData) => {
+    
     dispatch({ type: 'API_REQUEST' });
     const index = wishlistData.findIndex((e) => e.pid === pid);
     if (index < 0) {
@@ -87,6 +88,7 @@ const WishlistProvider = ({ children }) => {
           }
         );
         const dataList = resp.data.wishlist;
+        console.log(dataList);
         dispatch({ type: 'API_RESPONSE', payload: dataList });
         dispatch({ type: 'UPDATE_WISHLIST_PID' });
         const datatoUpdate = JSON.parse(localStorage.getItem('userData'));

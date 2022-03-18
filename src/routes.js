@@ -27,5 +27,6 @@ export const availableRoutes = (
     <Route path={SIGNIN} element={<Signin />} />
     <Route path={SIGNUP} element={<Signup />} />
     <Route path={MOCKAPI} element={<MockAPI />} />
+    <Route path="*" element={<HomePage />} />
   </Routes>
 );
