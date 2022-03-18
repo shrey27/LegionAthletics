@@ -9,10 +9,10 @@ import {
   HOMEPAGE,
   // CART,
   // WISHLIST,
-  // SIGNIN,
-  // SIGNUP
+  SIGNIN,
+  SIGNUP
 } from '../../../routes';
-// import { useAuthCtx } from '../../context/authenticationContext';
+import { useAuthCtx } from '../../context/authenticationContext';
 
 export default function Navbar({ noDrawer, showSearchBar }) {
   const [search, setSearch] = useState('');
@@ -20,7 +20,7 @@ export default function Navbar({ noDrawer, showSearchBar }) {
   // const { totalItems } = useCartCtx();
   // const { wishlistData } = useWishlistCtx();
   const { dispatch } = useProductsCtx();
-  // const { userdata, handleSignOut } = useAuthCtx();
+  const { userdata, handleSignOut } = useAuthCtx();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -87,21 +87,21 @@ export default function Navbar({ noDrawer, showSearchBar }) {
               <span className='menu__btn__name'>Account</span>
             </span>
             <div className='submenu shadow xs-s'>
-              {/* {!userdata && ( */}
+              {!userdata && (
                 <section className='submenu__btn'>
-                  {/* <Link className='btn btn--float' to={SIGNIN}> */}
+                  <Link className='btn btn--float' to={SIGNIN}>
                     Sign In
-                  {/* </Link> */}
-                  {/* <Link className='btn' to={SIGNUP}> */}
+                  </Link>
+                  <Link className='btn' to={SIGNUP}>
                     Sign Up
-                  {/* </Link> */}
+                  </Link>
                 </section>
-              {/* )} */}
+              )}
               <section className='submenu__items flex-st-ct flex-vertical'>
                 {/* <Link to={PROFILE} className='submenu__item sb'>
                   <span>My Profile</span>
-                </Link>
-                <Link to={ORDERS} className='submenu__item sb'>
+                </Link> */}
+                {/* <Link to={ORDERS} className='submenu__item sb'>
                   <span>Orders Summary</span>
                 </Link> */}
                 {/* <Link to={CART} className='submenu__item sb'>
@@ -111,8 +111,8 @@ export default function Navbar({ noDrawer, showSearchBar }) {
                     bdg-size='medium'
                     className='fas fa-shopping-cart nav__icons lg fl-rt'
                   ></i>
-                </Link>
-                <Link to={WISHLIST} className='submenu__item sb'>
+                </Link> */}
+                {/* <Link to={WISHLIST} className='submenu__item sb'>
                   Wishlist
                   <i
                     icon-badge={wishlistData.length}
@@ -121,16 +121,16 @@ export default function Navbar({ noDrawer, showSearchBar }) {
                   ></i>
                 </Link> */}
               </section>
-              {/* {userdata && ( */}
+              {userdata && (
                 <section className='submenu__btn flex-st-ct'>
                   <button
                     className='btn btn--float btn--wide'
-                    // onClick={handleSignOut}
+                    onClick={handleSignOut}
                   >
                     Log Out
                   </button>
                 </section>
-              {/* )} */}
+              )}
             </div>
           </div>
         </section>
