@@ -20,7 +20,7 @@ export default function Navbar({ noDrawer, showSearchBar }) {
   const { totalItems } = useCartCtx();
   const { wishlistData } = useWishlistCtx();
   const { dispatch } = useProductsCtx();
-  const { userdata, handleSignOut } = useAuthCtx();
+  const { token, handleSignOut } = useAuthCtx();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -86,7 +86,7 @@ export default function Navbar({ noDrawer, showSearchBar }) {
               <span className='menu__btn__name'>Account</span>
             </span>
             <div className='submenu shadow xs-s'>
-              {!userdata && (
+              {!token && (
                 <section className='submenu__btn'>
                   <Link className='btn btn--float' to={SIGNIN}>
                     Sign In
@@ -120,7 +120,7 @@ export default function Navbar({ noDrawer, showSearchBar }) {
                   ></i>
                 </Link>
               </section>
-              {userdata && (
+              {token && (
                 <section className='submenu__btn flex-st-ct'>
                   <button
                     className='btn btn--float btn--wide'

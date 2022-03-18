@@ -45,7 +45,7 @@
   border: none;
 }
 .input__eye {
-  color: var(--primary);
+  color: var(--black);
 }
 @media screen and (min-width: 768px) {
   .authentication {

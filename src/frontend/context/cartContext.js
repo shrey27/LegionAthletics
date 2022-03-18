@@ -88,24 +88,26 @@ const CartAPIProvider = ({ children }) => {
   const { token } = useAuthCtx();
 
   const getCartList = async () => {
-    dispatch({ type: 'API_REQUEST' });
-    try {
-      const storedCart = JSON.parse(localStorage.getItem('userData')).cart;
-      if (storedCart) {
-        dispatch({ type: 'API_RESPONSE', payload: storedCart });
-      } else {
-        const resp = await axios.get(CART_ENDPOINT, {
-          headers: {
-            authorization: token
-          }
-        });
-        const dataList = resp.data.cart;
-        dispatch({ type: 'API_RESPONSE', payload: dataList });
+    if (token) {
+      dispatch({ type: 'API_REQUEST' });
+      try {
+        const storedCart = JSON.parse(localStorage.getItem('userData')).cart;
+        if (storedCart) {
+          dispatch({ type: 'API_RESPONSE', payload: storedCart });
+        } else {
+          const resp = await axios.get(CART_ENDPOINT, {
+            headers: {
+              authorization: token
+            }
+          });
+          const dataList = resp.data.cart;
+          dispatch({ type: 'API_RESPONSE', payload: dataList });
+        }
+        dispatch({ type: 'UPDATE_CART_PID' });
+      } catch (err) {
+        console.log('GET-CART-ERROR', err);
+        dispatch({ type: 'API_FAILURE' });
       }
-      dispatch({ type: 'UPDATE_CART_PID' });
-    } catch (err) {
-      console.log('GET-CART-ERROR', err);
-      dispatch({ type: 'API_FAILURE' });
     }
   };
 
@@ -150,7 +152,6 @@ const CartAPIProvider = ({ children }) => {
       const dataList = resp.data.cart;
       const storedData = JSON.parse(localStorage.getItem('userData'));
       storedData.cart = [...dataList];
-      console.log(id, dataList);
       dispatch({ type: 'API_RESPONSE', payload: dataList });
       dispatch({ type: 'UPDATE_CART_PID' });
       localStorage.setItem('userData', JSON.stringify(storedData));

@@ -164,7 +164,7 @@ const ProductsContextProvider = ({ children }) => {
         let resp = await axios.get(GET_PRODUCTS);
         setProductList(resp.data.products);
       } catch (err) {
-        console.log(err);
+        console.log('GET-PRODUCTS ERROR FROM USEEFFECT', err);
       }
     })();
   }, []);

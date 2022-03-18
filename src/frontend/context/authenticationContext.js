@@ -15,6 +15,7 @@ const defaultState = {
   signinError: '',
   signupError: '',
   rememberMe: false,
+  signinRememberMe: false,
   userdata: '',
   token: null
 };
@@ -46,7 +47,7 @@ const authReducerFunc = (state, action) => {
     case 'SIGNIN-ERROR':
       return {
         ...state,
-        signinError: 'SIGN IN FAILED! TRY AFTER SOME TIME'
+        signinError: action.payload
       };
     case 'SIGNUP-ERROR':
       return {
@@ -92,12 +93,31 @@ const authReducerFunc = (state, action) => {
         ...state,
         rememberMe: !state.rememberMe
       };
+    case 'SIGNIN-REMEMBER-ME':
+      return {
+        ...state,
+        signinRememberMe: !state.signinRememberMe
+      };
     default:
       return {
         ...state
       };
   }
 };
+
+export function callLocalStorage() {
+  const { email, password, cart, wishlist } = JSON.parse(
+    localStorage.getItem('userData')
+  );
+  const storedToken = localStorage.getItem('token');
+  return {
+    storedEmail: email,
+    storedPassword: password,
+    storedCart: cart,
+    storedWishlist: wishlist,
+    storedToken
+  };
+}
 
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducerFunc, defaultState);
@@ -106,6 +126,7 @@ const AuthProvider = ({ children }) => {
     password,
     cnfPassword,
     rememberMe,
+    signinRememberMe,
     signinError,
     signupError,
     userdata,
@@ -116,7 +137,7 @@ const AuthProvider = ({ children }) => {
   } = state;
   const navigate = useNavigate();
 
-  function validationFun() {
+  function validationFun(forSignIn) {
     if (
       !email ||
       !email.match(
@@ -132,12 +153,12 @@ const AuthProvider = ({ children }) => {
       return false;
     }
 
-    if (!cnfPassword || cnfPassword.length < 8) {
+    if (!forSignIn && (!cnfPassword || cnfPassword.length < 8)) {
       dispatch({ type: 'CONFIRM-PASSWORD-INCORRECT' });
       return false;
     }
 
-    if (cnfPassword !== password) {
+    if (!forSignIn && cnfPassword !== password) {
       dispatch({ type: 'PASSWORDS-MISMATCH' });
       return false;
     }
@@ -146,48 +167,56 @@ const AuthProvider = ({ children }) => {
   }
 
   const handleSignIn = async () => {
-    if (!rememberMe) {
-      try {
-        // const storedEmail = JSON.parse(localStorage.getItem('userData')).email;
-        // const storedPassword = JSON.parse(
-        //   localStorage.getItem('userData')
-        // ).password;
-        // const storedToken = localStorage.getItem('token');
-        // if (storedEmail === email && storedPassword === password) {
-        //   dispatch({ type: 'TOKEN-SAVED', payload: storedToken });
-        // } else {
-        const resp = await axios.post(SIGN_IN, {
-          email,
-          password
-        });
-        const { createdUser, encodedToken } = resp.data;
-        localStorage.setItem('token', encodedToken);
-        localStorage.setItem('userData', JSON.stringify(createdUser));
-        dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
-        // }
-      } catch (err) {
-        dispatch({ type: 'SIGNIN-ERROR' });
-        console.log(err);
-      } finally {
-        dispatch({ type: 'SET-DEFAULT' });
-        navigate(HOMEPAGE);
+    if (validationFun(true)) {
+      if (!rememberMe) {
+        try {
+          const {
+            data: { foundUser, encodedToken },
+            status
+          } = await axios.post(SIGN_IN, {
+            email,
+            password
+          });
+          if (foundUser) {
+            localStorage.setItem('token', encodedToken);
+            localStorage.setItem('userData', JSON.stringify(foundUser));
+            dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
+            navigate(HOMEPAGE);
+          } else {
+            throw new Error('User not Found');
+          }
+        } catch (err) {
+          console.log('SIGNIN-ERROR', err);
+          dispatch({
+            type: 'SIGNIN-ERROR',
+            payload: 'User Not Found. Either Sign-up or try again later'
+          });
+        }
+      } else {
+        const { storedEmail, storedPassword, storedToken } = callLocalStorage();
+        if (storedEmail === email && storedPassword === password) {
+          dispatch({ type: 'TOKEN-SAVED', payload: storedToken });
+          dispatch({ type: 'SET-DEFAULT' });
+          navigate(HOMEPAGE);
+        } else {
+          dispatch({
+            type: 'SIGNIN-ERROR',
+            payload: 'User Not Found. Either Sign-up or try again later'
+          });
+          dispatch({ type: 'SET-DEFAULT' });
+        }
       }
-    } else {
-      dispatch({ type: 'TOKEN-SAVED', payload: localStorage.getItem('token') });
-      dispatch({ type: 'SET-DEFAULT' });
-      navigate(HOMEPAGE);
     }
   };
 
   const handleSignUp = async () => {
-    if (validationFun()) {
+    if (validationFun(false)) {
       try {
         const response = await axios.post(SIGN_UP, {
           email,
           password
         });
         const { createdUser, encodedToken } = response.data;
-        console.log(createdUser, encodedToken);
         localStorage.setItem('token', encodedToken);
         localStorage.setItem('userData', JSON.stringify(createdUser));
         dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
@@ -203,7 +232,7 @@ const AuthProvider = ({ children }) => {
 
   const handleSignOut = () => {
     dispatch({ type: 'TOKEN-REMOVED' });
-    if (!rememberMe) localStorage.clear();
+    if (!rememberMe && !signinRememberMe) localStorage.clear();
     navigate(HOMEPAGE);
   };
 
@@ -222,6 +251,7 @@ const AuthProvider = ({ children }) => {
         userdata,
         cnfPassword,
         rememberMe,
+        signinRememberMe,
         token,
         signinError,
         signupError,

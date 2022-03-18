@@ -1,4 +1,5 @@
 import './authentication.css';
+import { useState } from 'react';
 import Navbar from '../common/navbar';
 import Footer from '../common/footer';
 import { useAuthCtx } from '../context/authenticationContext';
@@ -7,6 +8,9 @@ import { SIGNIN } from '../../routes';
 import { testCredentials } from '../common/constants';
 
 export default function Signup() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCnfPassword, setShowCnfPassword] = useState(false);
+
   const {
     email,
     password,
@@ -33,7 +37,6 @@ export default function Signup() {
       type: 'CONFIRM-PASSWORD',
       payload: testCredentials.confirmpassword
     });
-    dispatch({ type: 'REMEMBER-ME' });
   };
 
   return (
@@ -68,40 +71,56 @@ export default function Signup() {
             <label htmlFor='password__signup' className='label'>
               Enter Password
             </label>
-            <input
-              className='input sm-s'
-              type='password'
-              name='password__signup'
-              id='password__signup'
-              autoComplete='off'
-              placeholder='Enter Password'
-              value={password}
-              onChange={(e) =>
-                dispatch({ type: 'SIGNIN-PASSWORD', payload: e.target.value })
-              }
-              onBlur={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
-              required
-            />
+            <div className='input__container'>
+              <input
+                className='input input__password sm-s'
+                type={showPassword ? 'text' : 'password'}
+                name='password__signup'
+                id='password__signup'
+                autoComplete='off'
+                placeholder='Enter Password'
+                value={password}
+                onChange={(e) =>
+                  dispatch({ type: 'SIGNIN-PASSWORD', payload: e.target.value })
+                }
+                onBlur={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
+                required
+              />
+              <i
+                className='fa-solid fa-eye input__eye'
+                onClick={() => setShowPassword((e) => !e)}
+              ></i>
+            </div>
             <h1 className='input__error'>{passwordError}</h1>
           </div>
+
           <div className='authentication__input'>
             <label htmlFor='cnf__password__signup' className='label'>
               Confirm Password
             </label>
-            <input
-              className='input sm-s'
-              type='password'
-              name='cnf__password__signup'
-              id='cnf__password__signup'
-              autoComplete='off'
-              placeholder='Re-enter Password'
-              value={cnfPassword}
-              onChange={(e) =>
-                dispatch({ type: 'CONFIRM-PASSWORD', payload: e.target.value })
-              }
-              onBlur={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
-              required
-            />
+            <div className='input__container'>
+              <input
+                className='input input__password sm-s'
+                type={showCnfPassword ? 'text' : 'password'}
+                name='cnf__password__signup'
+                id='cnf__password__signup'
+                autoComplete='off'
+                placeholder='Re-enter Password'
+                value={cnfPassword}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'CONFIRM-PASSWORD',
+                    payload: e.target.value
+                  })
+                }
+                onBlur={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
+                required
+              />
+              <i
+                className='fa-solid fa-eye input__eye'
+                onClick={() => setShowCnfPassword((e) => !e)}
+              ></i>
+            </div>
             <h1 className='input__error'>{cnfpasswordError}</h1>
           </div>
           <div className='flex-ct-st signin__remember'>

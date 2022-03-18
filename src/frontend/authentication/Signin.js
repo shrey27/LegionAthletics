@@ -1,11 +1,10 @@
 import './authentication.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Navbar from '../common/navbar';
 import Footer from '../common/footer';
 import { useAuthCtx } from '../context/authenticationContext';
 import { Link } from 'react-router-dom';
-import { HOMEPAGE, SIGNUP } from '../../routes';
-import { useNavigate } from 'react-router-dom';
+import { SIGNUP } from '../../routes';
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,7 +14,7 @@ export default function Signin() {
     emailError,
     passwordError,
     signinError,
-    rememberMe,
+    signinRememberMe,
     dispatch,
     handleSignIn
   } = useAuthCtx();
@@ -73,7 +72,7 @@ export default function Signin() {
                 required
               />
               <i
-                class='fa-solid fa-eye input__eye'
+                className='fa-solid fa-eye input__eye'
                 onClick={() => setShowPassword((e) => !e)}
               ></i>
             </div>
@@ -86,8 +85,8 @@ export default function Signin() {
               type='checkbox'
               name='remember__signin'
               id='remember__signin'
-              checked={rememberMe}
-              onChange={(e) => dispatch({ type: 'REMEMBER-ME' })}
+              checked={signinRememberMe}
+              onChange={(e) => dispatch({ type: 'SIGNIN-REMEMBER-ME' })}
             />
             <label htmlFor='remember__signin' className='label'>
               Remember me
