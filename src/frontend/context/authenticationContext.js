@@ -11,7 +11,7 @@ const defaultState = {
   signinError: '',
   signupError: '',
   userdata: '',
-  token: localStorage.getItem('token') ?? ''
+  token: null
 };
 const authReducerFunc = (state, action) => {
   switch (action.type) {
@@ -114,7 +114,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
     if (storedData) {
-      dispatch({ type: 'TOKEN-SAVED', payload: 'TOKENSAVED' });
+      dispatch({ type: 'TOKEN-SAVED', payload: localStorage.getItem('token') });
     }
   }, []);
 

@@ -2,13 +2,13 @@ import './navbar.css';
 import Drawer from './Drawer';
 import { useState } from 'react';
 // import { useCartCtx } from '../../context/cartContext';
-// import { useWishlistCtx } from '../../context/wishlistContext';
+import { useWishlistCtx } from '../../context/wishlistContext';
 import { useProductsCtx } from '../../context/productsContext';
 import { Link } from 'react-router-dom';
 import {
   HOMEPAGE,
   // CART,
-  // WISHLIST,
+  WISHLIST,
   SIGNIN,
   SIGNUP
 } from '../../../routes';
@@ -18,14 +18,13 @@ export default function Navbar({ noDrawer, showSearchBar }) {
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
   // const { totalItems } = useCartCtx();
-  // const { wishlistData } = useWishlistCtx();
+  const { wishlistData } = useWishlistCtx();
   const { dispatch } = useProductsCtx();
   const { userdata, handleSignOut } = useAuthCtx();
 
   const handleSearch = (e) => {
     e.preventDefault();
     const { value } = e.target;
-    //route to products page
     setSearch(value);
     dispatch({
       type: 'NAVBAR_ITEM_SEARCH',
@@ -112,14 +111,14 @@ export default function Navbar({ noDrawer, showSearchBar }) {
                     className='fas fa-shopping-cart nav__icons lg fl-rt'
                   ></i>
                 </Link> */}
-                {/* <Link to={WISHLIST} className='submenu__item sb'>
+                <Link to={WISHLIST} className='submenu__item sb'>
                   Wishlist
                   <i
                     icon-badge={wishlistData.length}
                     bdg-size='medium'
                     className='far fa-heart nav__icons lg fl-rt'
                   ></i>
-                </Link> */}
+                </Link>
               </section>
               {userdata && (
                 <section className='submenu__btn flex-st-ct'>
