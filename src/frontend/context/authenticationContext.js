@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 const AuthentiationContext = createContext();
-import { HOMEPAGE } from '../../routes';
+import { SIGNOUT ,HOMEPAGE} from '../../routes';
 import { SIGN_IN, SIGN_UP } from '../../apiEndpoints';
 
 const defaultState = {
@@ -233,7 +233,7 @@ const AuthProvider = ({ children }) => {
   const handleSignOut = () => {
     dispatch({ type: 'TOKEN-REMOVED' });
     if (!rememberMe && !signinRememberMe) localStorage.clear();
-    navigate(HOMEPAGE);
+    navigate(SIGNOUT);
   };
 
   useEffect(() => {
