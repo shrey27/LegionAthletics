@@ -75,6 +75,7 @@ export const categoryList = [
 ];
 
 export const testCredentials = {
+  username: 'Shrey Pandey',
   email: 'shreyp@gmail.com',
   password: 'shreypandey',
   confirmpassword: 'shreypandey'

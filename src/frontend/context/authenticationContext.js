@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 const AuthentiationContext = createContext();
-import { SIGNOUT ,HOMEPAGE} from '../../routes';
+import { SIGNOUT, HOMEPAGE } from '../../routes';
 import { SIGN_IN, SIGN_UP } from '../../apiEndpoints';
 
 const defaultState = {
@@ -12,6 +12,8 @@ const defaultState = {
   passwordError: '',
   cnfPassword: '',
   cnfpasswordError: '',
+  username: '',
+  userNameError: '',
   signinError: '',
   signupError: '',
   rememberMe: false,
@@ -30,6 +32,11 @@ const authReducerFunc = (state, action) => {
       return {
         ...state,
         password: action.payload
+      };
+    case 'SIGNUP-USERNAME':
+      return {
+        ...state,
+        username: action.payload
       };
     case 'TOKEN-SAVED':
       return {
@@ -79,6 +86,11 @@ const authReducerFunc = (state, action) => {
         ...state,
         cnfpasswordError: 'Password should be atleast 8 chars long'
       };
+    case 'SIGNUP-USERNAME-ERROR':
+      return {
+        ...state,
+        userNameError: 'Username can only have alphabets'
+      };
     case 'CLEAR-ALL-ERRORS':
       return {
         ...state,
@@ -86,7 +98,8 @@ const authReducerFunc = (state, action) => {
         passwordError: '',
         emailError: '',
         signupError: '',
-        signinError: ''
+        signinError: '',
+        userNameError: ''
       };
     case 'REMEMBER-ME':
       return {
@@ -133,11 +146,18 @@ const AuthProvider = ({ children }) => {
     token,
     emailError,
     passwordError,
-    cnfpasswordError
+    cnfpasswordError,
+    username,
+    userNameError
   } = state;
   const navigate = useNavigate();
 
   function validationFun(forSignIn) {
+    if ((!forSignIn && !username) || !username.match(/^[a-zA-Z ]+/)) {
+      dispatch({ type: 'SIGNUP-USERNAME-ERROR' });
+      return false;
+    }
+
     if (
       !email ||
       !email.match(
@@ -171,8 +191,7 @@ const AuthProvider = ({ children }) => {
       if (!rememberMe) {
         try {
           const {
-            data: { foundUser, encodedToken },
-            status
+            data: { foundUser, encodedToken }
           } = await axios.post(SIGN_IN, {
             email,
             password
@@ -213,6 +232,8 @@ const AuthProvider = ({ children }) => {
     if (validationFun(false)) {
       try {
         const response = await axios.post(SIGN_UP, {
+          name: username.split(' ')[0],
+          surname: username.split(' ')[1],
           email,
           password
         });
@@ -261,7 +282,9 @@ const AuthProvider = ({ children }) => {
         handleSignOut,
         emailError,
         passwordError,
-        cnfpasswordError
+        cnfpasswordError,
+        username,
+        userNameError
       }}
     >
       {children}

@@ -14,6 +14,7 @@ export default function Signup() {
   const {
     email,
     password,
+    username,
     cnfPassword,
     rememberMe,
     dispatch,
@@ -21,7 +22,8 @@ export default function Signup() {
     handleSignUp,
     emailError,
     passwordError,
-    cnfpasswordError
+    cnfpasswordError,
+    userNameError
   } = useAuthCtx();
 
   const onSignUpHandler = (e) => {
@@ -31,6 +33,7 @@ export default function Signup() {
 
   const onUsingTestCredentials = (e) => {
     e.preventDefault();
+    dispatch({ type: 'SIGNUP-USERNAME', payload: testCredentials.username });
     dispatch({ type: 'SIGNIN-EMAIL', payload: testCredentials.email });
     dispatch({ type: 'SIGNIN-PASSWORD', payload: testCredentials.password });
     dispatch({
@@ -48,6 +51,27 @@ export default function Signup() {
         <hr />
         <form action='#' className='sm-s'>
           <div className='authentication__input'>
+            <label htmlFor='name__signup' className='label'>
+              Enter Your Name
+            </label>
+            <input
+              className='input sm-s'
+              type='text'
+              name='name__signup'
+              id='name__signup'
+              placeholder='Enter your Name'
+              autoComplete='off'
+              aria-autocomplete='off'
+              value={username}
+              onChange={(e) =>
+                dispatch({ type: 'SIGNUP-USERNAME', payload: e.target.value })
+              }
+              onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
+              required
+            />
+            <h1 className='input__error'>{userNameError}</h1>
+          </div>
+          <div className='authentication__input'>
             <label htmlFor='email__signup' className='label'>
               Enter Your Email ID
             </label>
@@ -58,6 +82,7 @@ export default function Signup() {
               id='email__signup'
               placeholder='Enter Email'
               autoComplete='off'
+              aria-autocomplete='off'
               value={email}
               onChange={(e) =>
                 dispatch({ type: 'SIGNIN-EMAIL', payload: e.target.value })
