@@ -1,44 +1,40 @@
 import './deals.css';
-// import { useCartCtx, useCartAPICtx } from '../../context/cartContext';
+import { useCartCtx, useCartAPICtx } from '../../context/cartContext';
 import { useWishlistCtx } from '../../context/wishlistContext';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PRODUCTS } from '../../../routes';
 
 export default function Deal(props) {
+  const { itemdata, wishlist, close, noButton } = props;
   const {
-    _id,
+    id,
     pid,
     source,
     title,
-    price,
     mrp,
+    price,
     discount,
     rating,
     fastdelivery,
     count,
-    nostock,
-    wishlist,
-    close,
-    noButton
-  } = props;
+    nostock
+  } = itemdata;
 
-  // const { addToCart } = useCartCtx();
+  const { addToCart } = useCartCtx();
   const { addToWishlist, deleteFromWishlist, addedPID } = useWishlistCtx();
-  // const { addedCartPID } = useCartAPICtx();
+  const { addedCartPID } = useCartAPICtx();
 
   const [addedToWishlist, setAddedToWishlist] = useState(false);
-  // const [addedToCart, setAddedToCart] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   useEffect(() => {
     if (addedPID && addedPID.includes(pid)) setAddedToWishlist(true);
     else setAddedToWishlist(false);
-  }, [addedPID, pid]);
 
-  // useEffect(() => {
-  //   if (addedCartPID && addedCartPID.includes(pid)) setAddedToCart(true);
-  //   else setAddedToCart(false);
-  // }, [addedCartPID, pid]);
+    if (addedCartPID && addedCartPID.includes(pid)) setAddedToCart(true);
+    else setAddedToCart(false);
+  }, [addedCartPID, addedPID, pid]);
 
   const handleAddToWishlistClick = () => {
     if (!addedToWishlist) {
@@ -132,17 +128,21 @@ export default function Deal(props) {
         ) : (
           <>
             {noButton ? (
-              <Link to={PRODUCTS}>
-                <button className='btn btn--auth--solid btn--wide btn--margin'>
-                  Get Details
-                </button>
-              </Link>
+              <button
+                className={`btn ${
+                  addedToCart ? 'btn--auth' : 'btn--auth--solid'
+                } btn--wide btn--margin`}
+              >
+                Get Details
+              </button>
             ) : (
               <button
-                className='btn btn--auth--solid btn--wide btn--margin'
+                className={`btn ${
+                  addedToCart ? 'btn--auth' : 'btn--auth--solid'
+                } btn--wide btn--margin`}
                 onClick={handleAddToCartClick}
               >
-                Add to Cart
+                {addedToCart ? 'Added To Cart' : 'Add to Cart'}
               </button>
             )}
           </>

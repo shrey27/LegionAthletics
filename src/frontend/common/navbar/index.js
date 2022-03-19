@@ -1,13 +1,13 @@
 import './navbar.css';
 import Drawer from './Drawer';
 import { useState } from 'react';
-// import { useCartCtx } from '../../context/cartContext';
+import { useCartCtx } from '../../context/cartContext';
 import { useWishlistCtx } from '../../context/wishlistContext';
 import { useProductsCtx } from '../../context/productsContext';
 import { Link } from 'react-router-dom';
 import {
   HOMEPAGE,
-  // CART,
+  CART,
   WISHLIST,
   SIGNIN,
   SIGNUP
@@ -17,7 +17,7 @@ import { useAuthCtx } from '../../context/authenticationContext';
 export default function Navbar({ noDrawer, showSearchBar }) {
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
-  // const { totalItems } = useCartCtx();
+  const { totalItems } = useCartCtx();
   const { wishlistData } = useWishlistCtx();
   const { dispatch } = useProductsCtx();
   const { userdata, handleSignOut } = useAuthCtx();
@@ -103,14 +103,14 @@ export default function Navbar({ noDrawer, showSearchBar }) {
                 {/* <Link to={ORDERS} className='submenu__item sb'>
                   <span>Orders Summary</span>
                 </Link> */}
-                {/* <Link to={CART} className='submenu__item sb'>
+                <Link to={CART} className='submenu__item sb'>
                   Cart
                   <i
                     icon-badge={totalItems}
                     bdg-size='medium'
                     className='fas fa-shopping-cart nav__icons lg fl-rt'
                   ></i>
-                </Link> */}
+                </Link>
                 <Link to={WISHLIST} className='submenu__item sb'>
                   Wishlist
                   <i

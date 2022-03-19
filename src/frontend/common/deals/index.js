@@ -8,7 +8,13 @@ export default function Deals({ items, name, wishlist, close, noButton }) {
       <div className='deal--cards xs-s'>
         {items.map((elem, index) => {
           return (
-            <Deal key={index * 2} {...elem} wishlist={wishlist} close={close} noButton={noButton}/>
+            <Deal
+              key={elem.id}
+              itemdata={{ ...elem }}
+              wishlist={wishlist}
+              close={close}
+              noButton={noButton}
+            />
           );
         })}
       </div>
