@@ -188,4 +188,9 @@ const ProductsContextProvider = ({ children }) => {
   );
 };
 
-export { useProductsCtx, ProductsContextProvider };
+const useProductId = (id) => {
+  const { productListing } = useProductsCtx();
+  return productListing.find((elem) => elem.pid === id);
+};
+
+export { useProductId, useProductsCtx, ProductsContextProvider };

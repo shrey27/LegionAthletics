@@ -92,11 +92,14 @@ export default function Deal(props) {
           ></i>
         </span>
       )}
-      <img
-        src={source}
-        alt='Banner'
-        className={`card__banner ${nostock && 'nostock'}`}
-      />
+      <Link to={`${PRODUCTS}/${pid}`}>
+        <img
+          src={source}
+          alt='Banner'
+          className={`card__banner ${nostock && 'nostock'}`}
+        />
+      </Link>
+
       <section className='deal__content'>
         <h1 className='primary sm sb mg-half'>{title}</h1>
         <div className='price__ctr'>

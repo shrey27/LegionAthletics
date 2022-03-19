@@ -19,7 +19,11 @@ export const products = [
     count: 1,
     nostock: false,
     fastdelivery: true,
-    category: 'combo'
+    category: 'combo',
+    description:
+      'bestselling supplements | Designed to support your progress | Great value for money',
+    type: 'Vegetarian',
+    size: 'Small'
   },
   {
     _id: uuid(),
@@ -33,7 +37,11 @@ export const products = [
     rating: 4.5,
     count: 1,
     nostock: true,
-    category: 'supplements'
+    category: 'supplements',
+    description:
+      'Indulgent triple-layered, low-sugar snack containing 16g of protein',
+    type: 'Vegan',
+    size: 'Medium'
   },
   {
     _id: uuid(),
@@ -48,7 +56,10 @@ export const products = [
     count: 1,
     fastdelivery: true,
     category: 'snacks',
-    nostock: false
+    nostock: false,
+    description:
+      'A delicious snack, packed with 30g of both fast-and slow-releasing proteins',
+    type: 'Vegan'
   },
   {
     _id: uuid(),
@@ -62,7 +73,10 @@ export const products = [
     rating: 3.9,
     count: 1,
     category: 'combo',
-    nostock: false
+    nostock: false,
+    description: 'The protein power couple',
+    type: 'Vegetarian',
+    size: 'Small'
   },
   {
     _id: uuid(),
@@ -76,7 +90,11 @@ export const products = [
     rating: 4.5,
     count: 1,
     category: 'supplements',
-    nostock: false
+    nostock: false,
+    description:
+      'Highest-quality British-manufactured product | Low Fat | Sugar free',
+    type: 'Vegetarian',
+    size: 'Medium'
   },
   {
     _id: uuid(),
@@ -90,7 +108,10 @@ export const products = [
     rating: 3.9,
     count: 1,
     category: 'clothing',
-    nostock: false
+    nostock: false,
+    description:
+      'Soft-touch stretch fabric | Raglan sleeves for free movement | Printed logo design',
+    size: 'Medium'
   },
   {
     _id: uuid(),
@@ -104,7 +125,10 @@ export const products = [
     rating: 4.5,
     count: 1,
     fastdelivery: true,
-    category: 'combo'
+    category: 'combo',
+    description: 'The protein power couple',
+    type: 'Vegetarian',
+    size: 'Medium'
   },
   {
     _id: uuid(),
@@ -118,7 +142,10 @@ export const products = [
     rating: 4.2,
     count: 1,
     category: 'combo',
-    nostock: false
+    nostock: false,
+    description: 'The protein power couple',
+    type: 'Vegetarian',
+    size: 'Small'
   },
   {
     _id: uuid(),
@@ -133,7 +160,11 @@ export const products = [
     count: 1,
     fastdelivery: true,
     category: 'combo',
-    nostock: false
+    nostock: false,
+    description:
+      'bestselling supplements | Designed to support your progress | Great value for money',
+    type: 'Vegetarian',
+    size: 'Medium'
   },
   {
     _id: uuid(),
@@ -148,7 +179,11 @@ export const products = [
     count: 1,
     fastdelivery: true,
     category: 'supplements',
-    nostock: false
+    nostock: false,
+    description:
+      'Indulgent triple-layered, low-sugar snack containing 16g of protein',
+    type: 'Vegan',
+    size: 'Large'
   },
   {
     _id: uuid(),
@@ -163,7 +198,11 @@ export const products = [
     count: 1,
     fastdelivery: true,
     category: 'snacks',
-    nostock: false
+    nostock: false,
+    description:
+      'Indulgent triple-layered, low-sugar snack containing 16g of protein',
+    type: 'Vegan',
+    size: 'Large'
   },
   {
     _id: uuid(),
@@ -177,7 +216,10 @@ export const products = [
     rating: 4.5,
     count: 1,
     category: 'combo',
-    nostock: false
+    nostock: false,
+    description: 'The protein power couple',
+    type: 'Vegetarian',
+    size: 'Large'
   },
   {
     _id: uuid(),
@@ -191,7 +233,11 @@ export const products = [
     rating: 4.2,
     count: 1,
     category: 'supplements',
-    nostock: false
+    nostock: false,
+    description:
+      'Highest-quality British-manufactured product | Low Fat | Sugar free',
+    type: 'Vegetarian',
+    size: 'Small'
   },
   {
     _id: uuid(),
@@ -206,7 +252,10 @@ export const products = [
     count: 1,
     nostock: true,
     fastdelivery: true,
-    category: 'clothing'
+    category: 'clothing',
+    description:
+      'Soft-touch stretch fabric | Raglan sleeves for free movement | Printed logo design',
+    size: 'Medium'
   },
   {
     _id: uuid(),
@@ -220,7 +269,11 @@ export const products = [
     rating: 4.5,
     count: 1,
     nostock: true,
-    category: 'combo'
+    category: 'combo',
+    description:
+      'bestselling supplements | Designed to support your progress | Great value for money',
+    type: 'Vegetarian',
+    size: 'Small'
   },
   {
     _id: uuid(),
@@ -234,7 +287,10 @@ export const products = [
     rating: 4.0,
     count: 1,
     nostock: true,
-    category: 'combo'
+    category: 'combo',
+    description: 'The protein power couple',
+    type: 'Vegetarian',
+    size: 'Large'
   },
   {
     _id: uuid(),
@@ -249,7 +305,10 @@ export const products = [
     count: 1,
     fastdelivery: true,
     nostock: false,
-    category: 'clothing'
+    category: 'clothing',
+    description:
+      'Soft-touch stretch fabric | Raglan sleeves for free movement | Printed logo design',
+    size: 'Medium'
   },
   {
     _id: uuid(),
@@ -264,7 +323,10 @@ export const products = [
     count: 1,
     fastdelivery: true,
     nostock: false,
-    category: 'clothing'
+    category: 'clothing',
+    description:
+      'Soft-touch stretch fabric | Raglan sleeves for free movement | Printed logo design',
+    size: 'Medium'
   },
   {
     _id: uuid(),
@@ -278,7 +340,9 @@ export const products = [
     rating: 4.4,
     count: 1,
     nostock: false,
-    category: 'clothing'
+    category: 'clothing',
+    description: 'Puff Jacket | Raglan sleeves for free movement | Sweat Proof',
+    size: 'Small'
   },
   {
     _id: uuid(),
@@ -293,7 +357,9 @@ export const products = [
     count: 1,
     nostock: false,
     fastdelivery: true,
-    category: 'clothing'
+    category: 'clothing',
+    description: 'Puff Jacket | Raglan sleeves for free movement | Sweat Proof',
+    size: 'Small'
   },
   {
     _id: uuid(),
@@ -308,7 +374,10 @@ export const products = [
     count: 1,
     nostock: false,
     fastdelivery: true,
-    category: 'supplements'
+    category: 'supplements',
+    description: 'Plant-based essential amino acids',
+    type: 'Vegetarian',
+    size: 'Medium'
   },
   {
     _id: uuid(),
@@ -322,7 +391,10 @@ export const products = [
     rating: 3.8,
     count: 1,
     nostock: false,
-    category: 'snacks'
+    category: 'snacks',
+    description: 'Soy-based high protein snack',
+    type: 'Vegan',
+    size: 'Small'
   },
   {
     _id: uuid(),
@@ -336,7 +408,10 @@ export const products = [
     rating: 4.2,
     count: 1,
     nostock: false,
-    category: 'snacks'
+    category: 'snacks',
+    description: 'An indulgent chocolate spread alternative, made with whey',
+    type: 'Vegetarian',
+    size: 'Medium'
   },
   {
     _id: uuid(),
@@ -350,6 +425,9 @@ export const products = [
     rating: 3.9,
     count: 1,
     nostock: false,
-    category: 'snacks'
+    category: 'snacks',
+    description: 'An indulgent peanut butter alternative, made with whey',
+    type: 'Vegan',
+    size: 'Small'
   }
 ];

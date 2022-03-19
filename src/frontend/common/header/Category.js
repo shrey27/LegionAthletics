@@ -1,15 +1,8 @@
 import './header.css';
 import { Link } from 'react-router-dom';
 import { PRODUCTS } from '../../../routes';
+import { categoryList } from '../constants';
 
-const categoryList = [
-  'Protein',
-  'Gym Gear',
-  'Athletics',
-  'Nutrition',
-  'Vegan',
-  'Clothing'
-];
 export default function Category() {
   return (
     <section className='categories'>
