@@ -5,11 +5,14 @@ import { useCartAPICtx } from '../../context';
 import { Loader, Navbar, Footer } from '../../components';
 
 export default function Orders() {
-  const { cartLoading, cartListData } = useCartAPICtx();
+  const {
+    cartLoading,
+    ordercart: { cartList }
+  } = useCartAPICtx();
   return (
     <Fragment>
       <Navbar />
-      {!cartListData.length ? (
+      {!cartList?.length ? (
         <img src='empty.webp' alt='empty' className='image__empty img--md' />
       ) : (
         <div className='mg-full'>
@@ -20,7 +23,7 @@ export default function Orders() {
             {cartLoading ? (
               <Loader />
             ) : (
-              cartListData.map((elem, index) => {
+              cartList?.map((elem, index) => {
                 return <SummaryCard key={elem._id} {...elem} />;
               })
             )}
@@ -28,7 +31,7 @@ export default function Orders() {
         </div>
       )}
 
-      <Footer fixed={!cartListData.length} />
+      <Footer fixed={!cartList?.length} />
     </Fragment>
   );
 }

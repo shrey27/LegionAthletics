@@ -45,6 +45,8 @@ export default function Cart() {
       type: 'UPDATE_CART_LIST',
       payload: { remainingAmount: cartPrice.net, cartList: [...cartArray] }
     });
+    dispatch({ type: 'API_RESPONSE', payload: [] });
+    dispatch({ type: 'UPDATE_CART_PID', payload: [] });
     navigate(ORDER);
   };
 

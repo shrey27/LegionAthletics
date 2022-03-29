@@ -3,6 +3,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { useLocalStorage } from '../../helpers';
 import { HOMEPAGE } from '../../routes/routes';
 import { Link } from 'react-router-dom';
+import { ToastMessage } from '../../components';
 
 export default function SummaryCard(props) {
   const {
@@ -23,6 +24,7 @@ export default function SummaryCard(props) {
   const [etaDate, setEtaDate] = useState({ date: 0, month: 0, year: 0 });
   const { storedName, storedSurname, storedEmail, storedAddress, storedPhone } =
     useLocalStorage();
+
   useEffect(() => {
     const date1 = new Date();
     const randomNumber = Number(Math.random() * 10);
@@ -39,6 +41,7 @@ export default function SummaryCard(props) {
       month: date2.getMonth() + 1,
       year: date2.getFullYear()
     });
+    ToastMessage('Order Placed Successfully', 'success');
   }, []);
 
   return (
@@ -46,7 +49,7 @@ export default function SummaryCard(props) {
       <div className='card card__summary landscape shdw xs-s'>
         <img src={source} alt='Banner' className='summary card__banner' />
         <section className='card__status xs-s'>
-          <h1 className='card__status__margin tag md sb cen'>ORDER PLACED</h1>
+          <h1 className='card__status__margin tag md sb cen'>ORDER SUMMARY</h1>
           <h1 className='card__status__margin primary md sb cen'>{title}</h1>
           <h1 className='card__status__margin md sb primary cen'>
             Order placed on:
