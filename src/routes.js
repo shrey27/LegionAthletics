@@ -7,7 +7,7 @@ import Signin from './frontend/authentication/Signin';
 import Signup from './frontend/authentication/Signup';
 import Signout from './frontend/authentication/Signout';
 import MockAPI from './MockAPI';
-
+import PrivateRoute from './PrivateRoute';
 import { Routes, Route } from 'react-router-dom';
 
 export const HOMEPAGE = '/';
@@ -23,13 +23,16 @@ export const availableRoutes = (
   <Routes>
     <Route path={HOMEPAGE} element={<HomePage />} />
     <Route path={PRODUCTS} element={<Products />} />
-    <Route path={`${PRODUCTS}/:productId`} element={<Product />} />
-    <Route path={CART} element={<Cart />} />
-    <Route path={WISHLIST} element={<Wishlist />} />
+
     <Route path={SIGNIN} element={<Signin />} />
     <Route path={SIGNUP} element={<Signup />} />
     <Route path={SIGNOUT} element={<Signout />} />
     <Route path={MOCKAPI} element={<MockAPI />} />
+    <Route exact path={HOMEPAGE} element={<PrivateRoute />}>
+      <Route path={CART} element={<Cart />} />
+      <Route path={WISHLIST} element={<Wishlist />} />
+      <Route path={`${PRODUCTS}/:productId`} element={<Product />} />
+    </Route>
     <Route path='*' element={<HomePage />} />
   </Routes>
 );

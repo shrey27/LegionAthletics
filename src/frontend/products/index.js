@@ -10,7 +10,6 @@ import { useLocation } from 'react-router-dom';
 
 export default function Products() {
   const location = useLocation();
-  console.log(location);
   const [filterOpen, setFilterOpen] = useState(false);
   const [products, setProducts] = useState([]);
   const {

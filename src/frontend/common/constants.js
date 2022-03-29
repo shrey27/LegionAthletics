@@ -74,6 +74,10 @@ export const categoryList = [
   'Clothing'
 ];
 
+export const guestCredentials = {
+  email: 'carlJones234@gmail.com',
+  password: 'carljones234'
+};
 export const testCredentials = {
   username: 'Shrey Pandey',
   email: 'shreyp@gmail.com',

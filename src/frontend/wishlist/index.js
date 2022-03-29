@@ -5,22 +5,10 @@ import Category from '../common/header/Category';
 import Footer from '../common/footer';
 import Deals from '../common/deals';
 import { useWishlistCtx } from '../context/wishlistContext';
-import { useAuthCtx } from '../context/authenticationContext';
 import Loader from '../common/Loader';
-import { useNavigate } from 'react-router-dom';
-import { SIGNIN } from '../../routes';
 
 export default function Wishlist() {
-  const navigate = useNavigate();
   const { wishlistLoading, wishlistData } = useWishlistCtx();
-  const { userdata } = useAuthCtx();
-
-  useEffect(() => {
-    if (!userdata) {
-      navigate(SIGNIN);
-    }
-  }, [userdata, navigate]);
-
   return (
     <Fragment>
       <Navbar />

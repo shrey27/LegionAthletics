@@ -5,6 +5,7 @@ import Footer from '../common/footer';
 import { useAuthCtx } from '../context/authenticationContext';
 import { Link } from 'react-router-dom';
 import { SIGNUP } from '../../routes';
+import { guestCredentials } from '../common/constants';
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,6 +23,12 @@ export default function Signin() {
   const onSignInHandler = (e) => {
     e.preventDefault();
     handleSignIn();
+  };
+
+  const guestSignIn = (e) => {
+    e.preventDefault();
+    dispatch({ type: 'SIGNIN-EMAIL', payload: guestCredentials.email });
+    dispatch({ type: 'SIGNIN-PASSWORD', payload: guestCredentials.password });
   };
 
   return (
@@ -98,6 +105,13 @@ export default function Signin() {
             onClick={onSignInHandler}
           >
             SIGNIN
+          </button>
+          <button
+            type='submit'
+            className='btn btn--wide btn--auth sb'
+            onClick={guestSignIn}
+          >
+            Sign In as Guest
           </button>
         </form>
         <div className='signin__links'>

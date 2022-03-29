@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 const AuthentiationContext = createContext();
 import { SIGNOUT, HOMEPAGE } from '../../routes';
-import { SIGN_IN, SIGN_UP } from '../../apiEndpoints';
+import { SIGNINAPI, SIGNUPAPI } from '../../apiEndpoints';
+import { ToastMessage } from '../common/toast';
 
 const defaultState = {
   email: '',
@@ -19,7 +20,7 @@ const defaultState = {
   rememberMe: false,
   signinRememberMe: false,
   userdata: '',
-  token: null
+  token: ''
 };
 const authReducerFunc = (state, action) => {
   switch (action.type) {
@@ -111,6 +112,10 @@ const authReducerFunc = (state, action) => {
         ...state,
         signinRememberMe: !state.signinRememberMe
       };
+    case 'SET-DEFAULT':
+      return {
+        ...defaultState
+      };
     default:
       return {
         ...state
@@ -192,7 +197,7 @@ const AuthProvider = ({ children }) => {
         try {
           const {
             data: { foundUser, encodedToken }
-          } = await axios.post(SIGN_IN, {
+          } = await axios.post(SIGNINAPI, {
             email,
             password
           });
@@ -201,6 +206,7 @@ const AuthProvider = ({ children }) => {
             localStorage.setItem('userData', JSON.stringify(foundUser));
             dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
             navigate(HOMEPAGE);
+            ToastMessage('Sign In was Successfull', 'success');
           } else {
             throw new Error('User not Found');
           }
@@ -210,6 +216,7 @@ const AuthProvider = ({ children }) => {
             type: 'SIGNIN-ERROR',
             payload: 'User Not Found. Either Sign-up or try again later'
           });
+          ToastMessage('Sign In failed! User Not Found', 'error');
         }
       } else {
         const { storedEmail, storedPassword, storedToken } = callLocalStorage();
@@ -217,21 +224,25 @@ const AuthProvider = ({ children }) => {
           dispatch({ type: 'TOKEN-SAVED', payload: storedToken });
           dispatch({ type: 'SET-DEFAULT' });
           navigate(HOMEPAGE);
+          ToastMessage('Sign In was Successfull', 'success');
         } else {
           dispatch({
             type: 'SIGNIN-ERROR',
             payload: 'User Not Found. Either Sign-up or try again later'
           });
           dispatch({ type: 'SET-DEFAULT' });
+          ToastMessage('Sign In failed! User Not Found', 'error');
         }
       }
+    } else {
+      console.log('failed');
     }
   };
 
   const handleSignUp = async () => {
     if (validationFun(false)) {
       try {
-        const response = await axios.post(SIGN_UP, {
+        const response = await axios.post(SIGNUPAPI, {
           name: username.split(' ')[0],
           surname: username.split(' ')[1],
           email,
@@ -241,12 +252,13 @@ const AuthProvider = ({ children }) => {
         localStorage.setItem('token', encodedToken);
         localStorage.setItem('userData', JSON.stringify(createdUser));
         dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
-      } catch (err) {
-        dispatch({ type: 'SIGNUP-ERROR' });
-        console.log(err);
-      } finally {
-        dispatch({ type: 'SET-DEFAULT' });
         navigate(HOMEPAGE);
+        ToastMessage('Sign Up was Successfull', 'success');
+      } catch (err) {
+        console.log(err);
+        dispatch({ type: 'CLEAR-FIELDS' });
+        dispatch({ type: 'SIGNUP-ERROR' });
+        ToastMessage('Sign Up failed! Try Again later', 'error');
       }
     }
   };
@@ -254,6 +266,7 @@ const AuthProvider = ({ children }) => {
   const handleSignOut = () => {
     dispatch({ type: 'TOKEN-REMOVED' });
     if (!rememberMe && !signinRememberMe) localStorage.clear();
+    dispatch({ type: 'SET-DEFAULT' });
     navigate(SIGNOUT);
   };
 
@@ -261,6 +274,10 @@ const AuthProvider = ({ children }) => {
     const storedData = localStorage.getItem('userData');
     if (storedData) {
       dispatch({ type: 'TOKEN-SAVED', payload: localStorage.getItem('token') });
+      dispatch({
+        type: 'SIGNUP-USERNAME',
+        payload: JSON.parse(userData)?.name
+      });
     }
   }, []);
 

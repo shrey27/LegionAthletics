@@ -4,12 +4,14 @@ import { useWishlistCtx } from '../../context/wishlistContext';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PRODUCTS } from '../../../routes';
+import { useAuthCtx } from '../../context/authenticationContext';
+import { ToastMessage } from '../toast';
 
 export default function Deal(props) {
   const { itemdata, wishlist, close, noButton } = props;
   const {
     id,
-    pid,
+    _id,
     source,
     title,
     mrp,
@@ -24,22 +26,25 @@ export default function Deal(props) {
   const { addToCart } = useCartCtx();
   const { addToWishlist, deleteFromWishlist, addedPID } = useWishlistCtx();
   const { addedCartPID } = useCartAPICtx();
+  const { token } = useAuthCtx();
 
   const [addedToWishlist, setAddedToWishlist] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
 
   useEffect(() => {
-    if (addedPID && addedPID.includes(pid)) setAddedToWishlist(true);
-    else setAddedToWishlist(false);
-
-    if (addedCartPID && addedCartPID.includes(pid)) setAddedToCart(true);
+    if (addedCartPID && addedCartPID.includes(_id)) setAddedToCart(true);
     else setAddedToCart(false);
-  }, [addedCartPID, addedPID, pid]);
+  }, [addedCartPID, _id]);
+
+  useEffect(() => {
+    if (addedPID && addedPID.includes(_id)) setAddedToWishlist(true);
+    else setAddedToWishlist(false);
+  }, [addedPID, _id]);
 
   const handleAddToWishlistClick = () => {
-    if (!addedToWishlist) {
+    if (token) {
       const productToAdd = {
-        pid,
+        _id,
         source,
         title,
         mrp,
@@ -48,25 +53,30 @@ export default function Deal(props) {
         rating,
         nostock
       };
-      addToWishlist(pid, productToAdd);
-      setAddedToWishlist(true);
+      addToWishlist(_id, productToAdd);
+    } else {
+      ToastMessage('You need to sign in first', 'info');
     }
   };
 
   const handleAddToCartClick = () => {
-    if (!addedToCart) {
-      const productToAdd = {
-        pid,
-        source,
-        title,
-        price,
-        discount,
-        rating,
-        count: count ?? 1,
-        nostock
-      };
-      addToCart(productToAdd);
-      setAddedToCart(true);
+    if (token) {
+      if (!addedToCart) {
+        const productToAdd = {
+          _id,
+          source,
+          title,
+          price,
+          discount,
+          rating,
+          count: count ?? 1,
+          nostock
+        };
+        addToCart(productToAdd);
+        setAddedToCart(true);
+      }
+    } else {
+      ToastMessage('You need to sign in first', 'info');
     }
   };
 
@@ -84,7 +94,7 @@ export default function Deal(props) {
       {close && (
         <span
           className='card__dismiss'
-          onClick={deleteFromWishlist.bind(this, pid)}
+          onClick={deleteFromWishlist.bind(this, _id)}
         >
           <i
             className='fas fa-times-circle'
@@ -92,7 +102,7 @@ export default function Deal(props) {
           ></i>
         </span>
       )}
-      <Link to={`${PRODUCTS}/${pid}`}>
+      <Link to={`${PRODUCTS}/${_id}`}>
         <img
           src={source}
           alt='Banner'

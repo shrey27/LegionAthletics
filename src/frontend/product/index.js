@@ -20,11 +20,11 @@ export default function Product() {
   const [addedToCart, setAddedToCart] = useState(false);
 
   useEffect(() => {
-    if (product?.pid) {
-      if (addedPID && addedPID.includes(product.pid)) setAddedToWishlist(true);
+    if (product?._id) {
+      if (addedPID && addedPID.includes(product._id)) setAddedToWishlist(true);
       else setAddedToWishlist(false);
 
-      if (addedCartPID && addedCartPID.includes(product.pid))
+      if (addedCartPID && addedCartPID.includes(product._id))
         setAddedToCart(true);
       else setAddedToCart(false);
     }
@@ -34,9 +34,9 @@ export default function Product() {
     if (!addedToWishlist && !addedToCart) {
       const productToAdd = {
         ...product,
-        _id: product?.pid
+        _id: product?._id
       };
-      addToWishlist(product?.pid, productToAdd);
+      addToWishlist(product?._id, productToAdd);
       setAddedToWishlist(true);
     }
   };
@@ -45,7 +45,7 @@ export default function Product() {
     if (!addedToCart) {
       const productToAdd = {
         ...product,
-        _id: product?.pid,
+        _id: product?._id,
         count: product?.count ?? 1
       };
       addToCart(productToAdd);

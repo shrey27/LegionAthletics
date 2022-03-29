@@ -4,14 +4,14 @@ import { useWishlistCtx } from '../context/wishlistContext';
 import { useCartAPICtx } from '../context/cartContext';
 
 export default function CartItem(props) {
-  const { pid, source, title, price, mrp, discount, qty } = props;
+  const { _id, source, title, price, mrp, discount, qty } = props;
   const { incQty, decQty } = useCartCtx();
   const { addToWishlist } = useWishlistCtx();
   const { deleteFromCart } = useCartAPICtx();
 
   const handleMoveToWishlist = () => {
-    addToWishlist(pid, { ...props });
-    deleteFromCart(pid);
+    addToWishlist(_id, { ...props });
+    deleteFromCart(_id);
   };
 
   return (
@@ -29,20 +29,20 @@ export default function CartItem(props) {
             <i
               className='fa-regular fa-trash-can btn qty--btn'
               name='del'
-              onClick={decQty.bind(this, pid, qty)}
+              onClick={decQty.bind(this, _id, qty)}
             ></i>
           ) : (
             <i
               className='fas fa-minus btn qty--btn'
               name='dec'
-              onClick={decQty.bind(this, pid, qty)}
+              onClick={decQty.bind(this, _id, qty)}
             ></i>
           )}
           <span className='quantity'>{qty}</span>
           <i
             className='fas fa-plus btn qty--btn'
             name='inc'
-            onClick={incQty.bind(this, pid)}
+            onClick={incQty.bind(this, _id)}
           ></i>
         </h1>
         <div className='btn--shift'>

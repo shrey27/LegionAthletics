@@ -1,8 +1,8 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
-import { CART_ENDPOINT } from '../../apiEndpoints';
+import { CARTAPI } from '../../apiEndpoints';
 import { useAuthCtx } from './authenticationContext';
 import axios from 'axios';
-
+import { ToastMessage } from '../common/toast';
 //Cart Management context
 const CartContext = createContext();
 
@@ -11,7 +11,7 @@ const CartProvider = ({ children }) => {
     useCartAPICtx();
 
   const addToCart = (item) => {
-    const index = cartListData.findIndex((e) => e.pid === item.pid);
+    const index = cartListData.findIndex((e) => e._id === item._id);
     if (index < 0) {
       addItemToCart(item);
     } else {
@@ -19,15 +19,15 @@ const CartProvider = ({ children }) => {
     }
   };
 
-  const incQty = (pid) => {
-    updateCartItem(pid, true);
+  const incQty = (_id) => {
+    updateCartItem(_id, true);
   };
 
-  const decQty = (pid, qty) => {
+  const decQty = (_id, qty) => {
     if (qty <= 1) {
-      deleteFromCart(pid);
+      deleteFromCart(_id);
     } else {
-      updateCartItem(pid, false);
+      updateCartItem(_id, false);
     }
   };
 
@@ -63,7 +63,7 @@ const cartApiReducerFunc = (state, action) => {
         ...state,
         cartLoading: false,
         cartError: '',
-        cartListData: [...action.payload]
+        cartListData: action.payload
       };
     case 'API_FAILURE':
       return {
@@ -72,10 +72,14 @@ const cartApiReducerFunc = (state, action) => {
         cartError: 'TECHNICAL ISSUE. PLEASE TRY AGAIN AFTER SOME TIME'
       };
     case 'UPDATE_CART_PID':
-      const pidArray = state.cartListData;
       return {
         ...state,
-        addedCartPID: pidArray.map((elem) => elem.pid)
+        addedCartPID: action.payload
+      };
+    case 'STOP_LOADER':
+      return {
+        ...state,
+        cartLoading: false
       };
     default:
       return { ...defaultCartState };
@@ -87,38 +91,14 @@ const CartAPIProvider = ({ children }) => {
   const { cartLoading, cartError, cartListData, addedCartPID } = state;
   const { token } = useAuthCtx();
 
-  const getCartList = async () => {
-    if (token) {
-      dispatch({ type: 'API_REQUEST' });
-      try {
-        const storedCart = JSON.parse(localStorage.getItem('userData')).cart;
-        if (storedCart) {
-          dispatch({ type: 'API_RESPONSE', payload: storedCart });
-        } else {
-          const resp = await axios.get(CART_ENDPOINT, {
-            headers: {
-              authorization: token
-            }
-          });
-          const dataList = resp.data.cart;
-          dispatch({ type: 'API_RESPONSE', payload: dataList });
-        }
-        dispatch({ type: 'UPDATE_CART_PID' });
-      } catch (err) {
-        console.log('GET-CART-ERROR', err);
-        dispatch({ type: 'API_FAILURE' });
-      }
-    }
-  };
-
   const addItemToCart = async (objectData) => {
     dispatch({ type: 'API_REQUEST' });
     try {
       const resp = await axios.post(
-        CART_ENDPOINT,
+        CARTAPI,
         {
           product: {
-            _id: objectData.pid,
+            _id: objectData._id,
             ...objectData
           }
         },
@@ -135,16 +115,18 @@ const CartAPIProvider = ({ children }) => {
       const datatoUpdate = JSON.parse(localStorage.getItem('userData'));
       datatoUpdate.cart = [...dataList];
       localStorage.setItem('userData', JSON.stringify(datatoUpdate));
+      ToastMessage('Product added to cart', 'success');
     } catch (err) {
       console.log('POST-CART-ERROR', err);
       dispatch({ type: 'API_FAILURE' });
+      ToastMessage('Try adding product again', 'error');
     }
   };
 
   const deleteFromCart = async (id) => {
     dispatch({ type: 'API_REQUEST' });
     try {
-      const resp = await axios.delete(CART_ENDPOINT + '/' + id, {
+      const resp = await axios.delete(CARTAPI + '/' + id, {
         headers: {
           authorization: token
         }
@@ -155,9 +137,11 @@ const CartAPIProvider = ({ children }) => {
       dispatch({ type: 'API_RESPONSE', payload: dataList });
       dispatch({ type: 'UPDATE_CART_PID' });
       localStorage.setItem('userData', JSON.stringify(storedData));
+      ToastMessage('Product was delted from cart', 'info');
     } catch (err) {
       dispatch({ type: 'API_FAILURE' });
       console.log('DELETE-WISHLIST-ERROR', err);
+      ToastMessage('Try deleting product again', 'error');
     }
   };
 
@@ -165,7 +149,7 @@ const CartAPIProvider = ({ children }) => {
     dispatch({ type: 'API_REQUEST' });
     try {
       const resp = await axios.post(
-        CART_ENDPOINT + '/' + id,
+        CARTAPI + '/' + id,
         {
           action: {
             type: `${inc ? 'increment' : 'decrement'}`
@@ -184,25 +168,44 @@ const CartAPIProvider = ({ children }) => {
       dispatch({ type: 'API_RESPONSE', payload: dataList });
       dispatch({ type: 'UPDATE_CART_PID' });
       localStorage.setItem('userData', JSON.stringify(storedData));
+      ToastMessage('Quantity was updated', 'info');
     } catch (err) {
       dispatch({ type: 'API_FAILURE' });
       console.log('DELETE-WISHLIST-ERROR', err);
+      ToastMessage('Try updating the quantity again', 'error');
     }
   };
 
   useEffect(() => {
-    getCartList();
-    return () => console.log('cart list clean up');
+    const getCartList = async () => {
+      dispatch({ type: 'API_REQUEST' });
+      try {
+        const {
+          data: { cart }
+        } = await axios.get(CARTAPI, {
+          headers: {
+            authorization: token
+          }
+        });
+        dispatch({ type: 'API_RESPONSE', payload: [...cart] });
+        const idArray = cart.map((elem) => elem._id);
+        dispatch({ type: 'UPDATE_CART_PID', payload: idArray });
+      } catch (err) {
+        console.log('GET-CART-ERROR', err);
+        dispatch({ type: 'API_FAILURE' });
+      }
+    };
+    if (token) getCartList();
   }, []);
 
-  useEffect(() => {
-    if (!token) {
-      dispatch({ type: 'CLEAR_ALL' });
-    } else {
-      const storedcart = JSON.parse(localStorage.getItem('userData')).cart;
-      dispatch({ type: 'API_RESPONSE', payload: storedcart });
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (!token) {
+  //     dispatch({ type: 'CLEAR_ALL' });
+  //   } else {
+  //     const storedcart = JSON.parse(localStorage.getItem('userData')).cart;
+  //     dispatch({ type: 'API_RESPONSE', payload: storedcart });
+  //   }
+  // }, [token]);
 
   return (
     <CartAPIContext.Provider
@@ -210,7 +213,6 @@ const CartAPIProvider = ({ children }) => {
         cartLoading,
         cartError,
         cartListData,
-        getCartList,
         addedCartPID,
         addItemToCart,
         deleteFromCart,
