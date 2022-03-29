@@ -1,10 +1,11 @@
 import './header.css';
 import Category from './Category';
 import Banner from './Banner';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PRODUCTS } from '../../../routes';
 
 export default function Header() {
+  const navigate = useNavigate();
   return (
     <header className='header'>
       <Category />
@@ -29,32 +30,30 @@ export default function Header() {
       </section>
       <Banner source='carousal-2.jpeg' />
       <div className='shortcuts mg-full'>
-        <div className='shortcut btn--float'>
-          <Link to={PRODUCTS}>
-            <span>Protein</span>
-          </Link>
+        <div
+          onClick={() => navigate(PRODUCTS, { state: { category: 'combo' } })}
+          className='shortcut btn--float'
+        >
+          Combos
         </div>
-        <div className='shortcut btn--icons'>
-          <Link to={PRODUCTS}>
-            <span>Nutrition</span>
-          </Link>
+        <div
+          onClick={() => navigate(PRODUCTS, { state: { category: 'supplements' } })}
+          className='shortcut btn--icons'
+        >
+          Supplements
         </div>
-        <div className='shortcut btn--primary'>
-          <Link to={PRODUCTS}>
-            <span>Vegan</span>
-          </Link>
+        <div
+          onClick={() => navigate(PRODUCTS, { state: { category: 'snacks' } })}
+          className='shortcut btn--primary'
+        >
+          Vegan
         </div>
-        <div className='shortcut btn--float'>
-          <Link to={PRODUCTS}>
-            <span>Clothing</span>
-          </Link>
+        <div
+          onClick={() => navigate(PRODUCTS, { state: { category: 'clothing' } })}
+          className='shortcut btn--float'
+        >
+          Clothing
         </div>
-        {/* <div className='shortcut btn--primary'>
-          <span>Equipment</span>
-        </div> */}
-        {/* <div className='shortcut btn--icons'>
-          <span>Athletics</span>
-        </div> */}
       </div>
     </header>
   );

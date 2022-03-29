@@ -19,6 +19,7 @@
 }
 .card__product .card__banner {
   width: 60%;
+  border-radius: 0;
 }
 .content {
   width: 90%;
@@ -75,6 +76,7 @@
   }
   .card__product .card__banner {
     width: 40%;
+    border-radius: 0;
   }
   .stack__item {
     margin: 0;

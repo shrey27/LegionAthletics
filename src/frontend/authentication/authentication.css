@@ -34,6 +34,19 @@
 .signin__links {
   padding: 0 1rem 1rem 1rem;
 }
+.input__container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--primary--light);
+}
+.input__password {
+  width: 95%;
+  border: none;
+}
+.input__eye {
+  color: var(--black);
+}
 @media screen and (min-width: 768px) {
   .authentication {
     width: 30rem;

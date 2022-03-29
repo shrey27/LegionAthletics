@@ -49,26 +49,27 @@ const WishlistProvider = ({ children }) => {
   const { token } = useAuthCtx();
 
   const getWishlist = async () => {
-    dispatch({ type: 'API_REQUEST' });
-    try {
-      const storedWishlist = JSON.parse(
-        localStorage.getItem('userData')
-      ).wishlist;
-      if (storedWishlist) {
-        dispatch({ type: 'API_RESPONSE', payload: storedWishlist });
-      } else {
-        const resp = await axios.get(GET_WISHLIST);
-        dispatch({ type: 'API_RESPONSE', payload: resp.data.wishlist });
+    if (token) {
+      dispatch({ type: 'API_REQUEST' });
+      try {
+        const storedWishlist = JSON.parse(
+          localStorage.getItem('userData')
+        ).wishlist;
+        if (storedWishlist) {
+          dispatch({ type: 'API_RESPONSE', payload: storedWishlist });
+        } else {
+          const resp = await axios.get(GET_WISHLIST);
+          dispatch({ type: 'API_RESPONSE', payload: resp.data.wishlist });
+        }
+        dispatch({ type: 'UPDATE_WISHLIST_PID' });
+      } catch (err) {
+        console.log('GET-WISHLIST-ERROR', err);
+        dispatch({ type: 'API_FAILURE' });
       }
-      dispatch({ type: 'UPDATE_WISHLIST_PID' });
-    } catch (err) {
-      console.log('GET-WISHLIST-ERROR', err);
-      dispatch({ type: 'API_FAILURE' });
     }
   };
 
   const addToWishlist = async (pid, objectData) => {
-    
     dispatch({ type: 'API_REQUEST' });
     const index = wishlistData.findIndex((e) => e.pid === pid);
     if (index < 0) {
@@ -88,7 +89,6 @@ const WishlistProvider = ({ children }) => {
           }
         );
         const dataList = resp.data.wishlist;
-        console.log(dataList);
         dispatch({ type: 'API_RESPONSE', payload: dataList });
         dispatch({ type: 'UPDATE_WISHLIST_PID' });
         const datatoUpdate = JSON.parse(localStorage.getItem('userData'));

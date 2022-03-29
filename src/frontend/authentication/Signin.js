@@ -1,15 +1,23 @@
 import './authentication.css';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import Navbar from '../common/navbar';
 import Footer from '../common/footer';
 import { useAuthCtx } from '../context/authenticationContext';
 import { Link } from 'react-router-dom';
-import { HOMEPAGE, SIGNUP } from '../../routes';
-import { useNavigate } from 'react-router-dom';
+import { SIGNUP } from '../../routes';
 
 export default function Signin() {
-  const { email, password, signinError, dispatch, handleSignIn } = useAuthCtx();
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const {
+    email,
+    password,
+    emailError,
+    passwordError,
+    signinError,
+    signinRememberMe,
+    dispatch,
+    handleSignIn
+  } = useAuthCtx();
 
   const onSignInHandler = (e) => {
     e.preventDefault();
@@ -19,7 +27,7 @@ export default function Signin() {
   return (
     <>
       <Navbar noDrawer={true} />
-      {signinError && <h1 className='tag cen md sb'>{signinError}</h1>}
+      {<h1 className='tag cen md sb mg-full'>{signinError}</h1>}
       <div className='card authentication shdw'>
         <h1 className='lg sb cen xs-s mg-full'>SIGNIN</h1>
         <hr />
@@ -39,32 +47,37 @@ export default function Signin() {
               onChange={(e) =>
                 dispatch({ type: 'SIGNIN-EMAIL', payload: e.target.value })
               }
+              onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
               required
             />
-            {!email && (
-              <h1 className='input__error'>Enter a valid email address</h1>
-            )}
+            <h1 className='input__error'>{emailError}</h1>
           </div>
           <div className='authentication__input'>
             <label htmlFor='password__signin' className='label'>
               Enter Password
             </label>
-            <input
-              className='input sm-s'
-              type='password'
-              name='password__signin'
-              id='password__signin'
-              autoComplete='off'
-              placeholder='Password'
-              value={password}
-              onChange={(e) =>
-                dispatch({ type: 'SIGNIN-PASSWORD', payload: e.target.value })
-              }
-              required
-            />
-            {!password && (
-              <h1 className='input__error'>Enter a valid password</h1>
-            )}
+            <div className='input__container'>
+              <input
+                className='input input__password sm-s'
+                type={showPassword ? 'text' : 'password'}
+                name='password__signin'
+                id='password__signin'
+                autoComplete='off'
+                placeholder='Password'
+                value={password}
+                onChange={(e) =>
+                  dispatch({ type: 'SIGNIN-PASSWORD', payload: e.target.value })
+                }
+                onBlur={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
+                required
+              />
+              <i
+                className='fa-solid fa-eye input__eye'
+                onClick={() => setShowPassword((e) => !e)}
+              ></i>
+            </div>
+
+            <h1 className='input__error'>{passwordError}</h1>
           </div>
           <div className='flex-ct-st signin__remember'>
             <input
@@ -72,6 +85,8 @@ export default function Signin() {
               type='checkbox'
               name='remember__signin'
               id='remember__signin'
+              checked={signinRememberMe}
+              onChange={(e) => dispatch({ type: 'SIGNIN-REMEMBER-ME' })}
             />
             <label htmlFor='remember__signin' className='label'>
               Remember me

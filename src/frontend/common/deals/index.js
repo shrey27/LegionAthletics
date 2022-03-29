@@ -9,7 +9,7 @@ export default function Deals({ items, name, wishlist, close, noButton }) {
         {items.map((elem, index) => {
           return (
             <Deal
-              key={elem.id}
+              key={`${elem.id}__${index}`}
               itemdata={{ ...elem }}
               wishlist={wishlist}
               close={close}

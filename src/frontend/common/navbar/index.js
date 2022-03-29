@@ -5,13 +5,7 @@ import { useCartCtx } from '../../context/cartContext';
 import { useWishlistCtx } from '../../context/wishlistContext';
 import { useProductsCtx } from '../../context/productsContext';
 import { Link } from 'react-router-dom';
-import {
-  HOMEPAGE,
-  CART,
-  WISHLIST,
-  SIGNIN,
-  SIGNUP
-} from '../../../routes';
+import { HOMEPAGE, CART, WISHLIST, SIGNIN, SIGNUP } from '../../../routes';
 import { useAuthCtx } from '../../context/authenticationContext';
 
 export default function Navbar({ noDrawer, showSearchBar }) {
@@ -20,7 +14,7 @@ export default function Navbar({ noDrawer, showSearchBar }) {
   const { totalItems } = useCartCtx();
   const { wishlistData } = useWishlistCtx();
   const { dispatch } = useProductsCtx();
-  const { userdata, handleSignOut } = useAuthCtx();
+  const { token, username, handleSignOut } = useAuthCtx();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -86,23 +80,15 @@ export default function Navbar({ noDrawer, showSearchBar }) {
               <span className='menu__btn__name'>Account</span>
             </span>
             <div className='submenu shadow xs-s'>
-              {!userdata && (
-                <section className='submenu__btn'>
-                  <Link className='btn btn--float' to={SIGNIN}>
-                    Sign In
-                  </Link>
-                  <Link className='btn' to={SIGNUP}>
-                    Sign Up
-                  </Link>
-                </section>
+              {token && (
+                <div className='mg-half'>
+                  <h1 className='primary md cen mg-half'>
+                    Hey, {username.split(' ')[0]}
+                  </h1>
+                  <hr />
+                </div>
               )}
               <section className='submenu__items flex-st-ct flex-vertical'>
-                {/* <Link to={PROFILE} className='submenu__item sb'>
-                  <span>My Profile</span>
-                </Link> */}
-                {/* <Link to={ORDERS} className='submenu__item sb'>
-                  <span>Orders Summary</span>
-                </Link> */}
                 <Link to={CART} className='submenu__item sb'>
                   Cart
                   <i
@@ -120,16 +106,27 @@ export default function Navbar({ noDrawer, showSearchBar }) {
                   ></i>
                 </Link>
               </section>
-              {userdata && (
-                <section className='submenu__btn flex-st-ct'>
-                  <button
-                    className='btn btn--float btn--wide'
-                    onClick={handleSignOut}
-                  >
-                    Log Out
-                  </button>
-                </section>
-              )}
+              <div>
+                {token ? (
+                  <section className='submenu__btn flex-st-ct'>
+                    <button
+                      className='btn btn--auth--solid btn--wide'
+                      onClick={handleSignOut}
+                    >
+                      Log Out
+                    </button>
+                  </section>
+                ) : (
+                  <section className='submenu__btn'>
+                    <Link className='btn btn--auth--solid sb' to={SIGNIN}>
+                      Sign In
+                    </Link>
+                    <Link className='btn btn--auth sb' to={SIGNUP}>
+                      Sign Up
+                    </Link>
+                  </section>
+                )}
+              </div>
             </div>
           </div>
         </section>
