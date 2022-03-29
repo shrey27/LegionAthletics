@@ -5,7 +5,14 @@ import { useCartCtx } from '../../context/cartContext';
 import { useWishlistCtx } from '../../context/wishlistContext';
 import { useProductsCtx } from '../../context/productsContext';
 import { Link } from 'react-router-dom';
-import { HOMEPAGE, CART, WISHLIST, SIGNIN, SIGNUP } from '../../routes/routes';
+import {
+  HOMEPAGE,
+  CART,
+  WISHLIST,
+  SIGNIN,
+  SIGNUP,
+  ORDER
+} from '../../routes/routes';
 import { useAuthCtx } from '../../context/authenticationContext';
 import pic from '../../assets/lalogo.jpg';
 
@@ -103,6 +110,10 @@ export function Navbar({ noDrawer, showSearchBar }) {
                     bdg-size='medium'
                     className='far fa-heart nav__icons lg fl-rt'
                   ></i>
+                </Link>
+                <Link to={ORDER} className='submenu__item sb'>
+                  Orders Placed
+                  <i class='fa-solid fa-basket-shopping lg bl'></i>
                 </Link>
               </section>
               <div>

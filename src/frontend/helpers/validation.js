@@ -23,10 +23,21 @@ export function validateSignIn(state, dispatch) {
 }
 
 export function validationSignUp(state, dispatch) {
-  const { username, signUpEmail, signUpPassword, cnfPassword } = state;
+  const {
+    firstName,
+    lastName,
+    signUpEmail,
+    signUpPassword,
+    cnfPassword,
+    phone,
+    address
+  } = state;
   const errorArray = [];
-  if (!username || !username.match(/^[a-zA-Z ]+/)) {
-    errorArray.push('SIGNUP-USERNAME-ERROR');
+  if (!firstName || !firstName.match(/^[a-zA-Z ]+/)) {
+    errorArray.push('SIGNUP-FIRSTNAME-ERROR');
+  }
+  if (!lastName || !lastName.match(/^[a-zA-Z ]+/)) {
+    errorArray.push('SIGNUP-LASTNAME-ERROR');
   }
   if (
     !signUpEmail ||
@@ -44,6 +55,12 @@ export function validationSignUp(state, dispatch) {
   }
   if (cnfPassword !== signUpPassword) {
     errorArray.push('PASSWORDS-MISMATCH');
+  }
+  if (!phone || !phone.match(/^\d{10}$/)) {
+    errorArray.push('SIGNUP-PHONE-ERROR');
+  }
+  if (!address) {
+    errorArray.push('SIGNUP-ADDRESS-ERROR');
   }
   if (errorArray.length) {
     errorArray.forEach((elem) =>

@@ -62,21 +62,18 @@ export default function Deal(props) {
 
   const handleAddToCartClick = () => {
     if (token) {
-      if (!addedToCart) {
-        const productToAdd = {
-          _id,
-          source,
-          title,
-          price,
-          mrp,
-          discount,
-          rating,
-          count: count ?? 1,
-          nostock
-        };
-        addToCart(productToAdd);
-        setAddedToCart(true);
-      }
+      const productToAdd = {
+        _id,
+        source,
+        title,
+        price,
+        mrp,
+        discount,
+        rating,
+        count: count ?? 1,
+        nostock
+      };
+      addToCart(productToAdd);
     } else {
       ToastMessage('You need to sign in first', 'info');
     }

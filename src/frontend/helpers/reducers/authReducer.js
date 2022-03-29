@@ -9,8 +9,14 @@ export const defaultState = {
   signUpPasswordError: '',
   cnfPassword: '',
   cnfpasswordError: '',
-  username: '',
-  userNameError: '',
+  firstName: '',
+  firstNameError: '',
+  lastName: '',
+  lastNameError: '',
+  phone: '',
+  phoneError: '',
+  address: '',
+  addressError: '',
   signinError: '',
   signupError: '',
   rememberMe: false,
@@ -59,15 +65,25 @@ export const authReducerFunc = (state, action) => {
         ...state,
         signUpPasswordError: action.payload
       };
-    case 'SIGNUP-USERNAME':
+    case 'SIGNUP-FIRSTNAME':
       return {
         ...state,
-        username: action.payload
+        firstName: action.payload
       };
-    case 'SIGNUP-USERNAME-ERROR':
+    case 'SIGNUP-FIRSTNAME-ERROR':
       return {
         ...state,
-        userNameError: action.payload
+        firstNameError: action.payload
+      };
+    case 'SIGNUP-LASTNAME':
+      return {
+        ...state,
+        lastName: action.payload
+      };
+    case 'SIGNUP-LASTNAME-ERROR':
+      return {
+        ...state,
+        lastNameError: action.payload
       };
     case 'CONFIRM-PASSWORD':
       return {
@@ -83,6 +99,26 @@ export const authReducerFunc = (state, action) => {
       return {
         ...state,
         signupError: action.payload
+      };
+    case 'SIGNUP-PHONE':
+      return {
+        ...state,
+        phone: action.payload
+      };
+    case 'SIGNUP-PHONE-ERROR':
+      return {
+        ...state,
+        phoneError: action.payload
+      };
+    case 'SIGNUP-ADDRESS':
+      return {
+        ...state,
+        address: action.payload
+      };
+    case 'SIGNUP-ADDRESS-ERROR':
+      return {
+        ...state,
+        addressError: action.payload
       };
     case 'TOKEN-SAVED':
       return {

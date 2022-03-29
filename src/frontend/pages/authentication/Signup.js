@@ -15,10 +15,16 @@ export default function Signup() {
     signUpEmailError,
     signUpPassword,
     signUpPasswordError,
-    username,
-    userNameError,
+    firstName,
+    firstNameError,
+    lastName,
+    lastNameError,
     cnfPassword,
     cnfpasswordError,
+    address,
+    addressError,
+    phone,
+    phoneError,
     signupError,
     rememberMe,
     dispatch,
@@ -32,8 +38,11 @@ export default function Signup() {
 
   const onUsingTestCredentials = (e) => {
     e.preventDefault();
-    dispatch({ type: 'SIGNUP-USERNAME', payload: testCredentials.username });
+    dispatch({ type: 'SIGNUP-FIRSTNAME', payload: testCredentials.firstName });
+    dispatch({ type: 'SIGNUP-LASTNAME', payload: testCredentials.lastName });
     dispatch({ type: 'SIGNUP-EMAIL', payload: testCredentials.email });
+    dispatch({ type: 'SIGNUP-ADDRESS', payload: testCredentials.address });
+    dispatch({ type: 'SIGNUP-PHONE', payload: testCredentials.phone });
     dispatch({ type: 'SIGNUP-PASSWORD', payload: testCredentials.password });
     dispatch({
       type: 'CONFIRM-PASSWORD',
@@ -54,28 +63,48 @@ export default function Signup() {
         <hr />
         <form action='#' className='sm-s'>
           <div className='authentication__input'>
-            <label htmlFor='name__signup' className='label'>
-              Enter Your Name
+            <label htmlFor='firstname__signup' className='label'>
+              Enter Your First Name*
             </label>
             <input
               className='input sm-s'
               type='text'
-              name='name__signup'
-              id='name__signup'
+              name='firstname__signup'
+              id='firstname__signup'
               placeholder='Enter your Name'
               autoComplete='off'
-              value={username}
+              value={firstName}
               onChange={(e) =>
-                dispatch({ type: 'SIGNUP-USERNAME', payload: e.target.value })
+                dispatch({ type: 'SIGNUP-FIRSTNAME', payload: e.target.value })
               }
               onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
               required
             />
-            <h1 className='input__error'>{userNameError}</h1>
+            <h1 className='input__error'>{firstNameError}</h1>
+          </div>
+          <div className='authentication__input'>
+            <label htmlFor='lastname__signup' className='label'>
+              Enter Your Last Name*
+            </label>
+            <input
+              className='input sm-s'
+              type='text'
+              name='lastname__signup'
+              id='lastname__signup'
+              placeholder='Enter your Name'
+              autoComplete='off'
+              value={lastName}
+              onChange={(e) =>
+                dispatch({ type: 'SIGNUP-LASTNAME', payload: e.target.value })
+              }
+              onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
+              required
+            />
+            <h1 className='input__error'>{lastNameError}</h1>
           </div>
           <div className='authentication__input'>
             <label htmlFor='email__signup' className='label'>
-              Enter Your Email ID
+              Enter Your Email ID*
             </label>
             <input
               className='input sm-s'
@@ -94,8 +123,48 @@ export default function Signup() {
             <h1 className='input__error'>{signUpEmailError}</h1>
           </div>
           <div className='authentication__input'>
+            <label htmlFor='phone__signup' className='label'>
+              Enter Your Phone Number*
+            </label>
+            <input
+              className='input sm-s'
+              type='text'
+              name='phone__signup'
+              id='phone__signup'
+              placeholder='Enter Phone Number'
+              autoComplete='off'
+              value={phone}
+              onChange={(e) =>
+                dispatch({ type: 'SIGNUP-PHONE', payload: e.target.value })
+              }
+              onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
+              required
+            />
+            <h1 className='input__error'>{phoneError}</h1>
+          </div>
+          <div className='authentication__input'>
+            <label htmlFor='address__signup' className='label'>
+              Address Details*
+            </label>
+            <input
+              className='input sm-s'
+              type='text'
+              name='address__signup'
+              id='address__signup'
+              placeholder='Address Details'
+              autoComplete='off'
+              value={address}
+              onChange={(e) =>
+                dispatch({ type: 'SIGNUP-ADDRESS', payload: e.target.value })
+              }
+              onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
+              required
+            />
+            <h1 className='input__error'>{addressError}</h1>
+          </div>
+          <div className='authentication__input'>
             <label htmlFor='password__signup' className='label'>
-              Enter Password
+              Enter Password*
             </label>
             <div className='input__container'>
               <input
@@ -122,7 +191,7 @@ export default function Signup() {
 
           <div className='authentication__input'>
             <label htmlFor='cnf__password__signup' className='label'>
-              Confirm Password
+              Confirm Password*
             </label>
             <div className='input__container'>
               <input

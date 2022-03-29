@@ -22,6 +22,8 @@ export const users = [
     lastName: 'Jones',
     email: 'carljones234@gmail.com',
     password: 'carljones234',
+    phone: '9876543210',
+    address: '89, Lincoln Street, NY, USA',
     createdAt: formatDate(),
     updatedAt: formatDate()
   }

@@ -21,7 +21,10 @@ const AuthProvider = ({ children }) => {
     password,
     signUpEmail,
     signUpPassword,
-    username,
+    firstName,
+    lastName,
+    phone,
+    address,
     rememberMe,
     signinRememberMe,
     token
@@ -94,10 +97,12 @@ const AuthProvider = ({ children }) => {
     if (validationSignUp(state, dispatch)) {
       try {
         const response = await axios.post(SIGNUPAPI, {
-          firstName: username.split(' ')[0],
-          lastName: username.split(' ')[1],
+          firstName,
+          lastName,
           email: signUpEmail,
-          password: signUpPassword
+          password: signUpPassword,
+          phone,
+          address
         });
         const { createdUser, encodedToken } = response.data;
         localStorage.setItem('token', encodedToken);
@@ -144,9 +149,7 @@ const AuthProvider = ({ children }) => {
         dispatch,
         handleSignIn,
         handleSignUp,
-        handleSignOut,
-        firstName: username.split(' ')[0],
-        lastName: username.split(' ')[1]
+        handleSignOut
       }}
     >
       {children}

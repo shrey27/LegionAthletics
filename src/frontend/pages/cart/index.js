@@ -4,10 +4,12 @@ import { Navbar, Footer, Loader } from '../../components';
 import Category from '../../components/header/Category';
 import CartItem from './CartItem';
 import { useCartAPICtx } from '../../context';
+import { ORDER } from '../../routes/routes';
+import { useNavigate } from 'react-router-dom';
 
 export default function Cart() {
   const { cartLoading, cartListData, cartError, dispatch } = useCartAPICtx();
-
+  const navigate = useNavigate();
   const [cartPrice, setCartPrice] = useState({
     total: 0,
     discount: 0,
@@ -43,7 +45,7 @@ export default function Cart() {
       type: 'UPDATE_CART_LIST',
       payload: { remainingAmount: cartPrice.net, cartList: [...cartArray] }
     });
-    // navigate(ADDRESS);
+    navigate(ORDER);
   };
 
   return (

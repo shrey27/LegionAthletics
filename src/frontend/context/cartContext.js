@@ -49,7 +49,8 @@ const defaultCartState = {
   cartLoading: false,
   cartError: '',
   cartListData: [],
-  addedCartPID: []
+  addedCartPID: [],
+  ordercart: []
 };
 const cartApiReducerFunc = (state, action) => {
   switch (action.type) {
@@ -77,6 +78,11 @@ const cartApiReducerFunc = (state, action) => {
         ...state,
         addedCartPID: action.payload
       };
+    case 'UPDATE_CART_LIST':
+      return {
+        ...state,
+        ordercart: action.payload
+      };
     case 'STOP_LOADER':
       return {
         ...state,
@@ -89,7 +95,7 @@ const cartApiReducerFunc = (state, action) => {
 
 const CartAPIProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartApiReducerFunc, defaultCartState);
-  const { cartLoading, cartError, cartListData, addedCartPID } = state;
+  const { addedCartPID } = state;
   const { token } = useAuthCtx();
   const { updateLocalStorage } = useLocalStorage();
 
@@ -211,9 +217,8 @@ const CartAPIProvider = ({ children }) => {
   return (
     <CartAPIContext.Provider
       value={{
-        cartLoading,
-        cartError,
-        cartListData,
+        ...state,
+        dispatch,
         addedCartPID,
         addItemToCart,
         deleteFromCart,

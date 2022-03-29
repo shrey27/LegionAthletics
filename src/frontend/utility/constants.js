@@ -77,24 +77,33 @@ export const categoryList = [
 export const guestCredentials = {
   email: 'carljones234@gmail.com',
   password: 'carljones234',
-  username: 'Carl Jones'
+  firstName: 'Carl',
+  lastName: 'Jones',
+  phone: '9876543210',
+  address: '89, Lincoln Street, NY, USA'
 };
 export const testCredentials = {
-  username: 'Shrey Pandey',
+  firstName: 'Shrey',
+  lastName: 'Pandey',
   email: 'shreyp@gmail.com',
   password: 'shreypandey',
-  confirmpassword: 'shreypandey'
+  confirmpassword: 'shreypandey',
+  phone: '9998877112',
+  address: 'A-98, Gandhi Path, Nehru Marg, Ajmer, Rajasthan'
 };
 
 export const errorStatements = {
   'EMAIL-INCORRECT': 'Enter the email in correct format',
   'PASSWORD-INCORRECT': 'Password must be atleast 8 chars long',
 
-  'SIGNUP-USERNAME-ERROR': 'Username can only have alphabets',
+  'SIGNUP-FIRSTNAME-ERROR': 'Name can only have alphabets',
+  'SIGNUP-LASTNAME-ERROR': 'Name can only have alphabets',
   'SIGNUP-EMAIL-INCORRECT': 'Enter the email in correct format',
   'SIGNUP-PASSWORD-INCORRECT': 'Password must be atleast 8 chars long',
   'CONFIRM-PASSWORD-INCORRECT': 'Password must be atleast 8 chars long',
   'PASSWORDS-MISMATCH': "Passwords Don't Match",
+  'SIGNUP-PHONE-ERROR': 'Phone number can only contain digits',
+  'SIGNUP-ADDRESS-ERROR': 'Address cannot be empty',
 
   'SIGN-IN-ERROR': 'Sign In failed! User Not Found',
   'SIGN-UP-ERROR':

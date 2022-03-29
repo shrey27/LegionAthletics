@@ -6,7 +6,7 @@ import Products from '../pages/products';
 import Cart from '../pages/cart';
 import Wishlist from '../pages/wishlist';
 import HomePage from '../pages/homepage';
-
+import Orders from '../pages/summary';
 import MockAPI from '../../MockAPI';
 import PrivateRoute from './PrivateRoute';
 import { Routes, Route } from 'react-router-dom';
@@ -27,6 +27,7 @@ export const SIGNIN = '/signin';
 export const SIGNUP = '/signup';
 export const SIGNOUT = '/signout';
 export const MOCKAPI = '/mock-api';
+export const ORDER = '/orders';
 
 export const availableRoutes = (
   <Routes>
@@ -41,6 +42,7 @@ export const availableRoutes = (
       <Route path={WISHLIST} element={<Wishlist />} />
       <Route path={`${PRODUCTS}/:productId`} element={<Product />} />
       <Route path={SIGNOUT} element={<Signout />} />
+      <Route path={ORDER} element={<Orders />} />
     </Route>
 
     <Route path='*' element={<HomePage />} />
