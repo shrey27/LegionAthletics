@@ -59,10 +59,10 @@ export const signupHandler = function (schema, request) {
  * */
 
 export const signupUpdateHandler = function (schema, request) {
-  const { email, address, phone, username } = JSON.parse(request.requestBody);
+  const { email, address, phone, firstName, lastName } = JSON.parse(
+    request.requestBody
+  );
   const userId = requiresAuth.call(this, request);
-
-  console.log(email, address, phone, username, userId);
   try {
     // check if email already exists
     const foundUser = schema.users.findBy({ email });
@@ -79,8 +79,8 @@ export const signupUpdateHandler = function (schema, request) {
       { _id: userId },
       { address },
       { phone },
-      { firstName: username.split(' ')[0] },
-      { lastName: username.split(' ')[1] }
+      { firstName },
+      { lastName }
     );
     return new Response(
       201,
@@ -89,8 +89,8 @@ export const signupUpdateHandler = function (schema, request) {
         updatedDetails: {
           address,
           phone,
-          firstName: username.split(' ')[0],
-          lastName: username.split(' ')[1]
+          firstName,
+          lastName
         }
       }
     );

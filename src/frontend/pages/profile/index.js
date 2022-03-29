@@ -1,55 +1,24 @@
-import axios from 'axios';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { Footer, Navbar } from '../../components';
 import { useAuthCtx } from '../../context';
 import './profile.css';
 
 export default function Profile() {
-  const [disable, setDisable] = useState(false);
   const {
     firstName,
     lastName,
     phone,
     email,
     address,
-    token,
     addressError,
     phoneError,
     firstNameError,
     lastNameError,
-    dispatch
+    dispatch,
+    handleProfileUpdate,
+    disable,
+    setDisable
   } = useAuthCtx();
-
-  const handleProfileUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      const userDetails = await axios.post(
-        '/api/auth/update',
-        {
-          username: `${firstName} ${lastName}`,
-          phone,
-          email,
-          address
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      );
-      console.log(userDetails);
-    } catch (err) {
-      console.log('profile details error', err);
-    }
-  };
-
-  const handleDisable = () => {
-    if (disable) {
-      setDisable(false);
-    } else {
-      setDisable(true);
-    }
-  };
 
   return (
     <Fragment>
@@ -136,7 +105,7 @@ export default function Profile() {
           </div>
           <div className='profile_input'>
             <label htmlFor='profile__address' className='label'>
-              Address
+              Delivery Address
             </label>
             <textarea
               className='textarea sm-s'
@@ -154,21 +123,23 @@ export default function Profile() {
             ></textarea>
             <h1 className='input__error'>{addressError}</h1>
           </div>
-          {/* <button
-            type={disable ? '' : 'submit'}
-            className='btn btn--auth--solid sb'
-            onClick={handleDisable}
-          >
-            {disable ? 'UPDATE' : 'EDIT DETAILS'}
-          </button> */}
-          <button type='submit' className='btn btn--auth--solid sb'>
-            SUBMIT
-          </button>
+          {disable && (
+            <button
+              className='btn btn--auth--solid sb'
+              onClick={() => setDisable(false)}
+            >
+              UPDATE
+            </button>
+          )}
+          {!disable && (
+            <button type='submit' className='btn btn--auth--solid sb'>
+              SUBMIT
+            </button>
+          )}
           {!disable && (
             <button
-              type='submit'
               className='btn btn--auth--error sb'
-              onClick={handleDisable}
+              onClick={() => setDisable(true)}
             >
               CANCEL
             </button>

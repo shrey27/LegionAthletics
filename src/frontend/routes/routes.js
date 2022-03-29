@@ -16,6 +16,7 @@ import { Routes, Route } from 'react-router-dom';
 //API endpoints
 export const SIGNUPAPI = '/api/auth/signup';
 export const SIGNINAPI = '/api/auth/login';
+export const UPDATEDETAILS = '/api/auth/update';
 export const PRODUCTSAPI = '/api/products';
 export const WISHLISTAPI = '/api/user/wishlist';
 export const CARTAPI = '/api/user/cart';

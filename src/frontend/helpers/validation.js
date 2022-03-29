@@ -70,3 +70,27 @@ export function validationSignUp(state, dispatch) {
   }
   return true;
 }
+
+export const validateUpdateDetails = (state, dispatch) => {
+  const { firstName, lastName, phone, address } = state;
+  const errorArray = [];
+  if (!firstName || !firstName.match(/^[a-zA-Z ]+/)) {
+    errorArray.push('SIGNUP-FIRSTNAME-ERROR');
+  }
+  if (!lastName || !lastName.match(/^[a-zA-Z ]+/)) {
+    errorArray.push('SIGNUP-LASTNAME-ERROR');
+  }
+  if (!phone || !phone.match(/^\d{10}$/)) {
+    errorArray.push('SIGNUP-PHONE-ERROR');
+  }
+  if (!address) {
+    errorArray.push('SIGNUP-ADDRESS-ERROR');
+  }
+  if (errorArray.length) {
+    errorArray.forEach((elem) =>
+      dispatch({ type: elem, payload: errorStatements[elem] })
+    );
+    return false;
+  }
+  return true;
+};

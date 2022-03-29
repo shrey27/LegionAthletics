@@ -1,12 +1,25 @@
-import { createContext, useContext, useReducer, useEffect } from 'react';
+import {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  useState
+} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { SIGNOUT, HOMEPAGE, SIGNINAPI, SIGNUPAPI } from '../routes/routes';
+import {
+  SIGNOUT,
+  HOMEPAGE,
+  SIGNINAPI,
+  SIGNUPAPI,
+  UPDATEDETAILS
+} from '../routes/routes';
 import { ToastMessage } from '../components';
 import {
   useLocalStorage,
   validateSignIn,
   validationSignUp,
+  validateUpdateDetails,
   authReducerFunc,
   defaultState
 } from '../helpers';
@@ -15,6 +28,7 @@ import { errorStatements } from '../utility/constants';
 const AuthentiationContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const [disable, setDisable] = useState(true);
   const [state, dispatch] = useReducer(authReducerFunc, defaultState);
   const {
     email,
@@ -37,7 +51,8 @@ const AuthProvider = ({ children }) => {
     storedName,
     storedSurname,
     storedPhone,
-    storedAddress
+    storedAddress,
+    updateLocalStorage
   } = useLocalStorage();
 
   const handleUserDetails = (userDetails) => {
@@ -157,6 +172,45 @@ const AuthProvider = ({ children }) => {
     navigate(SIGNOUT);
   };
 
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    if (validateUpdateDetails(state, dispatch)) {
+      try {
+        const {
+          data: { updatedDetails }
+        } = await axios.post(
+          UPDATEDETAILS,
+          {
+            firstName,
+            lastName,
+            phone,
+            email,
+            address
+          },
+          {
+            headers: {
+              authorization: token
+            }
+          }
+        );
+        console.log('updatedDetails', updatedDetails);
+        // handleUserDetails(updatedDetails);
+        updateLocalStorage('firstName', firstName);
+        updateLocalStorage('lastName', lastName);
+        updateLocalStorage('phone', phone);
+        updateLocalStorage('address', address);
+        updateLocalStorage('email', email);
+        setDisable(true);
+        ToastMessage('Details updated Successfully', 'success');
+      } catch (err) {
+        console.log('profile details error', err);
+        ToastMessage('Profile updation failed', 'error');
+      }
+    } else {
+      ToastMessage('Please enter correct details', 'error');
+    }
+  };
+
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
     if (storedData) {
@@ -174,7 +228,10 @@ const AuthProvider = ({ children }) => {
         dispatch,
         handleSignIn,
         handleSignUp,
-        handleSignOut
+        handleSignOut,
+        handleProfileUpdate,
+        disable,
+        setDisable
       }}
     >
       {children}
