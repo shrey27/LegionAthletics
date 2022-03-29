@@ -10,7 +10,7 @@ import {
   authReducerFunc,
   defaultState
 } from '../helpers';
-import { guestCredentials, errorStatements } from '../utility/constants';
+import { errorStatements } from '../utility/constants';
 
 const AuthentiationContext = createContext();
 

@@ -14,7 +14,6 @@ export default function CartItem(props) {
 
   return (
     <div className='cart__landscape shdw'>
-      {mrp}
       <img src={source} alt='Banner' className='card__banner' />
       <section className='cart__content'>
         <h1 className='cart__align primary lg sb'>{title}</h1>
