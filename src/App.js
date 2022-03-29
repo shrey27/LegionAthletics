@@ -1,4 +1,4 @@
-import { availableRoutes } from './routes';
+import { availableRoutes } from './frontend/routes/routes';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';

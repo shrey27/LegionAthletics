@@ -1,9 +1,9 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
-import { CARTAPI } from '../../apiEndpoints';
+import { CARTAPI } from '../routes/routes';
 import { useAuthCtx } from './authenticationContext';
 import axios from 'axios';
-import { ToastMessage } from '../common/toast';
-//Cart Management context
+import { ToastMessage } from '../components/toast';
+
 const CartContext = createContext();
 
 const CartProvider = ({ children }) => {

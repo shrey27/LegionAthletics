@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { createContext, useContext, useReducer, useEffect } from 'react';
-import { WISHLISTAPI } from '../../apiEndpoints';
+import { WISHLISTAPI } from '../routes/routes';
 import { useAuthCtx } from './authenticationContext';
-import { ToastMessage } from '../common/toast';
+import { ToastMessage } from '../components/toast';
 import { useLocalStorage } from '../helpers';
 
 const WishListContext = createContext();

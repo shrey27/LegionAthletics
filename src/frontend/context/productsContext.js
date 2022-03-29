@@ -5,7 +5,7 @@ import {
   useEffect,
   useState
 } from 'react';
-import { PRODUCTSAPI } from '../../apiEndpoints';
+import { PRODUCTSAPI } from '../routes/routes';
 import axios from 'axios';
 
 const ProductsContext = createContext();

@@ -1,0 +1,6 @@
+export { Deals } from './deals';
+export { Footer } from './footer';
+export { Navbar } from './navbar';
+export { Header } from './header';
+export { ToastMessage } from './toast';
+export { Loader } from './Loader';
