@@ -33,12 +33,40 @@ const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const {
     storedEmail,
-    storedPassword,
     storedToken,
     storedName,
-    storedSurname
+    storedSurname,
+    storedPhone,
+    storedAddress
   } = useLocalStorage();
 
+  const handleUserDetails = (userDetails) => {
+    const { firstName, lastName, phone, address, email } = userDetails;
+    dispatch({
+      type: 'SIGNUP-FIRSTNAME',
+      payload: firstName
+    });
+    dispatch({
+      type: 'SIGNUP-LASTNAME',
+      payload: lastName
+    });
+    dispatch({
+      type: 'SIGNUP-PHONE',
+      payload: phone
+    });
+    dispatch({
+      type: 'SIGNUP-ADDRESS',
+      payload: address
+    });
+    dispatch({
+      type: 'SIGNUP-EMAIL',
+      payload: email
+    });
+    dispatch({
+      type: 'SIGNIN-EMAIL',
+      payload: email
+    });
+  };
   const handleSignIn = async () => {
     if (validateSignIn(state, dispatch)) {
       if (!rememberMe) {
@@ -49,14 +77,12 @@ const AuthProvider = ({ children }) => {
             email,
             password
           });
+
           if (foundUser) {
             localStorage.setItem('token', encodedToken);
             localStorage.setItem('userData', JSON.stringify(foundUser));
             dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
-            dispatch({
-              type: 'SIGNUP-USERNAME',
-              payload: `${foundUser.firstName} ${foundUser.lastName}`
-            });
+            handleUserDetails(foundUser);
             navigate(HOMEPAGE);
             ToastMessage('Sign In was Successfull', 'success');
           } else {
@@ -71,11 +97,13 @@ const AuthProvider = ({ children }) => {
           ToastMessage(errorStatements['SIGN-IN-ERROR'], 'error');
         }
       } else {
-        if (storedEmail === email && storedPassword === password) {
+        if (storedEmail === email) {
           dispatch({ type: 'TOKEN-SAVED', payload: storedToken });
-          dispatch({
-            type: 'SIGNUP-USERNAME',
-            payload: storedName + ' ' + storedSurname
+          handleUserDetails({
+            firstName: storedName,
+            lastName: storedSurname,
+            phone: storedPhone,
+            address: storedAddress
           });
           navigate(HOMEPAGE);
           ToastMessage('Sign In was Successfull', 'success');
@@ -134,10 +162,7 @@ const AuthProvider = ({ children }) => {
     if (storedData) {
       dispatch({ type: 'TOKEN-SAVED', payload: localStorage.getItem('token') });
       const parsedData = JSON.parse(storedData);
-      dispatch({
-        type: 'SIGNUP-USERNAME',
-        payload: `${parsedData.firstName} ${parsedData.lastName}`
-      });
+      handleUserDetails(parsedData);
     }
   }, []);
 

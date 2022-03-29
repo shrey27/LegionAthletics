@@ -9,6 +9,7 @@ import {
   HOMEPAGE,
   CART,
   WISHLIST,
+  PROFILE,
   SIGNIN,
   SIGNUP,
   ORDER
@@ -95,6 +96,10 @@ export function Navbar({ noDrawer, showSearchBar }) {
                 </div>
               )}
               <section className='submenu__items flex-st-ct flex-vertical'>
+                <Link to={PROFILE} className='submenu__item sb'>
+                  My Profile
+                  <i className='far fa-user-circle lg bl'></i>
+                </Link>
                 <Link to={CART} className='submenu__item sb'>
                   Cart
                   <i
@@ -112,15 +117,15 @@ export function Navbar({ noDrawer, showSearchBar }) {
                   ></i>
                 </Link>
                 <Link to={ORDER} className='submenu__item sb'>
-                  Orders Placed
-                  <i class='fa-solid fa-basket-shopping lg bl'></i>
+                  Orders Summary
+                  <i className='fa-solid fa-basket-shopping lg bl'></i>
                 </Link>
               </section>
               <div>
                 {token ? (
                   <section className='submenu__btn flex-st-ct'>
                     <button
-                      className='btn btn--auth--solid btn--wide'
+                      className='btn btn--auth--solid btn--wide sb'
                       onClick={handleSignOut}
                     >
                       Log Out

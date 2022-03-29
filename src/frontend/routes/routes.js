@@ -7,6 +7,8 @@ import Cart from '../pages/cart';
 import Wishlist from '../pages/wishlist';
 import HomePage from '../pages/homepage';
 import Orders from '../pages/summary';
+import Profile from '../pages/profile';
+
 import MockAPI from '../../MockAPI';
 import PrivateRoute from './PrivateRoute';
 import { Routes, Route } from 'react-router-dom';
@@ -28,6 +30,7 @@ export const SIGNUP = '/signup';
 export const SIGNOUT = '/signout';
 export const MOCKAPI = '/mock-api';
 export const ORDER = '/orders';
+export const PROFILE = '/profile';
 
 export const availableRoutes = (
   <Routes>
@@ -36,7 +39,7 @@ export const availableRoutes = (
     <Route path={SIGNIN} element={<Signin />} />
     <Route path={SIGNUP} element={<Signup />} />
     <Route path={MOCKAPI} element={<MockAPI />} />
-
+    <Route path={PROFILE} element={<Profile />} />
     <Route exact path={HOMEPAGE} element={<PrivateRoute />}>
       <Route path={CART} element={<Cart />} />
       <Route path={WISHLIST} element={<Wishlist />} />
