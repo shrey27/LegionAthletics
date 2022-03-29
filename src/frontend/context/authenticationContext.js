@@ -1,16 +1,23 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-const AuthentiationContext = createContext();
 import { SIGNOUT, HOMEPAGE } from '../../routes';
 import { SIGNINAPI, SIGNUPAPI } from '../../apiEndpoints';
 import { ToastMessage } from '../common/toast';
+import { useLocalStorage } from '../helpers';
+import { guestCredentials } from '../common/constants';
+
+const AuthentiationContext = createContext();
 
 const defaultState = {
   email: '',
   emailError: '',
   password: '',
   passwordError: '',
+  signUpEmail: '',
+  signUpEmailError: '',
+  signUpPassword: '',
+  signUpPasswordError: '',
   cnfPassword: '',
   cnfpasswordError: '',
   username: '',
@@ -19,7 +26,6 @@ const defaultState = {
   signupError: '',
   rememberMe: false,
   signinRememberMe: false,
-  userdata: '',
   token: ''
 };
 const authReducerFunc = (state, action) => {
@@ -29,15 +35,65 @@ const authReducerFunc = (state, action) => {
         ...state,
         email: action.payload
       };
+    case 'EMAIL-INCORRECT':
+      return {
+        ...state,
+        emailError: 'Enter the email in correct format'
+      };
     case 'SIGNIN-PASSWORD':
       return {
         ...state,
         password: action.payload
       };
+    case 'PASSWORD-INCORRECT':
+      return {
+        ...state,
+        passwordError: 'Password should be atleast 8 chars long'
+      };
+    case 'SIGNUP-EMAIL':
+      return {
+        ...state,
+        signUpEmail: action.payload
+      };
+    case 'SIGNUP-EMAIL-INCORRECT':
+      return {
+        ...state,
+        signUpEmailError: 'Enter the email in correct format'
+      };
+    case 'SIGNUP-PASSWORD':
+      return {
+        ...state,
+        signUpPassword: action.payload
+      };
+    case 'SIGNUP-PASSWORD-INCORRECT':
+      return {
+        ...state,
+        signUpPasswordError: 'Password should be atleast 8 chars long'
+      };
     case 'SIGNUP-USERNAME':
       return {
         ...state,
         username: action.payload
+      };
+    case 'SIGNUP-USERNAME-ERROR':
+      return {
+        ...state,
+        userNameError: 'Username can only have alphabets'
+      };
+    case 'CONFIRM-PASSWORD':
+      return {
+        ...state,
+        cnfPassword: action.payload
+      };
+    case 'CONFIRM-PASSWORD-INCORRECT':
+      return {
+        ...state,
+        cnfpasswordError: 'Password should be atleast 8 chars long'
+      };
+    case 'PASSWORDS-MISMATCH':
+      return {
+        ...state,
+        signupError: "Passwords Don't Match"
       };
     case 'TOKEN-SAVED':
       return {
@@ -62,36 +118,6 @@ const authReducerFunc = (state, action) => {
         ...state,
         signupError: 'SIGN UP FAILED! TRY AFTER SOME TIME'
       };
-    case 'PASSWORDS-MISMATCH':
-      return {
-        ...state,
-        signupError: "Passwords Don't Match"
-      };
-    case 'CONFIRM-PASSWORD':
-      return {
-        ...state,
-        cnfPassword: action.payload
-      };
-    case 'EMAIL-INCORRECT':
-      return {
-        ...state,
-        emailError: 'Enter the email in correct format'
-      };
-    case 'PASSWORD-INCORRECT':
-      return {
-        ...state,
-        passwordError: 'Password should be atleast 8 chars long'
-      };
-    case 'CONFIRM-PASSWORD-INCORRECT':
-      return {
-        ...state,
-        cnfpasswordError: 'Password should be atleast 8 chars long'
-      };
-    case 'SIGNUP-USERNAME-ERROR':
-      return {
-        ...state,
-        userNameError: 'Username can only have alphabets'
-      };
     case 'CLEAR-ALL-ERRORS':
       return {
         ...state,
@@ -100,7 +126,9 @@ const authReducerFunc = (state, action) => {
         emailError: '',
         signupError: '',
         signinError: '',
-        userNameError: ''
+        userNameError: '',
+        signUpEmailError: '',
+        signUpPasswordError: ''
       };
     case 'REMEMBER-ME':
       return {
@@ -123,76 +151,80 @@ const authReducerFunc = (state, action) => {
   }
 };
 
-export function callLocalStorage() {
-  const { email, password, cart, wishlist } = JSON.parse(
-    localStorage.getItem('userData')
-  );
-  const storedToken = localStorage.getItem('token');
-  return {
-    storedEmail: email,
-    storedPassword: password,
-    storedCart: cart,
-    storedWishlist: wishlist,
-    storedToken
-  };
-}
-
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducerFunc, defaultState);
   const {
     email,
     password,
+    signUpEmail,
+    signUpPassword,
     cnfPassword,
+    username,
     rememberMe,
     signinRememberMe,
-    signinError,
-    signupError,
-    userdata,
-    token,
-    emailError,
-    passwordError,
-    cnfpasswordError,
-    username,
-    userNameError
+    token
   } = state;
+
   const navigate = useNavigate();
+  const {
+    storedEmail,
+    storedPassword,
+    storedToken,
+    storedName,
+    storedSurname
+  } = useLocalStorage();
 
-  function validationFun(forSignIn) {
-    if ((!forSignIn && !username) || !username.match(/^[a-zA-Z ]+/)) {
-      dispatch({ type: 'SIGNUP-USERNAME-ERROR' });
-      return false;
-    }
-
+  function validateSignIn() {
+    const errorArray = [];
     if (
       !email ||
       !email.match(
         /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
       )
     ) {
-      dispatch({ type: 'EMAIL-INCORRECT' });
-      return false;
+      errorArray.push('EMAIL-INCORRECT');
     }
-
     if (!password || password.length < 8) {
-      dispatch({ type: 'PASSWORD-INCORRECT' });
+      errorArray.push('PASSWORD-INCORRECT');
+    }
+    if (errorArray.length) {
+      errorArray.forEach((elem) => dispatch({ type: elem }));
       return false;
     }
+    return true;
+  }
 
-    if (!forSignIn && (!cnfPassword || cnfPassword.length < 8)) {
-      dispatch({ type: 'CONFIRM-PASSWORD-INCORRECT' });
+  function validationSignUp() {
+    const errorArray = [];
+    if (!username || !username.match(/^[a-zA-Z ]+/)) {
+      errorArray.push('SIGNUP-USERNAME-ERROR');
+    }
+    if (
+      !signUpEmail ||
+      !signUpEmail.match(
+        /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
+      )
+    ) {
+      errorArray.push('SIGNUP-EMAIL-INCORRECT');
+    }
+    if (!signUpPassword || signUpPassword.length < 8) {
+      errorArray.push('SIGNUP-PASSWORD-INCORRECT');
+    }
+    if (!cnfPassword || cnfPassword.length < 8) {
+      errorArray.push('CONFIRM-PASSWORD-INCORRECT');
+    }
+    if (cnfPassword !== signUpPassword) {
+      errorArray.push('PASSWORDS-MISMATCH');
+    }
+    if (errorArray.length) {
+      errorArray.forEach((elem) => dispatch({ type: elem }));
       return false;
     }
-
-    if (!forSignIn && cnfPassword !== password) {
-      dispatch({ type: 'PASSWORDS-MISMATCH' });
-      return false;
-    }
-
     return true;
   }
 
   const handleSignIn = async () => {
-    if (validationFun(true)) {
+    if (validateSignIn()) {
       if (!rememberMe) {
         try {
           const {
@@ -205,6 +237,10 @@ const AuthProvider = ({ children }) => {
             localStorage.setItem('token', encodedToken);
             localStorage.setItem('userData', JSON.stringify(foundUser));
             dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
+            dispatch({
+              type: 'SIGNUP-USERNAME',
+              payload: guestCredentials.username
+            });
             navigate(HOMEPAGE);
             ToastMessage('Sign In was Successfull', 'success');
           } else {
@@ -219,10 +255,13 @@ const AuthProvider = ({ children }) => {
           ToastMessage('Sign In failed! User Not Found', 'error');
         }
       } else {
-        const { storedEmail, storedPassword, storedToken } = callLocalStorage();
         if (storedEmail === email && storedPassword === password) {
           dispatch({ type: 'TOKEN-SAVED', payload: storedToken });
-          dispatch({ type: 'SET-DEFAULT' });
+          // dispatch({ type: 'SET-DEFAULT' });
+          dispatch({
+            type: 'SIGNUP-USERNAME',
+            payload: storedName + ' ' + storedSurname
+          });
           navigate(HOMEPAGE);
           ToastMessage('Sign In was Successfull', 'success');
         } else {
@@ -240,11 +279,11 @@ const AuthProvider = ({ children }) => {
   };
 
   const handleSignUp = async () => {
-    if (validationFun(false)) {
+    if (validationSignUp()) {
       try {
         const response = await axios.post(SIGNUPAPI, {
-          name: username.split(' ')[0],
-          surname: username.split(' ')[1],
+          firstName: username.split(' ')[0],
+          lastName: username.split(' ')[1],
           email,
           password
         });
@@ -274,9 +313,10 @@ const AuthProvider = ({ children }) => {
     const storedData = localStorage.getItem('userData');
     if (storedData) {
       dispatch({ type: 'TOKEN-SAVED', payload: localStorage.getItem('token') });
+      const parsedData = JSON.parse(storedData);
       dispatch({
         type: 'SIGNUP-USERNAME',
-        payload: JSON.parse(userData)?.name
+        payload: `${parsedData.firstName} ${parsedData.lastName}`
       });
     }
   }, []);
@@ -284,24 +324,14 @@ const AuthProvider = ({ children }) => {
   return (
     <AuthentiationContext.Provider
       value={{
-        email,
-        password,
-        userdata,
-        cnfPassword,
-        rememberMe,
-        signinRememberMe,
+        ...state,
         token,
-        signinError,
-        signupError,
         dispatch,
         handleSignIn,
         handleSignUp,
         handleSignOut,
-        emailError,
-        passwordError,
-        cnfpasswordError,
-        username,
-        userNameError
+        firstName: username.split(' ')[0],
+        lastName: username.split(' ')[1]
       }}
     >
       {children}

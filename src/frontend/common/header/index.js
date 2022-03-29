@@ -1,7 +1,7 @@
 import './header.css';
 import Category from './Category';
 import Banner from './Banner';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PRODUCTS } from '../../../routes';
 
 export default function Header() {
@@ -37,7 +37,9 @@ export default function Header() {
           Combos
         </div>
         <div
-          onClick={() => navigate(PRODUCTS, { state: { category: 'supplements' } })}
+          onClick={() =>
+            navigate(PRODUCTS, { state: { category: 'supplements' } })
+          }
           className='shortcut btn--icons'
         >
           Supplements
@@ -49,7 +51,9 @@ export default function Header() {
           Vegan
         </div>
         <div
-          onClick={() => navigate(PRODUCTS, { state: { category: 'clothing' } })}
+          onClick={() =>
+            navigate(PRODUCTS, { state: { category: 'clothing' } })
+          }
           className='shortcut btn--float'
         >
           Clothing

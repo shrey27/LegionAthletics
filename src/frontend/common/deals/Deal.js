@@ -10,7 +10,6 @@ import { ToastMessage } from '../toast';
 export default function Deal(props) {
   const { itemdata, wishlist, close, noButton } = props;
   const {
-    id,
     _id,
     source,
     title,

@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import './wishlist.css';
 import Navbar from '../common/navbar';
 import Category from '../common/header/Category';

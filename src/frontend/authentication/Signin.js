@@ -14,7 +14,6 @@ export default function Signin() {
     password,
     emailError,
     passwordError,
-    signinError,
     signinRememberMe,
     dispatch,
     handleSignIn
@@ -34,7 +33,6 @@ export default function Signin() {
   return (
     <>
       <Navbar noDrawer={true} />
-      {<h1 className='tag cen md sb mg-full'>{signinError}</h1>}
       <div className='card authentication shdw'>
         <h1 className='lg sb cen xs-s mg-full'>SIGNIN</h1>
         <hr />
@@ -115,9 +113,8 @@ export default function Signin() {
           </button>
         </form>
         <div className='signin__links'>
-          <a className='forgot sm'>Forgot Password?</a>
-          <Link to={SIGNUP} className='forgot sm fl-rt'>
-            Sign Up
+          <Link to={SIGNUP} className='forgot sm'>
+            Create an Account.
           </Link>
         </div>
       </div>

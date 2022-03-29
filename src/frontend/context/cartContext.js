@@ -196,7 +196,7 @@ const CartAPIProvider = ({ children }) => {
       }
     };
     if (token) getCartList();
-  }, []);
+  }, [token]);
 
   // useEffect(() => {
   //   if (!token) {

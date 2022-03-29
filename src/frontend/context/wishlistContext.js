@@ -9,7 +9,6 @@ const WishListContext = createContext();
 
 const defaultState = {
   wishlistLoading: false,
-  wishListError: '',
   wishlistData: [],
   addedPID: []
 };
@@ -18,21 +17,18 @@ const wishlistApiReducerFunc = (state, action) => {
     case 'API_REQUEST':
       return {
         ...state,
-        wishlistLoading: true,
-        wishListError: ''
+        wishlistLoading: true
       };
     case 'API_RESPONSE':
       return {
         ...state,
         wishlistLoading: false,
-        wishListError: '',
         wishlistData: action.payload
       };
     case 'API_FAILURE':
       return {
         ...state,
-        wishlistLoading: false,
-        wishListError: 'TECHNICAL ISSUE. PLEASE TRY AGAIN AFTER SOME TIME'
+        wishlistLoading: false
       };
     case 'UPDATE_WISHLIST_PID':
       return {
@@ -57,7 +53,7 @@ const WishlistProvider = ({ children }) => {
 
   const addToWishlist = async (_id, objectData) => {
     dispatch({ type: 'API_REQUEST' });
-    if (!wishlistData.some((e) => e._id === _id)) {
+    if (!addedPID.includes(_id)) {
       try {
         const {
           data: { wishlist }
@@ -65,7 +61,7 @@ const WishlistProvider = ({ children }) => {
           WISHLISTAPI,
           {
             product: {
-              _id: _id,
+              _id,
               ...objectData
             }
           },
@@ -77,7 +73,10 @@ const WishlistProvider = ({ children }) => {
         );
         updateLocalStorage('wishlist', wishlist);
         dispatch({ type: 'API_RESPONSE', payload: wishlist });
-        dispatch({ type: 'UPDATE_WISHLIST_PID' });
+
+        const idArray = wishlist.map((elem) => elem._id);
+        dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
+
         ToastMessage('Product added to wishlist', 'success');
       } catch (err) {
         console.log('POST-WISHLIST-ERROR', err);
@@ -101,7 +100,10 @@ const WishlistProvider = ({ children }) => {
       });
       updateLocalStorage('wishlist', wishlist);
       dispatch({ type: 'API_RESPONSE', payload: wishlist });
-      dispatch({ type: 'UPDATE_WISHLIST_PID' });
+
+      const idArray = wishlist.map((elem) => elem._id);
+      dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
+
       ToastMessage('Product deleted from wishlist', 'info');
     } catch (err) {
       console.log('DELETE-WISHLIST-ERROR', err);
@@ -111,25 +113,38 @@ const WishlistProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log('token in wishlist context', token);
     const getWishlist = async () => {
       dispatch({ type: 'API_REQUEST' });
       try {
-        const {
-          data: { wishlist }
-        } = await axios.get(WISHLISTAPI);
+        const storedWishlist = JSON.parse(
+          localStorage.getItem('userData')
+        )?.wishlist;
 
-        dispatch({ type: 'API_RESPONSE', payload: [...wishlist] });
-        const idArray = wishlist.map((elem) => elem._id);
-        console.log('wishlist data', wishlist, idArray);
-        dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
+        if (storedWishlist) {
+          dispatch({ type: 'API_RESPONSE', payload: storedWishlist });
+          const idArray = storedWishlist.map((elem) => elem._id);
+          console.log('stored wishlist data', storedWishlist, idArray);
+          dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
+        } else {
+          const {
+            data: { wishlist }
+          } = await axios.get(WISHLISTAPI, {
+            headers: {
+              authorization: token
+            }
+          });
+          dispatch({ type: 'API_RESPONSE', payload: [...wishlist] });
+          const idArray = wishlist.map((elem) => elem._id);
+          console.log('wishlist data', wishlist, idArray);
+          dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
+        }
       } catch (err) {
         console.log('GET-WISHLIST-ERROR', err);
         dispatch({ type: 'API_FAILURE' });
       }
     };
     if (token) getWishlist();
-  }, []);
+  }, [token]);
 
   // useEffect(() => {
   //   if (!token) {

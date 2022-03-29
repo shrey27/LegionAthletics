@@ -12,18 +12,17 @@ export default function Signup() {
   const [showCnfPassword, setShowCnfPassword] = useState(false);
 
   const {
-    email,
-    password,
+    signUpEmail,
+    signUpEmailError,
+    signUpPassword,
+    signUpPasswordError,
     username,
+    userNameError,
     cnfPassword,
+    cnfpasswordError,
     rememberMe,
     dispatch,
-    signupError,
-    handleSignUp,
-    emailError,
-    passwordError,
-    cnfpasswordError,
-    userNameError
+    handleSignUp
   } = useAuthCtx();
 
   const onSignUpHandler = (e) => {
@@ -34,8 +33,8 @@ export default function Signup() {
   const onUsingTestCredentials = (e) => {
     e.preventDefault();
     dispatch({ type: 'SIGNUP-USERNAME', payload: testCredentials.username });
-    dispatch({ type: 'SIGNIN-EMAIL', payload: testCredentials.email });
-    dispatch({ type: 'SIGNIN-PASSWORD', payload: testCredentials.password });
+    dispatch({ type: 'SIGNUP-EMAIL', payload: testCredentials.email });
+    dispatch({ type: 'SIGNUP-PASSWORD', payload: testCredentials.password });
     dispatch({
       type: 'CONFIRM-PASSWORD',
       payload: testCredentials.confirmpassword
@@ -45,7 +44,6 @@ export default function Signup() {
   return (
     <>
       <Navbar noDrawer={true} />
-      {<h1 className='tag cen md sb mg-full'>{signupError}</h1>}
       <div className='card authentication shdw'>
         <h1 className='lg sb cen xs-s mg-full'>SIGN UP</h1>
         <hr />
@@ -61,7 +59,6 @@ export default function Signup() {
               id='name__signup'
               placeholder='Enter your Name'
               autoComplete='off'
-              aria-autocomplete='off'
               value={username}
               onChange={(e) =>
                 dispatch({ type: 'SIGNUP-USERNAME', payload: e.target.value })
@@ -82,15 +79,14 @@ export default function Signup() {
               id='email__signup'
               placeholder='Enter Email'
               autoComplete='off'
-              aria-autocomplete='off'
-              value={email}
+              value={signUpEmail}
               onChange={(e) =>
                 dispatch({ type: 'SIGNIN-EMAIL', payload: e.target.value })
               }
               onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
               required
             />
-            <h1 className='input__error'>{emailError}</h1>
+            <h1 className='input__error'>{signUpEmailError}</h1>
           </div>
           <div className='authentication__input'>
             <label htmlFor='password__signup' className='label'>
@@ -104,7 +100,7 @@ export default function Signup() {
                 id='password__signup'
                 autoComplete='off'
                 placeholder='Enter Password'
-                value={password}
+                value={signUpPassword}
                 onChange={(e) =>
                   dispatch({ type: 'SIGNIN-PASSWORD', payload: e.target.value })
                 }
@@ -116,7 +112,7 @@ export default function Signup() {
                 onClick={() => setShowPassword((e) => !e)}
               ></i>
             </div>
-            <h1 className='input__error'>{passwordError}</h1>
+            <h1 className='input__error'>{signUpPasswordError}</h1>
           </div>
 
           <div className='authentication__input'>

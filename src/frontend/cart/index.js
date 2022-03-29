@@ -6,20 +6,9 @@ import Footer from '../common/footer';
 import CartItem from './CartItem';
 import Loader from '../common/Loader';
 import { useCartAPICtx } from '../context/cartContext';
-import { useAuthCtx } from '../context/authenticationContext';
-import { useNavigate } from 'react-router-dom';
-import { SIGNIN } from '../../routes';
 
 export default function Cart() {
-  const { cartLoading, cartListData, cartError } = useCartAPICtx();
-  const { userdata } = useAuthCtx();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!userdata) {
-      navigate(SIGNIN);
-    }
-  }, [userdata, navigate]);
+  const { cartLoading, cartListData, cartError, dispatch } = useCartAPICtx();
 
   const [cartPrice, setCartPrice] = useState({
     total: 0,

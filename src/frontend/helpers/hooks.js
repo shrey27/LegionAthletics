@@ -5,13 +5,13 @@ export function useLocalStorage() {
     localStorage.setItem('userData', JSON.stringify(data));
   };
   if (data) {
-    const { email, password, name, surname, wishlist, cart } = data;
+    const { email, password, firstName, lastName, wishlist, cart } = data;
     const storedToken = localStorage.getItem('token');
     return {
       storedEmail: email,
       storedPassword: password,
-      storedName: name,
-      storedSurname: surname,
+      storedName: firstName,
+      storedSurname: lastName,
       storedWishlist: wishlist,
       storedCart: cart,
       storedToken,

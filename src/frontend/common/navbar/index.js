@@ -14,7 +14,7 @@ export default function Navbar({ noDrawer, showSearchBar }) {
   const { totalItems } = useCartCtx();
   const { wishlistData } = useWishlistCtx();
   const { dispatch } = useProductsCtx();
-  const { token, username, handleSignOut } = useAuthCtx();
+  const { token, firstName, handleSignOut } = useAuthCtx();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -82,9 +82,7 @@ export default function Navbar({ noDrawer, showSearchBar }) {
             <div className='submenu shadow xs-s'>
               {token && (
                 <div className='mg-half'>
-                  <h1 className='primary md cen mg-half'>
-                    Hey, {username.split(' ')[0]}
-                  </h1>
+                  <h1 className='primary md cen mg-half'>Hey, {firstName}</h1>
                   <hr />
                 </div>
               )}

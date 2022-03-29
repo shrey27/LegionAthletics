@@ -75,8 +75,9 @@ export const categoryList = [
 ];
 
 export const guestCredentials = {
-  email: 'carlJones234@gmail.com',
-  password: 'carljones234'
+  email: 'carljones234@gmail.com',
+  password: 'carljones234',
+  username: 'Carl Jones'
 };
 export const testCredentials = {
   username: 'Shrey Pandey',
