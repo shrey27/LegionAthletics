@@ -55,6 +55,7 @@ const WishlistProvider = ({ children }) => {
     dispatch({ type: 'API_REQUEST' });
     if (!addedPID.includes(_id)) {
       try {
+        console.log('data before post call', _id, objectData, token);
         const {
           data: { wishlist }
         } = await axios.post(
@@ -73,10 +74,8 @@ const WishlistProvider = ({ children }) => {
         );
         updateLocalStorage('wishlist', wishlist);
         dispatch({ type: 'API_RESPONSE', payload: wishlist });
-
         const idArray = wishlist.map((elem) => elem._id);
         dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
-
         ToastMessage('Product added to wishlist', 'success');
       } catch (err) {
         console.log('POST-WISHLIST-ERROR', err);
@@ -116,28 +115,16 @@ const WishlistProvider = ({ children }) => {
     const getWishlist = async () => {
       dispatch({ type: 'API_REQUEST' });
       try {
-        const storedWishlist = JSON.parse(
-          localStorage.getItem('userData')
-        )?.wishlist;
-
-        if (storedWishlist) {
-          dispatch({ type: 'API_RESPONSE', payload: storedWishlist });
-          const idArray = storedWishlist.map((elem) => elem._id);
-          console.log('stored wishlist data', storedWishlist, idArray);
-          dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
-        } else {
-          const {
-            data: { wishlist }
-          } = await axios.get(WISHLISTAPI, {
-            headers: {
-              authorization: token
-            }
-          });
-          dispatch({ type: 'API_RESPONSE', payload: [...wishlist] });
-          const idArray = wishlist.map((elem) => elem._id);
-          console.log('wishlist data', wishlist, idArray);
-          dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
-        }
+        const {
+          data: { wishlist }
+        } = await axios.get(WISHLISTAPI, {
+          headers: {
+            authorization: token
+          }
+        });
+        dispatch({ type: 'API_RESPONSE', payload: [...wishlist] });
+        const idArray = wishlist.map((elem) => elem._id);
+        dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
       } catch (err) {
         console.log('GET-WISHLIST-ERROR', err);
         dispatch({ type: 'API_FAILURE' });
@@ -145,17 +132,6 @@ const WishlistProvider = ({ children }) => {
     };
     if (token) getWishlist();
   }, [token]);
-
-  // useEffect(() => {
-  //   if (!token) {
-  //     dispatch({ type: 'CLEAR_ALL' });
-  //   } else {
-  //     const storedWishlist = JSON.parse(
-  //       localStorage.getItem('userData')
-  //     ).wishlist;
-  //     dispatch({ type: 'API_RESPONSE', payload: storedWishlist });
-  //   }
-  // }, [token]);
 
   return (
     <WishListContext.Provider

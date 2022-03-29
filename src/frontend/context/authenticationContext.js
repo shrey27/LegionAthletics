@@ -52,7 +52,7 @@ const AuthProvider = ({ children }) => {
             dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
             dispatch({
               type: 'SIGNUP-USERNAME',
-              payload: guestCredentials.username
+              payload: `${foundUser.firstName} ${foundUser.lastName}`
             });
             navigate(HOMEPAGE);
             ToastMessage('Sign In was Successfull', 'success');
@@ -96,8 +96,8 @@ const AuthProvider = ({ children }) => {
         const response = await axios.post(SIGNUPAPI, {
           firstName: username.split(' ')[0],
           lastName: username.split(' ')[1],
-          signUpEmail,
-          signUpPassword
+          email: signUpEmail,
+          password: signUpPassword
         });
         const { createdUser, encodedToken } = response.data;
         localStorage.setItem('token', encodedToken);

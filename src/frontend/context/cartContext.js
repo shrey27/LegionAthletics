@@ -3,6 +3,7 @@ import { CARTAPI } from '../routes/routes';
 import { useAuthCtx } from './authenticationContext';
 import axios from 'axios';
 import { ToastMessage } from '../components/toast';
+import { useLocalStorage } from '../helpers';
 
 const CartContext = createContext();
 
@@ -90,11 +91,14 @@ const CartAPIProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartApiReducerFunc, defaultCartState);
   const { cartLoading, cartError, cartListData, addedCartPID } = state;
   const { token } = useAuthCtx();
+  const { updateLocalStorage } = useLocalStorage();
 
   const addItemToCart = async (objectData) => {
     dispatch({ type: 'API_REQUEST' });
     try {
-      const resp = await axios.post(
+      const {
+        data: { cart }
+      } = await axios.post(
         CARTAPI,
         {
           product: {
@@ -108,13 +112,10 @@ const CartAPIProvider = ({ children }) => {
           }
         }
       );
-      const dataList = resp.data.cart;
-      dispatch({ type: 'API_RESPONSE', payload: dataList });
-      dispatch({ type: 'UPDATE_CART_PID' });
-
-      const datatoUpdate = JSON.parse(localStorage.getItem('userData'));
-      datatoUpdate.cart = [...dataList];
-      localStorage.setItem('userData', JSON.stringify(datatoUpdate));
+      updateLocalStorage('cart', cart);
+      dispatch({ type: 'API_RESPONSE', payload: [...cart] });
+      const idArray = cart.map((elem) => elem._id);
+      dispatch({ type: 'UPDATE_CART_PID', payload: idArray });
       ToastMessage('Product added to cart', 'success');
     } catch (err) {
       console.log('POST-CART-ERROR', err);
@@ -126,17 +127,17 @@ const CartAPIProvider = ({ children }) => {
   const deleteFromCart = async (id) => {
     dispatch({ type: 'API_REQUEST' });
     try {
-      const resp = await axios.delete(CARTAPI + '/' + id, {
+      const {
+        data: { cart }
+      } = await axios.delete(CARTAPI + '/' + id, {
         headers: {
           authorization: token
         }
       });
-      const dataList = resp.data.cart;
-      const storedData = JSON.parse(localStorage.getItem('userData'));
-      storedData.cart = [...dataList];
-      dispatch({ type: 'API_RESPONSE', payload: dataList });
-      dispatch({ type: 'UPDATE_CART_PID' });
-      localStorage.setItem('userData', JSON.stringify(storedData));
+      updateLocalStorage('cart', cart);
+      dispatch({ type: 'API_RESPONSE', payload: [...cart] });
+      const idArray = cart.map((elem) => elem._id);
+      dispatch({ type: 'UPDATE_CART_PID', payload: idArray });
       ToastMessage('Product was delted from cart', 'info');
     } catch (err) {
       dispatch({ type: 'API_FAILURE' });
@@ -148,7 +149,9 @@ const CartAPIProvider = ({ children }) => {
   const updateCartItem = async (id, inc) => {
     dispatch({ type: 'API_REQUEST' });
     try {
-      const resp = await axios.post(
+      const {
+        data: { cart }
+      } = await axios.post(
         CARTAPI + '/' + id,
         {
           action: {
@@ -161,13 +164,11 @@ const CartAPIProvider = ({ children }) => {
           }
         }
       );
-      const dataList = resp.data.cart;
-      const storedData = JSON.parse(localStorage.getItem('userData'));
-      storedData.cart = [...dataList];
-
-      dispatch({ type: 'API_RESPONSE', payload: dataList });
+      updateLocalStorage('cart', cart);
+      dispatch({ type: 'API_RESPONSE', payload: [...cart] });
       dispatch({ type: 'UPDATE_CART_PID' });
-      localStorage.setItem('userData', JSON.stringify(storedData));
+      const idArray = cart.map((elem) => elem._id);
+      dispatch({ type: 'UPDATE_CART_PID', payload: idArray });
       ToastMessage('Quantity was updated', 'info');
     } catch (err) {
       dispatch({ type: 'API_FAILURE' });

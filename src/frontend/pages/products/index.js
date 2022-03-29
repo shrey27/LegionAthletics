@@ -40,7 +40,7 @@ export default function Products() {
         );
       }
     }
-  }, [location.state.category, productListing]);
+  }, [location?.state?.category, productListing]);
 
   return (
     <div className='container'>

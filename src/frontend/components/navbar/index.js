@@ -7,6 +7,7 @@ import { useProductsCtx } from '../../context/productsContext';
 import { Link } from 'react-router-dom';
 import { HOMEPAGE, CART, WISHLIST, SIGNIN, SIGNUP } from '../../routes/routes';
 import { useAuthCtx } from '../../context/authenticationContext';
+import pic from '../../assets/lalogo.jpg';
 
 export function Navbar({ noDrawer, showSearchBar }) {
   const [search, setSearch] = useState('');
@@ -44,7 +45,7 @@ export function Navbar({ noDrawer, showSearchBar }) {
         )}
         <section className='start'>
           <Link to={HOMEPAGE} className='start link__style'>
-            <img className='box__image' src='lalogo.jpg' alt='logo' />
+            <img className='box__image' src={pic} alt='logo' />
             <span className='box-span'>
               <span className='navbar__title primary'>LEGION ATHLETICS</span>
             </span>
