@@ -72,13 +72,13 @@ export default function Products() {
             Clear All
           </span>
 
-          <h1 className='primary sm sb mg-full'>Price</h1>
+          <h1 className='primary sm sb mg-half'>Price</h1>
 
           <span className='primary sm sb'>₹ 500</span>
           <span className='primary sm sb fl-rt'>₹ {priceLimit}</span>
 
           <input
-            className='filter__slider mg-full'
+            className='filter__slider mg-half'
             type='range'
             id='price'
             name='price'
@@ -95,7 +95,7 @@ export default function Products() {
             }
           />
 
-          <div className='filter__category mg-full'>
+          <div className='filter__category mg-half'>
             <h1 className='primary sm sb'>Category</h1>
             <label htmlFor='supplements'>
               <input
@@ -167,7 +167,7 @@ export default function Products() {
             </label>
           </div>
 
-          <div className='filter__rating mg-full'>
+          <div className='filter__rating mg-half'>
             <h1 className='primary sm sb'>Rating</h1>
             <label htmlFor='4star--above'>
               <input
@@ -239,7 +239,7 @@ export default function Products() {
             </label>
           </div>
 
-          <div className='filter__category mg-full'>
+          <div className='filter__category mg-half'>
             <h1 className='primary sm sb'>Unavailable</h1>
             <label htmlFor='outOfStock'>
               <input
@@ -258,7 +258,7 @@ export default function Products() {
             </label>
           </div>
 
-          <div className='filter__sorting mg-full'>
+          <div className='filter__sorting mg-half'>
             <h1 className='primary sm sb'>Sort By</h1>
             <label>
               <input
@@ -296,7 +296,7 @@ export default function Products() {
             </label>
           </div>
 
-          <div className='filter__category mg-full'>
+          <div className='filter__category mg-half'>
             <h1 className='primary sm sb'>Fast - Delivery</h1>
             <label htmlFor='delivery'>
               <input
