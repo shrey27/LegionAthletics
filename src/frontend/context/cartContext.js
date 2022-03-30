@@ -86,7 +86,7 @@ const cartApiReducerFunc = (state, action) => {
       };
     case 'UPDATE_ORDERS':
       return {
-        ...defaultCartState,
+        ...state,
         orders: action.payload
       };
     case 'STOP_LOADER':
@@ -136,12 +136,24 @@ const CartAPIProvider = ({ children }) => {
     }
   };
 
-  const handleOrderPlaced = (tempObj) => {
+  const handleOrderPlaced = async (tempObj) => {
+    dispatch({ type: 'API_REQUEST' });
     dispatch({ type: 'UPDATE_ORDERS', payload: tempObj });
-    updateLocalStorage('cart', []);
+    try {
+      await axios.delete(CARTAPI + '/all', {
+        headers: {
+          authorization: token
+        }
+      });
+      dispatch({ type: 'API_RESPONSE', payload: [] });
+      dispatch({ type: 'UPDATE_CART_PID', payload: [] });
+      updateLocalStorage('cart', []);
+    } catch (err) {
+      console.log('Delete all cart Items error', err);
+    }
     ToastMessage('Payment Completed! Order is Placed', 'success');
   };
-  
+
   const deleteFromCart = async (id) => {
     dispatch({ type: 'API_REQUEST' });
     try {

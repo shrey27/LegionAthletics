@@ -97,7 +97,7 @@ export function Navbar({ noDrawer, showSearchBar }) {
               )}
               <section className='submenu__items flex-st-ct flex-vertical'>
                 <Link to={PROFILE} className='submenu__item sb'>
-                  My Profile
+                  Profile
                   <i className='far fa-user-circle lg bl'></i>
                 </Link>
                 <Link to={CART} className='submenu__item sb'>
@@ -105,7 +105,7 @@ export function Navbar({ noDrawer, showSearchBar }) {
                   <i
                     icon-badge={totalItems}
                     bdg-size='medium'
-                    className='fas fa-shopping-cart nav__icons lg fl-rt'
+                    className='fas fa-shopping-cart nav__icons lg'
                   ></i>
                 </Link>
                 <Link to={WISHLIST} className='submenu__item sb'>
@@ -113,11 +113,11 @@ export function Navbar({ noDrawer, showSearchBar }) {
                   <i
                     icon-badge={wishlistData.length}
                     bdg-size='medium'
-                    className='far fa-heart nav__icons lg fl-rt'
+                    className='far fa-heart nav__icons lg'
                   ></i>
                 </Link>
                 <Link to={ORDER} className='submenu__item sb'>
-                  Orders Summary
+                  Orders
                   <i className='fa-solid fa-basket-shopping lg bl'></i>
                 </Link>
               </section>

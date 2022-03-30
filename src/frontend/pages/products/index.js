@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './products.css';
 import Category from '../../components/header/Category';
-import { Navbar, Footer, Loader,Deals } from '../../components';
+import { Navbar, Footer, Loader, Deals } from '../../components';
 import { useProductsCtx } from '../../context';
 import { useLocation } from 'react-router-dom';
 
@@ -325,7 +325,11 @@ export default function Products() {
               {/* {wishListError && (
                 <h1 className='tag cen md sb'>{wishListError}</h1>
               )} */}
-              <Deals items={products} name='Products' wishlist={true} />
+              <Deals
+                items={products}
+                name={location?.state?.category ?? 'Products'}
+                wishlist={true}
+              />
             </div>
           )}
         </main>

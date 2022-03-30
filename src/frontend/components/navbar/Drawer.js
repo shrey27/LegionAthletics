@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import { PRODUCTS } from '../../routes/routes';
+
 export default function Drawer({ open, setOpen }) {
   return (
     <div>
@@ -12,13 +15,27 @@ export default function Drawer({ open, setOpen }) {
           </h1>
           <hr />
           <section className='submenu__items flex-st-ct flex-vertical'>
-            <span className='submenu__item md sb'>Protein</span>
-            <span className='submenu__item md sb'>Gym Gear</span>
-            <span className='submenu__item md sb'>Athletics</span>
-            <span className='submenu__item md sb'>Nutrition</span>
-            <span className='submenu__item md sb'>Vegan</span>
-            <span className='submenu__item md sb'>Clothing</span>
-            <span className='submenu__item md sb'>Limited-Edition</span>
+            <Link to={PRODUCTS} className='submenu__item md sb'>
+              Protein
+            </Link>
+            <Link to={PRODUCTS} className='submenu__item md sb'>
+              Gym Gear
+            </Link>
+            <Link to={PRODUCTS} className='submenu__item md sb'>
+              Athletics
+            </Link>
+            <Link to={PRODUCTS} className='submenu__item md sb'>
+              Nutrition
+            </Link>
+            <Link to={PRODUCTS} className='submenu__item md sb'>
+              Vegan
+            </Link>
+            <Link to={PRODUCTS} className='submenu__item md sb'>
+              Clothing
+            </Link>
+            <Link to={PRODUCTS} className='submenu__item md sb'>
+              Limited-Edition
+            </Link>
           </section>
           <hr />
         </div>
