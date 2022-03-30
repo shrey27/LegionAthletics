@@ -148,6 +148,7 @@ const AuthProvider = ({ children }) => {
           address
         });
         const { createdUser, encodedToken } = response.data;
+        delete createdUser.password;
         localStorage.setItem('token', encodedToken);
         localStorage.setItem('userData', JSON.stringify(createdUser));
         dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
@@ -172,9 +173,31 @@ const AuthProvider = ({ children }) => {
     navigate(SIGNOUT);
   };
 
+  const profileUpdateCancelled = () => {
+    dispatch({
+      type: 'SIGNUP-FIRSTNAME',
+      payload: storedName
+    });
+    dispatch({
+      type: 'SIGNUP-LASTNAME',
+      payload: storedSurname
+    });
+    dispatch({ type: 'SIGNUP-ADDRESS', payload: storedAddress });
+    dispatch({ type: 'SIGNUP-PHONE', payload: storedPhone });
+    setDisable(true);
+  };
+
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     if (validateUpdateDetails(state, dispatch)) {
+      console.log('details to update', {
+        firstName,
+        lastName,
+        phone,
+        email,
+        signUpEmail,
+        address
+      });
       try {
         const {
           data: { updatedDetails }
@@ -184,7 +207,7 @@ const AuthProvider = ({ children }) => {
             firstName,
             lastName,
             phone,
-            email,
+            email: email ?? signUpEmail,
             address
           },
           {
@@ -204,6 +227,7 @@ const AuthProvider = ({ children }) => {
         ToastMessage('Details updated Successfully', 'success');
       } catch (err) {
         console.log('profile details error', err);
+        profileUpdateCancelled();
         ToastMessage('Profile updation failed', 'error');
       }
     } else {
@@ -230,6 +254,7 @@ const AuthProvider = ({ children }) => {
         handleSignUp,
         handleSignOut,
         handleProfileUpdate,
+        profileUpdateCancelled,
         disable,
         setDisable
       }}

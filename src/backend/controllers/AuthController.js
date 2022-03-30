@@ -59,14 +59,14 @@ export const signupHandler = function (schema, request) {
  * */
 
 export const signupUpdateHandler = function (schema, request) {
-  const { email, address, phone, firstName, lastName } = JSON.parse(
-    request.requestBody
-  );
+  const { email, address, phone, firstName, lastName, signUpEmail } =
+    JSON.parse(request.requestBody);
   const userId = requiresAuth.call(this, request);
   try {
     // check if email already exists
     const foundUser = schema.users.findBy({ email });
-    if (!foundUser) {
+    const foundUser2 = schema.users.findBy({ signUpEmail });
+    if (!foundUser && !foundUser2) {
       return new Response(
         404,
         {},

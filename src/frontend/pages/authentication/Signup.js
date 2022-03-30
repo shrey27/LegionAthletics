@@ -216,7 +216,7 @@ export default function Signup() {
 
           <div className='authentication__input'>
             <label htmlFor='address__signup' className='label'>
-              Address Details*
+              Delivery Address Details*
             </label>
             <textarea
               className='textarea sm-s'

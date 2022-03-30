@@ -9,6 +9,7 @@ export default function Profile() {
     lastName,
     phone,
     email,
+    signUpEmail,
     address,
     addressError,
     phoneError,
@@ -16,6 +17,7 @@ export default function Profile() {
     lastNameError,
     dispatch,
     handleProfileUpdate,
+    profileUpdateCancelled,
     disable,
     setDisable
   } = useAuthCtx();
@@ -79,7 +81,7 @@ export default function Profile() {
               name='profile__email'
               id='profile__email'
               autoComplete='off'
-              value={email}
+              value={signUpEmail.length ? signUpEmail : email}
               disabled
             />
           </div>
@@ -139,7 +141,7 @@ export default function Profile() {
           {!disable && (
             <button
               className='btn btn--auth--error sb'
-              onClick={() => setDisable(true)}
+              onClick={profileUpdateCancelled}
             >
               CANCEL
             </button>
