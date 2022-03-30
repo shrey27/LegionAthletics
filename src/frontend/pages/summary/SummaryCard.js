@@ -3,20 +3,14 @@ import { Fragment, useEffect, useState } from 'react';
 import { useLocalStorage } from '../../helpers';
 import { HOMEPAGE } from '../../routes/routes';
 import { Link } from 'react-router-dom';
+import { months } from '../../utility/constants';
 
 export default function SummaryCard(props) {
-  const {
-    status,
-    source,
-    title,
-    price,
-    qty,
-    discount
-  } = props;
+  const { status, source, title, price, qty, discount } = props;
 
   const [dateOfOrder, setDateOfOrder] = useState({
     date: 0,
-    month: 0,
+    month: '',
     year: 0
   });
   const [etaDate, setEtaDate] = useState({ date: 0, month: 0, year: 0 });
@@ -31,12 +25,12 @@ export default function SummaryCard(props) {
     );
     setDateOfOrder({
       date: date1.getDate(),
-      month: date1.getMonth() + 1,
+      month: months[date1.getMonth()],
       year: date1.getFullYear()
     });
     setEtaDate({
       date: date2.getDate(),
-      month: date2.getMonth() + 1,
+      month: months[date2.getMonth()],
       year: date2.getFullYear()
     });
   }, []);
@@ -47,20 +41,21 @@ export default function SummaryCard(props) {
         <img src={source} alt='Banner' className='summary card__banner' />
         <section className='card__status xs-s'>
           <h1 className='card__status__margin tag md sb cen'>ORDER SUMMARY</h1>
-          <h1 className='card__status__margin primary md sb cen'>{title}</h1>
           <h1 className='card__status__margin md sb primary cen'>
-            Order placed on:
+            OrderId: {Math.trunc(Math.random() * 1000)}
+          </h1>
+          <h1 className='card__status__margin primary md sb cen'>{title}</h1>
+          <h1 className='card__status__margin md sb cen'>Quantity: {qty}</h1>
+
+          <h1 className='card__status__margin md sb primary cen'>
+            Order placed on:&nbsp;
             {`${
-              dateOfOrder.date < 10 ? '0' + dateOfOrder.date : dateOfOrder.date
-            }-${
               dateOfOrder.month < 10
                 ? '0' + dateOfOrder.month
                 : dateOfOrder.month
-            }-${dateOfOrder.year}`}
-          </h1>
-          <h1 className='card__status__margin md sb cen'>Quantity: {qty}</h1>
-          <h1 className='card__status__margin md sb primary cen'>
-            OrderId: {Math.trunc(Math.random() * 1000)}
+            } ${
+              dateOfOrder.date < 10 ? '0' + dateOfOrder.date : dateOfOrder.date
+            }, ${dateOfOrder.year}`}
           </h1>
           {status !== 'Cancelled' && (
             <h1 className='card__status__margin md sb price cen'>
