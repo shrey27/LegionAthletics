@@ -1,13 +1,14 @@
 import axios from 'axios';
 import { createContext, useContext, useReducer, useEffect } from 'react';
-import { GET_WISHLIST, POST_WISHLIST } from '../../apiEndpoints';
+import { WISHLISTAPI } from '../routes/routes';
 import { useAuthCtx } from './authenticationContext';
+import { ToastMessage } from '../components/toast';
+import { useLocalStorage } from '../helpers';
 
 const WishListContext = createContext();
 
 const defaultState = {
   wishlistLoading: false,
-  wishListError: '',
   wishlistData: [],
   addedPID: []
 };
@@ -16,27 +17,28 @@ const wishlistApiReducerFunc = (state, action) => {
     case 'API_REQUEST':
       return {
         ...state,
-        wishlistLoading: true,
-        wishListError: ''
+        wishlistLoading: true
       };
     case 'API_RESPONSE':
       return {
         ...state,
         wishlistLoading: false,
-        wishListError: '',
-        wishlistData: [...action.payload]
+        wishlistData: action.payload
       };
     case 'API_FAILURE':
       return {
         ...state,
-        wishlistLoading: false,
-        wishListError: 'TECHNICAL ISSUE. PLEASE TRY AGAIN AFTER SOME TIME'
+        wishlistLoading: false
       };
     case 'UPDATE_WISHLIST_PID':
-      const pidArray = state.wishlistData;
       return {
         ...state,
-        addedPID: pidArray.map((elem) => elem.pid)
+        addedPID: action.payload
+      };
+    case 'STOP_LOADER':
+      return {
+        ...state,
+        wishlistLoading: false
       };
     default:
       return { ...defaultState };
@@ -47,38 +49,20 @@ const WishlistProvider = ({ children }) => {
   const [state, dispatch] = useReducer(wishlistApiReducerFunc, defaultState);
   const { wishlistLoading, wishlistData, addedPID, wishListError } = state;
   const { token } = useAuthCtx();
+  const { updateLocalStorage } = useLocalStorage();
 
-  const getWishlist = async () => {
-    if (token) {
-      dispatch({ type: 'API_REQUEST' });
-      try {
-        const storedWishlist = JSON.parse(
-          localStorage.getItem('userData')
-        ).wishlist;
-        if (storedWishlist) {
-          dispatch({ type: 'API_RESPONSE', payload: storedWishlist });
-        } else {
-          const resp = await axios.get(GET_WISHLIST);
-          dispatch({ type: 'API_RESPONSE', payload: resp.data.wishlist });
-        }
-        dispatch({ type: 'UPDATE_WISHLIST_PID' });
-      } catch (err) {
-        console.log('GET-WISHLIST-ERROR', err);
-        dispatch({ type: 'API_FAILURE' });
-      }
-    }
-  };
-
-  const addToWishlist = async (pid, objectData) => {
+  const addToWishlist = async (_id, objectData) => {
     dispatch({ type: 'API_REQUEST' });
-    const index = wishlistData.findIndex((e) => e.pid === pid);
-    if (index < 0) {
+    if (!addedPID.includes(_id)) {
       try {
-        const resp = await axios.post(
-          POST_WISHLIST,
+        console.log('data before post call', _id, objectData, token);
+        const {
+          data: { wishlist }
+        } = await axios.post(
+          WISHLISTAPI,
           {
             product: {
-              _id: pid,
+              _id,
               ...objectData
             }
           },
@@ -88,55 +72,65 @@ const WishlistProvider = ({ children }) => {
             }
           }
         );
-        const dataList = resp.data.wishlist;
-        dispatch({ type: 'API_RESPONSE', payload: dataList });
-        dispatch({ type: 'UPDATE_WISHLIST_PID' });
-        const datatoUpdate = JSON.parse(localStorage.getItem('userData'));
-        datatoUpdate.wishlist = [...dataList];
-        localStorage.setItem('userData', JSON.stringify(datatoUpdate));
+        updateLocalStorage('wishlist', wishlist);
+        dispatch({ type: 'API_RESPONSE', payload: wishlist });
+        const idArray = wishlist.map((elem) => elem._id);
+        dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
+        ToastMessage('Product added to wishlist', 'success');
       } catch (err) {
         console.log('POST-WISHLIST-ERROR', err);
         dispatch({ type: 'API_FAILURE' });
+        ToastMessage('Product not added to wishlist', 'error');
       }
+    } else {
+      deleteFromWishlist(_id);
     }
   };
 
   const deleteFromWishlist = async (id) => {
     dispatch({ type: 'API_REQUEST' });
     try {
-      const token = localStorage.getItem('token');
-      const resp = await axios({
-        method: 'delete',
-        url: GET_WISHLIST + '/' + id,
+      const {
+        data: { wishlist }
+      } = await axios.delete(`${WISHLISTAPI}/${id}`, {
         headers: {
           authorization: token
         }
       });
-      const dataList = resp.data.wishlist;
-      const storedData = JSON.parse(localStorage.getItem('userData'));
-      storedData.wishlist = [...dataList];
-      dispatch({ type: 'API_RESPONSE', payload: dataList });
-      dispatch({ type: 'UPDATE_WISHLIST_PID' });
-      localStorage.setItem('userData', JSON.stringify(storedData));
+      updateLocalStorage('wishlist', wishlist);
+      dispatch({ type: 'API_RESPONSE', payload: wishlist });
+
+      const idArray = wishlist.map((elem) => elem._id);
+      dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
+
+      ToastMessage('Product deleted from wishlist', 'info');
     } catch (err) {
-      dispatch({ type: 'API_FAILURE' });
       console.log('DELETE-WISHLIST-ERROR', err);
+      dispatch({ type: 'API_FAILURE' });
+      ToastMessage('Product not deleted from wishlist', 'error');
     }
   };
 
   useEffect(() => {
-    getWishlist();
-  }, []);
-
-  useEffect(() => {
-    if (!token) {
-      dispatch({ type: 'CLEAR_ALL' });
-    } else {
-      const storedWishlist = JSON.parse(
-        localStorage.getItem('userData')
-      ).wishlist;
-      dispatch({ type: 'API_RESPONSE', payload: storedWishlist });
-    }
+    const getWishlist = async () => {
+      dispatch({ type: 'API_REQUEST' });
+      try {
+        const {
+          data: { wishlist }
+        } = await axios.get(WISHLISTAPI, {
+          headers: {
+            authorization: token
+          }
+        });
+        dispatch({ type: 'API_RESPONSE', payload: [...wishlist] });
+        const idArray = wishlist.map((elem) => elem._id);
+        dispatch({ type: 'UPDATE_WISHLIST_PID', payload: idArray });
+      } catch (err) {
+        console.log('GET-WISHLIST-ERROR', err);
+        dispatch({ type: 'API_FAILURE' });
+      }
+    };
+    if (token) getWishlist();
   }, [token]);
 
   return (

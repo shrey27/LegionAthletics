@@ -1,206 +1,105 @@
-import { createContext, useContext, useReducer, useEffect } from 'react';
+import {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  useState
+} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {
+  SIGNOUT,
+  HOMEPAGE,
+  SIGNINAPI,
+  SIGNUPAPI,
+  UPDATEDETAILS
+} from '../routes/routes';
+import { ToastMessage } from '../components';
+import {
+  useLocalStorage,
+  validateSignIn,
+  validationSignUp,
+  validateUpdateDetails,
+  authReducerFunc,
+  defaultState
+} from '../helpers';
+import { errorStatements } from '../utility/constants';
+
 const AuthentiationContext = createContext();
-import { SIGNOUT, HOMEPAGE } from '../../routes';
-import { SIGN_IN, SIGN_UP } from '../../apiEndpoints';
-
-const defaultState = {
-  email: '',
-  emailError: '',
-  password: '',
-  passwordError: '',
-  cnfPassword: '',
-  cnfpasswordError: '',
-  username: '',
-  userNameError: '',
-  signinError: '',
-  signupError: '',
-  rememberMe: false,
-  signinRememberMe: false,
-  userdata: '',
-  token: null
-};
-const authReducerFunc = (state, action) => {
-  switch (action.type) {
-    case 'SIGNIN-EMAIL':
-      return {
-        ...state,
-        email: action.payload
-      };
-    case 'SIGNIN-PASSWORD':
-      return {
-        ...state,
-        password: action.payload
-      };
-    case 'SIGNUP-USERNAME':
-      return {
-        ...state,
-        username: action.payload
-      };
-    case 'TOKEN-SAVED':
-      return {
-        ...state,
-        userdata: 'TOKENSAVED',
-        token: action.payload,
-        signupError: ''
-      };
-    case 'TOKEN-REMOVED':
-      return {
-        ...state,
-        userdata: '',
-        token: ''
-      };
-    case 'SIGNIN-ERROR':
-      return {
-        ...state,
-        signinError: action.payload
-      };
-    case 'SIGNUP-ERROR':
-      return {
-        ...state,
-        signupError: 'SIGN UP FAILED! TRY AFTER SOME TIME'
-      };
-    case 'PASSWORDS-MISMATCH':
-      return {
-        ...state,
-        signupError: "Passwords Don't Match"
-      };
-    case 'CONFIRM-PASSWORD':
-      return {
-        ...state,
-        cnfPassword: action.payload
-      };
-    case 'EMAIL-INCORRECT':
-      return {
-        ...state,
-        emailError: 'Enter the email in correct format'
-      };
-    case 'PASSWORD-INCORRECT':
-      return {
-        ...state,
-        passwordError: 'Password should be atleast 8 chars long'
-      };
-    case 'CONFIRM-PASSWORD-INCORRECT':
-      return {
-        ...state,
-        cnfpasswordError: 'Password should be atleast 8 chars long'
-      };
-    case 'SIGNUP-USERNAME-ERROR':
-      return {
-        ...state,
-        userNameError: 'Username can only have alphabets'
-      };
-    case 'CLEAR-ALL-ERRORS':
-      return {
-        ...state,
-        cnfpasswordError: '',
-        passwordError: '',
-        emailError: '',
-        signupError: '',
-        signinError: '',
-        userNameError: ''
-      };
-    case 'REMEMBER-ME':
-      return {
-        ...state,
-        rememberMe: !state.rememberMe
-      };
-    case 'SIGNIN-REMEMBER-ME':
-      return {
-        ...state,
-        signinRememberMe: !state.signinRememberMe
-      };
-    default:
-      return {
-        ...state
-      };
-  }
-};
-
-export function callLocalStorage() {
-  const { email, password, cart, wishlist } = JSON.parse(
-    localStorage.getItem('userData')
-  );
-  const storedToken = localStorage.getItem('token');
-  return {
-    storedEmail: email,
-    storedPassword: password,
-    storedCart: cart,
-    storedWishlist: wishlist,
-    storedToken
-  };
-}
 
 const AuthProvider = ({ children }) => {
+  const [disable, setDisable] = useState(true);
   const [state, dispatch] = useReducer(authReducerFunc, defaultState);
   const {
     email,
     password,
-    cnfPassword,
+    signUpEmail,
+    signUpPassword,
+    firstName,
+    lastName,
+    phone,
+    address,
     rememberMe,
     signinRememberMe,
-    signinError,
-    signupError,
-    userdata,
-    token,
-    emailError,
-    passwordError,
-    cnfpasswordError,
-    username,
-    userNameError
+    token
   } = state;
+
   const navigate = useNavigate();
+  const {
+    storedEmail,
+    storedToken,
+    storedName,
+    storedSurname,
+    storedPhone,
+    storedAddress,
+    updateLocalStorage
+  } = useLocalStorage();
 
-  function validationFun(forSignIn) {
-    if ((!forSignIn && !username) || !username.match(/^[a-zA-Z ]+/)) {
-      dispatch({ type: 'SIGNUP-USERNAME-ERROR' });
-      return false;
-    }
-
-    if (
-      !email ||
-      !email.match(
-        /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
-      )
-    ) {
-      dispatch({ type: 'EMAIL-INCORRECT' });
-      return false;
-    }
-
-    if (!password || password.length < 8) {
-      dispatch({ type: 'PASSWORD-INCORRECT' });
-      return false;
-    }
-
-    if (!forSignIn && (!cnfPassword || cnfPassword.length < 8)) {
-      dispatch({ type: 'CONFIRM-PASSWORD-INCORRECT' });
-      return false;
-    }
-
-    if (!forSignIn && cnfPassword !== password) {
-      dispatch({ type: 'PASSWORDS-MISMATCH' });
-      return false;
-    }
-
-    return true;
-  }
-
+  const handleUserDetails = (userDetails) => {
+    const { firstName, lastName, phone, address, email } = userDetails;
+    dispatch({
+      type: 'SIGNUP-FIRSTNAME',
+      payload: firstName
+    });
+    dispatch({
+      type: 'SIGNUP-LASTNAME',
+      payload: lastName
+    });
+    dispatch({
+      type: 'SIGNUP-PHONE',
+      payload: phone
+    });
+    dispatch({
+      type: 'SIGNUP-ADDRESS',
+      payload: address
+    });
+    dispatch({
+      type: 'SIGNUP-EMAIL',
+      payload: email
+    });
+    dispatch({
+      type: 'SIGNIN-EMAIL',
+      payload: email
+    });
+  };
   const handleSignIn = async () => {
-    if (validationFun(true)) {
+    if (validateSignIn(state, dispatch)) {
       if (!rememberMe) {
         try {
           const {
             data: { foundUser, encodedToken }
-          } = await axios.post(SIGN_IN, {
+          } = await axios.post(SIGNINAPI, {
             email,
             password
           });
+
           if (foundUser) {
             localStorage.setItem('token', encodedToken);
             localStorage.setItem('userData', JSON.stringify(foundUser));
             dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
+            handleUserDetails(foundUser);
             navigate(HOMEPAGE);
+            ToastMessage('Sign In was Successfull', 'success');
           } else {
             throw new Error('User not Found');
           }
@@ -208,45 +107,61 @@ const AuthProvider = ({ children }) => {
           console.log('SIGNIN-ERROR', err);
           dispatch({
             type: 'SIGNIN-ERROR',
-            payload: 'User Not Found. Either Sign-up or try again later'
+            payload: errorStatements['SIGN-IN-ERROR']
           });
+          ToastMessage(errorStatements['SIGN-IN-ERROR'], 'error');
         }
       } else {
-        const { storedEmail, storedPassword, storedToken } = callLocalStorage();
-        if (storedEmail === email && storedPassword === password) {
+        if (storedEmail === email) {
           dispatch({ type: 'TOKEN-SAVED', payload: storedToken });
-          dispatch({ type: 'SET-DEFAULT' });
+          handleUserDetails({
+            firstName: storedName,
+            lastName: storedSurname,
+            phone: storedPhone,
+            address: storedAddress
+          });
           navigate(HOMEPAGE);
+          ToastMessage('Sign In was Successfull', 'success');
         } else {
           dispatch({
             type: 'SIGNIN-ERROR',
-            payload: 'User Not Found. Either Sign-up or try again later'
+            payload: errorStatements['SIGN-IN-ERROR']
           });
           dispatch({ type: 'SET-DEFAULT' });
+          ToastMessage(errorStatements['SIGN-IN-ERROR'], 'error');
         }
       }
+    } else {
+      console.log('failed');
     }
   };
 
   const handleSignUp = async () => {
-    if (validationFun(false)) {
+    if (validationSignUp(state, dispatch)) {
       try {
-        const response = await axios.post(SIGN_UP, {
-          name: username.split(' ')[0],
-          surname: username.split(' ')[1],
-          email,
-          password
+        const response = await axios.post(SIGNUPAPI, {
+          firstName,
+          lastName,
+          email: signUpEmail,
+          password: signUpPassword,
+          phone,
+          address
         });
         const { createdUser, encodedToken } = response.data;
+        delete createdUser.password;
         localStorage.setItem('token', encodedToken);
         localStorage.setItem('userData', JSON.stringify(createdUser));
         dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
-      } catch (err) {
-        dispatch({ type: 'SIGNUP-ERROR' });
-        console.log(err);
-      } finally {
-        dispatch({ type: 'SET-DEFAULT' });
         navigate(HOMEPAGE);
+        ToastMessage('Sign Up was Successfull', 'success');
+      } catch (err) {
+        console.log(err);
+        dispatch({ type: 'CLEAR-FIELDS' });
+        dispatch({
+          type: 'SIGNUP-ERROR',
+          payload: errorStatements['SIGN-UP-ERROR']
+        });
+        ToastMessage('Sign Up Failed!', 'error');
       }
     }
   };
@@ -254,37 +169,94 @@ const AuthProvider = ({ children }) => {
   const handleSignOut = () => {
     dispatch({ type: 'TOKEN-REMOVED' });
     if (!rememberMe && !signinRememberMe) localStorage.clear();
+    dispatch({ type: 'SET-DEFAULT' });
     navigate(SIGNOUT);
+  };
+
+  const profileUpdateCancelled = () => {
+    dispatch({
+      type: 'SIGNUP-FIRSTNAME',
+      payload: storedName
+    });
+    dispatch({
+      type: 'SIGNUP-LASTNAME',
+      payload: storedSurname
+    });
+    dispatch({ type: 'SIGNUP-ADDRESS', payload: storedAddress });
+    dispatch({ type: 'SIGNUP-PHONE', payload: storedPhone });
+    setDisable(true);
+  };
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    if (validateUpdateDetails(state, dispatch)) {
+      console.log('details to update', {
+        firstName,
+        lastName,
+        phone,
+        email,
+        signUpEmail,
+        address
+      });
+      try {
+        const {
+          data: { updatedDetails }
+        } = await axios.post(
+          UPDATEDETAILS,
+          {
+            firstName,
+            lastName,
+            phone,
+            email: email ?? signUpEmail,
+            address
+          },
+          {
+            headers: {
+              authorization: token
+            }
+          }
+        );
+        console.log('updatedDetails', updatedDetails);
+        // handleUserDetails(updatedDetails);
+        updateLocalStorage('firstName', firstName);
+        updateLocalStorage('lastName', lastName);
+        updateLocalStorage('phone', phone);
+        updateLocalStorage('address', address);
+        updateLocalStorage('email', email);
+        setDisable(true);
+        ToastMessage('Details updated Successfully', 'success');
+      } catch (err) {
+        console.log('profile details error', err);
+        profileUpdateCancelled();
+        ToastMessage('Profile updation failed', 'error');
+      }
+    } else {
+      ToastMessage('Please enter correct details', 'error');
+    }
   };
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
     if (storedData) {
       dispatch({ type: 'TOKEN-SAVED', payload: localStorage.getItem('token') });
+      const parsedData = JSON.parse(storedData);
+      handleUserDetails(parsedData);
     }
   }, []);
 
   return (
     <AuthentiationContext.Provider
       value={{
-        email,
-        password,
-        userdata,
-        cnfPassword,
-        rememberMe,
-        signinRememberMe,
+        ...state,
         token,
-        signinError,
-        signupError,
         dispatch,
         handleSignIn,
         handleSignUp,
         handleSignOut,
-        emailError,
-        passwordError,
-        cnfpasswordError,
-        username,
-        userNameError
+        handleProfileUpdate,
+        profileUpdateCancelled,
+        disable,
+        setDisable
       }}
     >
       {children}

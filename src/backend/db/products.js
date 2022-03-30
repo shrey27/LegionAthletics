@@ -1,5 +1,3 @@
-import { v4 as uuid } from 'uuid';
-
 /**
  * Product Database can be added here.
  * You can add products of your wish with different attributes
@@ -7,8 +5,7 @@ import { v4 as uuid } from 'uuid';
 
 export const products = [
   {
-    _id: uuid(),
-    pid: 'P1',
+    _id: 'P1',
     source:
       'https://s1.thcdn.com/productimg/300/300/13598918-8744929379980696.jpg',
     title: 'Fuel Ambition Gift Box',
@@ -26,8 +23,7 @@ export const products = [
     size: 'Small'
   },
   {
-    _id: uuid(),
-    pid: 'P2',
+    _id: 'P2',
     source:
       'https://s1.thcdn.com/productimg/300/300/13598922-1394929380171673.jpg',
     title: 'Vegan Bundle',
@@ -44,8 +40,7 @@ export const products = [
     size: 'Medium'
   },
   {
-    _id: uuid(),
-    pid: 'P3',
+    _id: 'P3',
     source:
       'https://static.thcdn.com/images/xsmall/webp//productimg/original/12949455-1834924183341159.jpg',
     title: 'Vegan Protein Bars',
@@ -62,8 +57,7 @@ export const products = [
     type: 'Vegan'
   },
   {
-    _id: uuid(),
-    pid: 'P4',
+    _id: 'P4',
     source:
       'https://s1.thcdn.com/productimg/300/300/12708205-7894888116404280.jpg',
     title: 'Protein Starter Pack Small',
@@ -79,8 +73,7 @@ export const products = [
     size: 'Small'
   },
   {
-    _id: uuid(),
-    pid: 'P5',
+    _id: 'P5',
     source:
       'https://static.thcdn.com/images/xsmall/webp//productimg/original/10530943-1224889444460882.jpg',
     title: 'Whey Protein Isolate',
@@ -97,8 +90,7 @@ export const products = [
     size: 'Medium'
   },
   {
-    _id: uuid(),
-    pid: 'P6',
+    _id: 'P6',
     source:
       'https://static.thcdn.com/images/xsmall/webp//productimg/original/12764004-1754853136850314.jpg',
     title: "MP Men's Gym T-Shirt",
@@ -114,8 +106,7 @@ export const products = [
     size: 'Medium'
   },
   {
-    _id: uuid(),
-    pid: 'P7',
+    _id: 'P7',
     source:
       'https://s1.thcdn.com/productimg/300/300/13598910-1234929379752087.jpg',
     title: 'Travel Bundle',
@@ -131,8 +122,7 @@ export const products = [
     size: 'Medium'
   },
   {
-    _id: uuid(),
-    pid: 'P8',
+    _id: 'P8',
     source:
       'https://s1.thcdn.com/productimg/300/300/12708205-7894888116404280.jpg',
     title: 'Protein Starter Pack Medium',
@@ -148,8 +138,7 @@ export const products = [
     size: 'Small'
   },
   {
-    _id: uuid(),
-    pid: 'P9',
+    _id: 'P9',
     source:
       'https://s1.thcdn.com/productimg/300/300/13598918-8744929379980696.jpg',
     title: 'Fuel Ambition Gift Box Ultra',
@@ -167,8 +156,7 @@ export const products = [
     size: 'Medium'
   },
   {
-    _id: uuid(),
-    pid: 'P10',
+    _id: 'P10',
     source:
       'https://s1.thcdn.com/productimg/300/300/13598922-1394929380171673.jpg',
     title: 'Vegan Bundle',
@@ -186,8 +174,7 @@ export const products = [
     size: 'Large'
   },
   {
-    _id: uuid(),
-    pid: 'P11',
+    _id: 'P11',
     source:
       'https://static.thcdn.com/images/xsmall/webp//productimg/original/12949455-1834924183341159.jpg',
     title: 'Vegan Brownie',
@@ -205,8 +192,7 @@ export const products = [
     size: 'Large'
   },
   {
-    _id: uuid(),
-    pid: 'P12',
+    _id: 'P12',
     source:
       'https://s1.thcdn.com/productimg/300/300/12708205-7894888116404280.jpg',
     title: 'Protein Starter Pack Large',
@@ -222,8 +208,7 @@ export const products = [
     size: 'Large'
   },
   {
-    _id: uuid(),
-    pid: 'P13',
+    _id: 'P13',
     source:
       'https://static.thcdn.com/images/xsmall/webp//productimg/original/10530943-1224889444460882.jpg',
     title: 'Impact Whey Protein',
@@ -240,8 +225,7 @@ export const products = [
     size: 'Small'
   },
   {
-    _id: uuid(),
-    pid: 'P14',
+    _id: 'P14',
     source:
       'https://static.thcdn.com/images/xsmall/webp//productimg/original/12764004-1754853136850314.jpg',
     title: "MP Men's Gym T-Shirt",
@@ -258,8 +242,7 @@ export const products = [
     size: 'Medium'
   },
   {
-    _id: uuid(),
-    pid: 'P15',
+    _id: 'P15',
     source:
       'https://s1.thcdn.com/productimg/300/300/13598910-1234929379752087.jpg',
     title: 'Compact Travel Bundle',
@@ -276,8 +259,7 @@ export const products = [
     size: 'Small'
   },
   {
-    _id: uuid(),
-    pid: 'P16',
+    _id: 'P16',
     source:
       'https://s1.thcdn.com/productimg/300/300/12708205-7894888116404280.jpg',
     title: 'Protein Starter Pack',
@@ -293,8 +275,7 @@ export const products = [
     size: 'Large'
   },
   {
-    _id: uuid(),
-    pid: 'P17',
+    _id: 'P17',
     source:
       'https://static.thcdn.com/images/xsmall/webp//productimg/1600/1600/12531549-1844789625377701.jpg',
     title: "Men's Essential Cagoule",
@@ -311,8 +292,7 @@ export const products = [
     size: 'Medium'
   },
   {
-    _id: uuid(),
-    pid: 'P18',
+    _id: 'P18',
     source:
       'https://static.thcdn.com/images/xsmall/webp//productimg/original/13111188-1184909884829884.jpg',
     title: "Men's Tempo Zip Top",
@@ -329,8 +309,7 @@ export const products = [
     size: 'Medium'
   },
   {
-    _id: uuid(),
-    pid: 'P19',
+    _id: 'P19',
     source:
       '	https://static.thcdn.com/images/large/webp//productimg/1600/1600/13122853-3814911984202806.jpg',
     title: "Women's Ultra Bonded Gilet",
@@ -345,8 +324,7 @@ export const products = [
     size: 'Small'
   },
   {
-    _id: uuid(),
-    pid: 'P20',
+    _id: 'P20',
     source:
       'https://static.thcdn.com/images/xsmall/webp//productimg/original/12857754-1384884224379918.jpg',
     title: "Women's Lightweight Jacket",
@@ -362,8 +340,7 @@ export const products = [
     size: 'Small'
   },
   {
-    _id: uuid(),
-    pid: 'P21',
+    _id: 'P21',
     source:
       'https://static.thcdn.com/images/large/webp//productimg/1600/1600/12692348-7474896385252590.jpg',
     title: 'BCAA Energy Drink',
@@ -380,8 +357,7 @@ export const products = [
     size: 'Medium'
   },
   {
-    _id: uuid(),
-    pid: 'P22',
+    _id: 'P22',
     source:
       'https://static.thcdn.com/images/large/webp//productimg/1600/1600/12041688-1124849555948395.jpg',
     title: 'Protein Crisps',
@@ -397,8 +373,7 @@ export const products = [
     size: 'Small'
   },
   {
-    _id: uuid(),
-    pid: 'P23',
+    _id: 'P23',
     source:
       'https://static.thcdn.com/images/xsmall/webp//productimg/1600/1600/11691951-8324824869276820.jpg',
     title: 'Protein Spread',
@@ -414,8 +389,7 @@ export const products = [
     size: 'Medium'
   },
   {
-    _id: uuid(),
-    pid: 'P24',
+    _id: 'P24',
     source:
       'https://static.thcdn.com/images/xsmall/webp//productimg/original/10530743-1564859351688231.jpg',
     title: 'All Natural Peanut Butter',

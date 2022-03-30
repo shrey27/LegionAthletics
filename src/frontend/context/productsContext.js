@@ -5,7 +5,7 @@ import {
   useEffect,
   useState
 } from 'react';
-import { GET_PRODUCTS } from '../../apiEndpoints';
+import { PRODUCTSAPI } from '../routes/routes';
 import axios from 'axios';
 
 const ProductsContext = createContext();
@@ -161,7 +161,7 @@ const ProductsContextProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       try {
-        let resp = await axios.get(GET_PRODUCTS);
+        let resp = await axios.get(PRODUCTSAPI);
         setProductList(resp.data.products);
       } catch (err) {
         console.log('GET-PRODUCTS ERROR FROM USEEFFECT', err);
@@ -190,7 +190,7 @@ const ProductsContextProvider = ({ children }) => {
 
 const useProductId = (id) => {
   const { productListing } = useProductsCtx();
-  return productListing.find((elem) => elem.pid === id);
+  return productListing.find((elem) => elem._id === id);
 };
 
 export { useProductId, useProductsCtx, ProductsContextProvider };
