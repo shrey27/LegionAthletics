@@ -2,7 +2,7 @@ import './checkout.css';
 import { Fragment, useEffect, useState } from 'react';
 import { useLocalStorage } from '../../helpers';
 import { months } from '../../utility/constants';
-import { CART, PROFILE } from '../../routes/routes';
+import { PROFILE } from '../../routes/routes';
 import { Link } from 'react-router-dom';
 import { useCartAPICtx } from '../../context';
 
@@ -150,11 +150,8 @@ export default function CheckoutCard(props) {
             </p>
           </div>
           <div className='flex-ct-ct'>
-            <Link to={CART} className='btn btn--auth sb'>
-              Update Item
-            </Link>
             <button
-              className='btn btn--auth--error sb'
+              className='btn btn--auth--error btn--wide sb'
               onClick={handleRemoveItem.bind(
                 this,
                 _id,
