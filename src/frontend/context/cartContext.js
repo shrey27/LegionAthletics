@@ -50,7 +50,7 @@ const defaultCartState = {
   cartError: '',
   cartListData: [],
   addedCartPID: [],
-  ordercart: []
+  ordercart: {}
 };
 const cartApiReducerFunc = (state, action) => {
   switch (action.type) {
@@ -78,7 +78,7 @@ const cartApiReducerFunc = (state, action) => {
         ...state,
         addedCartPID: action.payload
       };
-    case 'UPDATE_CART_LIST':
+    case 'CHECKOUT_DETAILS':
       return {
         ...state,
         ordercart: action.payload
@@ -183,6 +183,17 @@ const CartAPIProvider = ({ children }) => {
     }
   };
 
+  const handleRemoveItem = (id, pricetobeRemoved) => {
+    const {
+      ordercart: { remainingAmount, cartList }
+    } = state;
+    const objectToUpdate = {
+      remainingAmount: remainingAmount - pricetobeRemoved,
+      cartList: cartList.filter((e) => e._id !== id)
+    };
+    dispatch({ type: 'CHECKOUT_DETAILS', payload: objectToUpdate });
+  };
+
   useEffect(() => {
     const getCartList = async () => {
       dispatch({ type: 'API_REQUEST' });
@@ -205,15 +216,6 @@ const CartAPIProvider = ({ children }) => {
     if (token) getCartList();
   }, [token]);
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     dispatch({ type: 'CLEAR_ALL' });
-  //   } else {
-  //     const storedcart = JSON.parse(localStorage.getItem('userData')).cart;
-  //     dispatch({ type: 'API_RESPONSE', payload: storedcart });
-  //   }
-  // }, [token]);
-
   return (
     <CartAPIContext.Provider
       value={{
@@ -222,7 +224,8 @@ const CartAPIProvider = ({ children }) => {
         addedCartPID,
         addItemToCart,
         deleteFromCart,
-        updateCartItem
+        updateCartItem,
+        handleRemoveItem
       }}
     >
       <CartProvider>{children}</CartProvider>

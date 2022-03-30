@@ -108,7 +108,7 @@ export default function Signin() {
             className='btn btn--wide btn--auth sb'
             onClick={guestSignIn}
           >
-            Sign In as Guest
+            Fill Guest credentials
           </button>
         </form>
         <div className='signin__links'>

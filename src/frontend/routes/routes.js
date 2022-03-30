@@ -8,6 +8,7 @@ import Wishlist from '../pages/wishlist';
 import HomePage from '../pages/homepage';
 import Orders from '../pages/summary';
 import Profile from '../pages/profile';
+import Checkout from '../pages/checkout';
 
 import MockAPI from '../../MockAPI';
 import PrivateRoute from './PrivateRoute';
@@ -32,6 +33,7 @@ export const SIGNOUT = '/signout';
 export const MOCKAPI = '/mock-api';
 export const ORDER = '/orders';
 export const PROFILE = '/profile';
+export const CHECKOUT = '/checkout';
 
 export const availableRoutes = (
   <Routes>
@@ -48,6 +50,7 @@ export const availableRoutes = (
       <Route path={SIGNOUT} element={<Signout />} />
       <Route path={ORDER} element={<Orders />} />
       <Route path={PROFILE} element={<Profile />} />
+      <Route path={CHECKOUT} element={<Checkout />} />
     </Route>
 
     <Route path='*' element={<HomePage />} />

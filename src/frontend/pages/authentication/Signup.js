@@ -259,7 +259,7 @@ export default function Signup() {
             className='btn btn--wide btn--auth sb'
             onClick={onUsingTestCredentials}
           >
-            TEST-CREDENTIALS
+            Fill Test Credentials
           </button>
         </form>
         <div className='signin__links'>
