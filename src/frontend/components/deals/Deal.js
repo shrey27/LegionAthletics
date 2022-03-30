@@ -26,7 +26,8 @@ export default function Deal(props) {
   } = itemdata;
 
   const { addToCart } = useCartCtx();
-  const { addToWishlist, deleteFromWishlist, addedPID } = useWishlistCtx();
+  const { addToWishlist, deleteFromWishlist, addedPID, wishlistLoading } =
+    useWishlistCtx();
   const { addedCartPID } = useCartAPICtx();
   const { token } = useAuthCtx();
 
@@ -82,7 +83,10 @@ export default function Deal(props) {
   return (
     <div className='card ecom'>
       {wishlist && !close && (
-        <span className='card__dismiss' onClick={handleAddToWishlistClick}>
+        <span
+          className='card__dismiss'
+          onClick={!wishlistLoading && handleAddToWishlistClick}
+        >
           {addedToWishlist ? (
             <i className='fa-solid fa-heart tag--clr'></i>
           ) : (
