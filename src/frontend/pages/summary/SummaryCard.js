@@ -41,7 +41,6 @@ export default function SummaryCard(props) {
       month: date2.getMonth() + 1,
       year: date2.getFullYear()
     });
-    ToastMessage('Order Placed Successfully', 'success');
   }, []);
 
   return (

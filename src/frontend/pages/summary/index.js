@@ -7,8 +7,9 @@ import { Loader, Navbar, Footer } from '../../components';
 export default function Orders() {
   const {
     cartLoading,
-    ordercart: { cartList }
+    orders: { cartList }
   } = useCartAPICtx();
+  
   return (
     <Fragment>
       <Navbar />

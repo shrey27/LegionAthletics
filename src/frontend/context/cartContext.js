@@ -50,7 +50,8 @@ const defaultCartState = {
   cartError: '',
   cartListData: [],
   addedCartPID: [],
-  ordercart: {}
+  ordercart: {},
+  orders: []
 };
 const cartApiReducerFunc = (state, action) => {
   switch (action.type) {
@@ -82,6 +83,11 @@ const cartApiReducerFunc = (state, action) => {
       return {
         ...state,
         ordercart: action.payload
+      };
+    case 'UPDATE_ORDERS':
+      return {
+        ...defaultCartState,
+        orders: action.payload
       };
     case 'STOP_LOADER':
       return {
@@ -130,6 +136,12 @@ const CartAPIProvider = ({ children }) => {
     }
   };
 
+  const handleOrderPlaced = (tempObj) => {
+    dispatch({ type: 'UPDATE_ORDERS', payload: tempObj });
+    updateLocalStorage('cart', []);
+    ToastMessage('Payment Completed! Order is Placed', 'success');
+  };
+  
   const deleteFromCart = async (id) => {
     dispatch({ type: 'API_REQUEST' });
     try {
@@ -144,7 +156,7 @@ const CartAPIProvider = ({ children }) => {
       dispatch({ type: 'API_RESPONSE', payload: [...cart] });
       const idArray = cart.map((elem) => elem._id);
       dispatch({ type: 'UPDATE_CART_PID', payload: idArray });
-      ToastMessage('Product was delted from cart', 'info');
+      ToastMessage('Product was deleted from cart', 'info');
     } catch (err) {
       dispatch({ type: 'API_FAILURE' });
       console.log('DELETE-WISHLIST-ERROR', err);
@@ -192,6 +204,7 @@ const CartAPIProvider = ({ children }) => {
       cartList: cartList.filter((e) => e._id !== id)
     };
     dispatch({ type: 'CHECKOUT_DETAILS', payload: objectToUpdate });
+    ToastMessage('Product removed from checkout list', 'info');
   };
 
   useEffect(() => {
@@ -225,7 +238,8 @@ const CartAPIProvider = ({ children }) => {
         addItemToCart,
         deleteFromCart,
         updateCartItem,
-        handleRemoveItem
+        handleRemoveItem,
+        handleOrderPlaced
       }}
     >
       <CartProvider>{children}</CartProvider>

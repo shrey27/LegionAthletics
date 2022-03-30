@@ -45,8 +45,6 @@ export default function Cart() {
       type: 'CHECKOUT_DETAILS',
       payload: { remainingAmount: cartPrice.net, cartList: [...cartArray] }
     });
-    // dispatch({ type: 'API_RESPONSE', payload: [] });
-    // dispatch({ type: 'UPDATE_CART_PID', payload: [] });
     navigate(CHECKOUT);
   };
 
