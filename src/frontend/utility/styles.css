@@ -84,15 +84,24 @@ body {
   border: 2px solid var(--primary);
   color: var(--primary);
 }
-.btn--auth--error {
+.btn--error--solid {
   border: 2px solid var(--tag);
   color: var(--white);
   background-color: var(--tag);
 }
-.btn--auth--error:hover {
+.btn--error--solid:hover {
   border: 2px solid var(--tag--hover);
   color: var(--white);
   background-color: var(--tag--hover);
+}
+.btn--auth--error {
+  border: 2px solid var(--tag);
+  color: var(--tag);
+  background-color: var(--white);
+}
+.btn--auth--error:hover {
+  border: 2px solid var(--primary);
+  color: var(--primary);
 }
 .btn--auth--solid {
   border: 2px solid var(--tertiary--light);

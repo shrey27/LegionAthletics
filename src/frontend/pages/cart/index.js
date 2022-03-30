@@ -4,7 +4,7 @@ import { Navbar, Footer, Loader } from '../../components';
 import Category from '../../components/header/Category';
 import CartItem from './CartItem';
 import { useCartAPICtx } from '../../context';
-import { ORDER } from '../../routes/routes';
+import { CHECKOUT } from '../../routes/routes';
 import { useNavigate } from 'react-router-dom';
 
 export default function Cart() {
@@ -42,12 +42,12 @@ export default function Cart() {
       return { ...elem, productTotal, discountOnProduct, delivery };
     });
     dispatch({
-      type: 'UPDATE_CART_LIST',
+      type: 'CHECKOUT_DETAILS',
       payload: { remainingAmount: cartPrice.net, cartList: [...cartArray] }
     });
-    dispatch({ type: 'API_RESPONSE', payload: [] });
-    dispatch({ type: 'UPDATE_CART_PID', payload: [] });
-    navigate(ORDER);
+    // dispatch({ type: 'API_RESPONSE', payload: [] });
+    // dispatch({ type: 'UPDATE_CART_PID', payload: [] });
+    navigate(CHECKOUT);
   };
 
   return (

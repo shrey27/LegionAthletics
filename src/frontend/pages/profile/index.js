@@ -140,7 +140,7 @@ export default function Profile() {
           )}
           {!disable && (
             <button
-              className='btn btn--auth--error sb'
+              className='btn btn--error--solid sb'
               onClick={profileUpdateCancelled}
             >
               CANCEL
