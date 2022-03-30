@@ -6,7 +6,7 @@ import {
   useCartCtx,
   useCartAPICtx
 } from '../../context';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PRODUCTS } from '../../routes/routes';
 import { ToastMessage } from '../../components';
 
@@ -25,6 +25,7 @@ export default function Deal(props) {
     nostock
   } = itemdata;
 
+  const navigate = useNavigate();
   const { addToCart } = useCartCtx();
   const { addToWishlist, deleteFromWishlist, addedPID, wishlistLoading } =
     useWishlistCtx();
@@ -80,6 +81,9 @@ export default function Deal(props) {
     }
   };
 
+  const handleNavigateToProducts = () => {
+    navigate(PRODUCTS);
+  };
   return (
     <div className='card ecom'>
       {wishlist && !close && (
@@ -148,6 +152,7 @@ export default function Deal(props) {
                 className={`btn ${
                   addedToCart ? 'btn--auth' : 'btn--auth--solid'
                 } btn--wide btn--margin`}
+                onClick={handleNavigateToProducts}
               >
                 Get Details
               </button>

@@ -9,7 +9,6 @@ export default function SummaryCard(props) {
     status,
     source,
     title,
-    cardtype = 'CASH',
     price,
     qty,
     discount
@@ -103,7 +102,7 @@ export default function SummaryCard(props) {
           </h1>
 
           <h1 className='card__status__mode sm cen mg-half xs-s'>
-            Mode of Payment: {cardtype}
+            Payment Successfull
           </h1>
         </section>
 

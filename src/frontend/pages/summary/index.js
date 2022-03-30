@@ -2,14 +2,17 @@ import './summary.css';
 import { Fragment } from 'react';
 import SummaryCard from './SummaryCard';
 import { useCartAPICtx } from '../../context';
-import { Loader, Navbar, Footer } from '../../components';
+import { Loader, Navbar, Footer, Deals } from '../../components';
+import { homepageItems } from '../../utility/constants';
+import { Link } from 'react-router-dom';
+import { PRODUCTS } from '../../routes/routes';
 
 export default function Orders() {
   const {
     cartLoading,
     orders: { cartList }
   } = useCartAPICtx();
-  
+
   return (
     <Fragment>
       <Navbar />
@@ -29,11 +32,19 @@ export default function Orders() {
               })
             )}
           </div>
-          
         </div>
       )}
-
-      <Footer fixed={!cartList?.length} />
+      <Deals
+        items={[...homepageItems].slice(-4)}
+        name='Best-Sellers'
+        noButton={true}
+      />
+      <div className='flex-ct-ct xs-s'>
+        <Link className='btn btn--error btn--lg sb cen' to={PRODUCTS}>
+          View All
+        </Link>
+      </div>
+      <Footer />
     </Fragment>
   );
 }

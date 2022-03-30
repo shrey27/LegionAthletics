@@ -85,9 +85,6 @@
     top: 2.5rem;
     right: 0.5rem;
   }
-  .submenu__item{
-    justify-content: flex-start;
-  }
   .start {
     justify-content: flex-start;
   }
