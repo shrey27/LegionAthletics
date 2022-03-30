@@ -3,7 +3,6 @@ import { Fragment, useEffect, useState } from 'react';
 import { useLocalStorage } from '../../helpers';
 import { HOMEPAGE } from '../../routes/routes';
 import { Link } from 'react-router-dom';
-import { ToastMessage } from '../../components';
 
 export default function SummaryCard(props) {
   const {

@@ -30,7 +30,6 @@ export default function Checkout() {
   const {
     cartLoading,
     ordercart: { remainingAmount, cartList },
-    dispatch,
     handleOrderPlaced
   } = useCartAPICtx();
   const { firstName, lastName, phone, address, email, signUpEmail } =
