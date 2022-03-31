@@ -1,7 +1,8 @@
 import { Server, Model, RestSerializer } from 'miragejs';
 import {
   loginHandler,
-  signupHandler
+  signupHandler,
+  signupUpdateHandler
 } from './backend/controllers/AuthController';
 import {
   addItemToCartHandler,
@@ -66,21 +67,25 @@ export function makeServer({ environment = 'development' } = {}) {
               _id: uuid(),
               firstname: 'Shrey',
               lastname: 'Pandey',
-              street: 'A-98, Gandhi Path, Nehru Nagar',
+              address: 'A-98, Gandhi Path, Nehru Nagar',
               city: 'Ajmer',
               state: 'Rajasthan ',
-              zipCode: '999000',
-              mobile: '987654321'
+              pincode: '999000',
+              email: 'shreyp@gmail.com',
+              phone: '987654321',
+              type: 'HOME'
             },
             {
               _id: uuid(),
               firstname: 'Carl',
               lastname: 'Jones',
-              street: '89, Lincoln Street',
+              address: '89, Lincoln Street',
               city: 'NY',
               state: 'NY',
-              zipCode: '898989',
-              mobile: '9898989898'
+              pincode: '898989',
+              email: 'carljones234@gmail.com',
+              phone: '9898989898',
+              type: 'HOME'
             }
           ]
         })
@@ -94,6 +99,7 @@ export function makeServer({ environment = 'development' } = {}) {
       // auth routes (public)
       this.post('/auth/signup', signupHandler.bind(this));
       this.post('/auth/login', loginHandler.bind(this));
+      this.post('/auth/update', signupUpdateHandler.bind(this));
 
       // products routes (public)
       this.get('/products', getAllProductsHandler.bind(this));

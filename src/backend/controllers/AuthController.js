@@ -59,7 +59,7 @@ export const signupHandler = function (schema, request) {
  * */
 
 export const signupUpdateHandler = function (schema, request) {
-  const { email, address, phone, firstName, lastName, signUpEmail } =
+  const { email, signupAddress, phone, firstName, lastName, signUpEmail } =
     JSON.parse(request.requestBody);
   const userId = requiresAuth.call(this, request);
   try {
@@ -77,7 +77,7 @@ export const signupUpdateHandler = function (schema, request) {
     }
     this.db.users.update(
       { _id: userId },
-      { address },
+      { signupAddress },
       { phone },
       { firstName },
       { lastName }
@@ -87,7 +87,7 @@ export const signupUpdateHandler = function (schema, request) {
       {},
       {
         updatedDetails: {
-          address,
+          signupAddress,
           phone,
           firstName,
           lastName

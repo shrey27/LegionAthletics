@@ -8,7 +8,7 @@ import {
   WishlistProvider,
   AuthProvider,
   ProductsContextProvider,
-  AddressApiContextProvider
+  AddressContextProvider
 } from './frontend/context';
 
 // Call make Server
@@ -18,7 +18,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <AddressApiContextProvider>
+        <AddressContextProvider>
           <CartAPIProvider>
             <WishlistProvider>
               <ProductsContextProvider>
@@ -26,7 +26,7 @@ ReactDOM.render(
               </ProductsContextProvider>
             </WishlistProvider>
           </CartAPIProvider>
-        </AddressApiContextProvider>
+        </AddressContextProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,

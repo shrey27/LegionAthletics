@@ -56,7 +56,7 @@ const AuthProvider = ({ children }) => {
   } = useLocalStorage();
 
   const handleUserDetails = (userDetails) => {
-    const { firstName, lastName, phone, address, email } = userDetails;
+    const { firstName, lastName, phone, signupAddress, email } = userDetails;
     dispatch({
       type: 'SIGNUP-FIRSTNAME',
       payload: firstName
@@ -71,7 +71,7 @@ const AuthProvider = ({ children }) => {
     });
     dispatch({
       type: 'SIGNUP-ADDRESS',
-      payload: address
+      payload: signupAddress
     });
     dispatch({
       type: 'SIGNUP-EMAIL',
@@ -92,7 +92,6 @@ const AuthProvider = ({ children }) => {
             email,
             password
           });
-
           if (foundUser) {
             localStorage.setItem('token', encodedToken);
             localStorage.setItem('userData', JSON.stringify(foundUser));
@@ -145,7 +144,7 @@ const AuthProvider = ({ children }) => {
           email: signUpEmail,
           password: signUpPassword,
           phone,
-          address
+          signupAddress: address
         });
         const { createdUser, encodedToken } = response.data;
         delete createdUser.password;

@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer, useEffect } from 'react';
 import { ToastMessage } from '../components';
 import axios from 'axios';
 import { ADDRESS } from '../routes/routes';
@@ -9,6 +9,93 @@ const AddressAPIContext = createContext();
 
 const useAddressCtx = () => useContext(AddressContext);
 const useAddressApiCtx = () => useContext(AddressAPIContext);
+
+const defaultState = {
+  addressList: [],
+  addressLoader: false
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'API_REQUEST':
+      return {
+        ...state,
+        addressLoader: true
+      };
+    case 'API_RESPONSE':
+      const arr = action.payload;
+      return {
+        ...state,
+        addressLoader: false,
+        addressList: [...arr]
+      };
+    case 'API_FAILURE':
+      return {
+        ...state,
+        addressLoader: false
+      };
+    default:
+      return {
+        ...state
+      };
+  }
+};
+
+const AddressApiContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, defaultState);
+  const { token } = useAuthCtx();
+
+  const addNewAddress = async (addObject) => {
+    try {
+      const {
+        data: { address }
+      } = await axios.post(
+        ADDRESS,
+        { address: { ...addObject, type: 'HOME' } },
+        {
+          headers: {
+            authorization: token
+          }
+        }
+      );
+      console.log(address);
+      dispatch({ type: 'API_RESPONSE', payload: [...address] });
+      dispatch({ type: 'CLEAR_FORM' });
+      ToastMessage('Address saved Successfully', 'success');
+    } catch (err) {
+      console.log('ADD new address api error', err);
+      dispatch({ type: 'API_FAILURE' });
+      dispatch({ type: 'CLEAR_FORM' });
+      ToastMessage('Address submission failed', 'error');
+    }
+  };
+
+  useEffect(() => {
+    const getAddressList = async () => {
+      dispatch({ type: 'API_REQUEST' });
+      try {
+        const {
+          data: { address }
+        } = await axios.get(ADDRESS, {
+          headers: {
+            authorization: token
+          }
+        });
+        dispatch({ type: 'API_RESPONSE', payload: [...address] });
+      } catch (err) {
+        console.log('GET-ADDRESS-ERROR', err);
+        dispatch({ type: 'API_FAILURE' });
+      }
+    };
+    if (token) getAddressList();
+  }, [token]);
+
+  return (
+    <AddressAPIContext.Provider value={{ state, dispatch, addNewAddress }}>
+      {children}
+    </AddressAPIContext.Provider>
+  );
+};
 
 const addressState = {
   firstname: '',
@@ -64,6 +151,10 @@ const addressReducerFunction = (state, action) => {
         ...state,
         pincode: action.payload
       };
+    case 'CLEAR_FORM':
+      return {
+        ...addressState
+      };
     case 'CLEAR_ERRORS':
       return {
         ...state,
@@ -114,72 +205,9 @@ const AddressContextProvider = ({ children }) => {
 
   return (
     <AddressContext.Provider value={{ ...state, dispatch, validationAddress }}>
-      {children}
+      <AddressApiContextProvider>{children}</AddressApiContextProvider>
     </AddressContext.Provider>
   );
 };
 
-const defaultState = {
-  addressList: [],
-  addressId: [],
-  addressLoader: false
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'API_REQUEST':
-      return {
-        ...state,
-        addressLoader: true
-      };
-    case 'API_RESPONSE':
-      const arr = action.payload;
-      return {
-        ...state,
-        addressLoader: false,
-        addressList: [...arr]
-        // addressId: [...arr].map((e) => e._id)
-      };
-    default:
-      return {
-        ...state
-      };
-  }
-};
-
-const AddressApiContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, defaultState);
-  const { token } = useAuthCtx();
-
-  const addNewAddress = async (addObject) => {
-    try {
-      const {
-        data: { address }
-      } = await axios.post(
-        ADDRESS,
-        { address: { ...addObject } },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      );
-      console.log(address);
-      dispatch({ type: 'API_RESPONSE', payload: [...address] });
-      ToastMessage('Address saved Successfully', 'success');
-    } catch (err) {
-      console.log('ADD new address api error', err);
-      ToastMessage('Address submission failed', 'error');
-    }
-  };
-
-  
-
-  return (
-    <AddressAPIContext.Provider value={{ ...state, dispatch, addNewAddress }}>
-      <AddressContextProvider>{children}</AddressContextProvider>
-    </AddressAPIContext.Provider>
-  );
-};
-
-export { AddressApiContextProvider, useAddressCtx, useAddressApiCtx };
+export { AddressContextProvider, useAddressCtx, useAddressApiCtx };

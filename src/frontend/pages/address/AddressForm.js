@@ -3,8 +3,9 @@ import { useAddressCtx, useAddressApiCtx } from '../../context/addressContext';
 import './address.css';
 import { addressError } from '../../utility/constants';
 
-export default function AddressForm() {
+export default function AddressForm(props) {
   const [disable, setDisable] = useState(false);
+  const { setSlide } = props;
   const {
     firstname,
     lastname,
@@ -37,6 +38,11 @@ export default function AddressForm() {
     }
   };
 
+  const handleFormCancel = () => {
+    dispatch({ type: 'CLEAR_FORM' });
+    setSlide(false);
+  };
+
   return (
     <div className='card address shdw'>
       <h1 className='lg sb cen xs-s mg-full'>ADD NEW ADDRESS</h1>
@@ -58,7 +64,7 @@ export default function AddressForm() {
             }
             onFocus={() => dispatch({ type: 'CLEAR_ERRORS' })}
           />
-          {errorFields.includes('firstname') && (
+          {errorFields?.includes('firstname') && (
             <h1 className='input__error'>{addressError}</h1>
           )}
         </div>
@@ -78,7 +84,7 @@ export default function AddressForm() {
             }
             onFocus={() => dispatch({ type: 'CLEAR_ERRORS' })}
           />
-          {errorFields.includes('lastname') && (
+          {errorFields?.includes('lastname') && (
             <h1 className='input__error'>{addressError}</h1>
           )}
         </div>
@@ -98,7 +104,7 @@ export default function AddressForm() {
             }
             onFocus={() => dispatch({ type: 'CLEAR_ERRORS' })}
           />
-          {errorFields.includes('email') && (
+          {errorFields?.includes('email') && (
             <h1 className='input__error'>{addressError}</h1>
           )}
         </div>
@@ -118,7 +124,7 @@ export default function AddressForm() {
             }
             onFocus={() => dispatch({ type: 'CLEAR_ERRORS' })}
           />
-          {errorFields.includes('phone') && (
+          {errorFields?.includes('phone') && (
             <h1 className='input__error'>{addressError}</h1>
           )}
         </div>
@@ -138,7 +144,7 @@ export default function AddressForm() {
             }
             onFocus={() => dispatch({ type: 'CLEAR_ERRORS' })}
           />
-          {errorFields.includes('address') && (
+          {errorFields?.includes('address') && (
             <h1 className='input__error'>{addressError}</h1>
           )}
         </div>
@@ -158,7 +164,7 @@ export default function AddressForm() {
             }
             onFocus={() => dispatch({ type: 'CLEAR_ERRORS' })}
           />
-          {errorFields.includes('city') && (
+          {errorFields?.includes('city') && (
             <h1 className='input__error'>{addressError}</h1>
           )}
         </div>
@@ -178,7 +184,7 @@ export default function AddressForm() {
             }
             onFocus={() => dispatch({ type: 'CLEAR_ERRORS' })}
           />
-          {errorFields.includes('state') && (
+          {errorFields?.includes('stateLoc') && (
             <h1 className='input__error'>{addressError}</h1>
           )}
         </div>
@@ -198,7 +204,7 @@ export default function AddressForm() {
             }
             onFocus={() => dispatch({ type: 'CLEAR_ERRORS' })}
           />
-          {errorFields.includes('pincode') && (
+          {errorFields?.includes('pincode') && (
             <h1 className='input__error'>{addressError}</h1>
           )}
         </div>
@@ -216,7 +222,13 @@ export default function AddressForm() {
           </button>
         )}
         {!disable && (
-          <button className='btn btn--error--solid sb'>CANCEL</button>
+          <button
+            type='reset'
+            className='btn btn--error--solid sb'
+            onClick={handleFormCancel}
+          >
+            CANCEL
+          </button>
         )}
       </form>
     </div>
