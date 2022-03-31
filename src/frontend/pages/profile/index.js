@@ -1,153 +1,100 @@
-import { Fragment } from 'react';
-import { Footer, Navbar } from '../../components';
-import { useAuthCtx } from '../../context';
+import { Fragment, useState } from 'react';
 import './profile.css';
+import { Navbar, Footer } from '../../components';
+import ProfileForm from './ProfileForm';
+import Address from '../address';
+import { Link } from 'react-router-dom';
+import { CART, ORDER, WISHLIST } from '../../routes/routes';
+import { useAuthCtx } from '../../context';
 
 export default function Profile() {
-  const {
-    firstName,
-    lastName,
-    phone,
-    email,
-    signUpEmail,
-    address,
-    addressError,
-    phoneError,
-    firstNameError,
-    lastNameError,
-    dispatch,
-    handleProfileUpdate,
-    profileUpdateCancelled,
-    disable,
-    setDisable
-  } = useAuthCtx();
+  const [optionsOpen, setOptionsOpen] = useState(false);
+  const [component, setComponent] = useState(<ProfileForm />);
+  const { handleSignOut } = useAuthCtx();
+
+  const handleMainContent = (component) => {
+    switch (component) {
+      case 'ADDRESS':
+        setComponent(<Address />);
+        break;
+      default:
+        setComponent(<ProfileForm />);
+        break;
+    }
+    setOptionsOpen(false);
+  };
 
   return (
     <Fragment>
       <Navbar />
-      <div className='card profile shdw'>
-        <h1 className='lg sb cen xs-s mg-full'>MY PROFILE</h1>
-        <hr />
-        <form className='sm-s' onSubmit={handleProfileUpdate}>
-          <div className='profile_input'>
-            <label htmlFor='firstname' className='label'>
-              First Name
-            </label>
-            <input
-              className='input sm-s'
-              type='text'
-              name='firstname'
-              id='firstname'
-              autoComplete='off'
-              value={firstName}
-              disabled={disable}
-              onChange={(e) =>
-                dispatch({ type: 'SIGNUP-FIRSTNAME', payload: e.target.value })
-              }
-              onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
-              required
-            />
-            {firstNameError && (
-              <h1 className='input__error'>{firstNameError}</h1>
-            )}
-          </div>
-          <div className='profile_input'>
-            <label htmlFor='lastname' className='label'>
-              Last Name
-            </label>
-            <input
-              className='input sm-s'
-              type='text'
-              name='lastname'
-              id='lastname'
-              autoComplete='off'
-              value={lastName}
-              disabled={disable}
-              onChange={(e) =>
-                dispatch({ type: 'SIGNUP-LASTNAME', payload: e.target.value })
-              }
-              onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
-              required
-            />
-            {lastNameError && <h1 className='input__error'>{lastNameError}</h1>}
-          </div>
-          <div className='profile_input'>
-            <label htmlFor='profile__email' className='label'>
-              Email
-            </label>
-            <input
-              className='input sm-s'
-              type='text'
-              name='profile__email'
-              id='profile__email'
-              autoComplete='off'
-              value={signUpEmail.length ? signUpEmail : email}
-              disabled
-            />
-          </div>
-          <div className='profile_input'>
-            <label htmlFor='profile__phone' className='label'>
-              Phone
-            </label>
-            <input
-              className='input sm-s'
-              type='text'
-              name='profile__phone'
-              id='profile__phone'
-              autoComplete='off'
-              value={phone}
-              disabled={disable}
-              onChange={(e) =>
-                dispatch({ type: 'SIGNUP-PHONE', payload: e.target.value })
-              }
-              onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
-              required
-            />
-            {phoneError && <h1 className='input__error'>{phoneError}</h1>}
-          </div>
-          <div className='profile_input'>
-            <label htmlFor='profile__address' className='label'>
-              Delivery Address
-            </label>
-            <textarea
-              className='textarea sm-s'
-              type='text'
-              name='profile__address'
-              id='profile__address'
-              autoComplete='off'
-              value={address}
-              disabled={disable}
-              onChange={(e) =>
-                dispatch({ type: 'SIGNUP-ADDRESS', payload: e.target.value })
-              }
-              onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
-              required
-            ></textarea>
-            <h1 className='input__error'>{addressError}</h1>
-          </div>
-          {disable && (
-            <button
-              className='btn btn--auth--solid sb'
-              onClick={() => setDisable(false)}
-            >
-              UPDATE
+      <div className='card profile__container shdw'>
+        <div className='hb--box'>
+          {/* header */}
+          <header className='hb--header'>
+            <nav className='navbar'>
+              <section className='end xs-s'>
+                <span
+                  className='slider btn hb--btn'
+                  onClick={() => setOptionsOpen((e) => !e)}
+                >
+                  Account&nbsp;<i className='fas fa-chevron-down'></i>
+                </span>
+              </section>
+            </nav>
+          </header>
+
+          {/* aside container */}
+          <aside
+            className={`hb--aside sm-s shadow ${optionsOpen ? 'hb--open' : ''}`}
+          >
+            <div className='mg-full'>
+              <h1 className='primary sm reg aside__title'>MY ACCOUNT</h1>
+              <ul className='stack'>
+                <li
+                  className='stack__item primary sm'
+                  onClick={handleMainContent.bind(this, 'PROFILE')}
+                >
+                  Profile Settings <i className='fa-solid fa-chevron-right'></i>
+                </li>
+                <li
+                  className='stack__item primary sm'
+                  onClick={handleMainContent.bind(this, 'ADDRESS')}
+                >
+                  Manage Address <i className='fa-solid fa-chevron-right'></i>
+                </li>
+              </ul>
+            </div>
+            <div className='mg-full'>
+              <h1 className='primary sm reg aside__title'>MY STUFF</h1>
+              <ul className='stack'>
+                <Link to={CART}>
+                  <li className='stack__item primary sm'>
+                    My Cart <i className='fa-solid fa-chevron-right'></i>
+                  </li>
+                </Link>
+                <Link to={ORDER}>
+                  <li className='stack__item primary sm'>
+                    My Orders <i className='fa-solid fa-chevron-right'></i>
+                  </li>
+                </Link>
+                <Link to={WISHLIST}>
+                  <li className='stack__item primary sm'>
+                    My Wishlist <i className='fa-solid fa-chevron-right'></i>
+                  </li>
+                </Link>
+              </ul>
+            </div>
+            <button className='btn btn--auth--solid btn--wide' onClick={handleSignOut}>
+              Logout
             </button>
-          )}
-          {!disable && (
-            <button type='submit' className='btn btn--auth--solid sb'>
-              SUBMIT
-            </button>
-          )}
-          {!disable && (
-            <button
-              className='btn btn--error--solid sb'
-              onClick={profileUpdateCancelled}
-            >
-              CANCEL
-            </button>
-          )}
-        </form>
+          </aside>
+
+          {/* main container */}
+          <main className='hb--main hb--open'>{component}</main>
+        </div>
       </div>
+
+      {/* Footer */}
       <Footer />
     </Fragment>
   );

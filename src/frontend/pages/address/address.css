@@ -1,0 +1,44 @@
+@import '../../utility/styles.css';
+
+.address {
+  width: 80%;
+  max-width: 35rem;
+  border: none;
+}
+.address__form {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.address_input_one,
+.address_input_three,
+.address_input_five,
+.address_input_seven,
+.address_input_two,
+.address_input_four,
+.address_input_six,
+.address_input_eight {
+  grid-column: 1/2;
+}
+
+@media screen and (min-width: 1024px) {
+  .address__form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .address_input_one,
+  .address_input_three,
+  .address_input_five,
+  .address_input_seven {
+    grid-column: 1/2;
+  }
+  .address_input_two,
+  .address_input_four,
+  .address_input_six,
+  .address_input_eight {
+    grid-column: 2/3;
+  }
+}

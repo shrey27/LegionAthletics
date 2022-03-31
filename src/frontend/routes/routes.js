@@ -43,15 +43,14 @@ export const availableRoutes = (
     <Route path={SIGNUP} element={<Signup />} />
     <Route path={MOCKAPI} element={<MockAPI />} />
 
-    <Route exact path={HOMEPAGE} element={<PrivateRoute />}>
-      <Route path={CART} element={<Cart />} />
-      <Route path={WISHLIST} element={<Wishlist />} />
-      <Route path={`${PRODUCTS}/:productId`} element={<Product />} />
-      <Route path={SIGNOUT} element={<Signout />} />
-      <Route path={ORDER} element={<Orders />} />
-      <Route path={PROFILE} element={<Profile />} />
-      <Route path={CHECKOUT} element={<Checkout />} />
-    </Route>
+    <Route exact path={HOMEPAGE} element={<PrivateRoute />}></Route>
+    <Route path={CART} element={<Cart />} />
+    <Route path={WISHLIST} element={<Wishlist />} />
+    <Route path={`${PRODUCTS}/:productId`} element={<Product />} />
+    <Route path={SIGNOUT} element={<Signout />} />
+    <Route path={ORDER} element={<Orders />} />
+    <Route path={PROFILE} element={<Profile />} />
+    <Route path={CHECKOUT} element={<Checkout />} />
 
     <Route path='*' element={<HomePage />} />
   </Routes>
