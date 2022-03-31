@@ -91,7 +91,7 @@ const AuthProvider = ({ children }) => {
       }
     });
   };
-  const handleSignIn = async () => {
+  const handleSignIn = async (navigateTo) => {
     if (validateSignIn(state, dispatch)) {
       if (!rememberMe) {
         try {
@@ -106,7 +106,7 @@ const AuthProvider = ({ children }) => {
             localStorage.setItem('userData', JSON.stringify(foundUser));
             dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
             handleUserDetails(foundUser);
-            navigate(HOMEPAGE);
+            navigate(navigateTo ?? HOMEPAGE, { replace: true });
             ToastMessage('Sign In was Successfull', 'success');
           } else {
             throw new Error('User not Found');
@@ -129,7 +129,7 @@ const AuthProvider = ({ children }) => {
             address: storedAddress,
             email: storedEmail
           });
-          navigate(HOMEPAGE);
+          navigate(navigateTo ?? HOMEPAGE, { replace: true });
           ToastMessage('Sign In was Successfull', 'success');
         } else {
           dispatch({

@@ -2,7 +2,7 @@ import './authentication.css';
 import { useState } from 'react';
 import { Navbar, Footer } from '../../components';
 import { useAuthCtx } from '../../context';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { SIGNUP } from '../../routes/routes';
 import { guestCredentials } from '../../utility/constants';
 
@@ -18,9 +18,12 @@ export default function Signin() {
     handleSignIn
   } = useAuthCtx();
 
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+
   const onSignInHandler = (e) => {
     e.preventDefault();
-    handleSignIn();
+    handleSignIn(from);
   };
 
   const guestSignIn = (e) => {
