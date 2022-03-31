@@ -39,7 +39,7 @@ export default function AddressCards() {
                 email,
                 address,
                 city,
-                state,
+                stateLoc,
                 pincode,
                 type
               } = elem;
@@ -75,7 +75,7 @@ export default function AddressCards() {
                   </h1>
                   <h1 className='addressbar__address'>
                     <i className='fa-solid fa-location-dot'></i>
-                    {`${address}, ${city}, ${state}, ${pincode}`}
+                    {`${address}, ${city}, ${stateLoc}, ${pincode}`}
                   </h1>
                 </div>
               );

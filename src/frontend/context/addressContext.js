@@ -240,6 +240,7 @@ const AddressApiContextProvider = ({ children }) => {
             authorization: token
           }
         });
+        console.log('fetched address', address);
         dispatcher({ type: 'ADDRESS_API_RESPONSE', payload: [...address] });
       } catch (err) {
         console.log('GET-ADDRESS-ERROR', err);

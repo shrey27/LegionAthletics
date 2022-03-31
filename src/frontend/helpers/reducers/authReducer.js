@@ -19,8 +19,8 @@ export const defaultState = {
   lastNameError: '',
   phone: '',
   phoneError: '',
-  address: '',
-  addressError: '',
+  signUpAddress: '',
+  signUpAddressError: '',
   signinError: '',
   signupError: '',
   primaryDetails: {},
@@ -118,12 +118,12 @@ export const authReducerFunc = (state, action) => {
     case 'SIGNUP-ADDRESS':
       return {
         ...state,
-        address: action.payload
+        signUpAddress: action.payload
       };
     case 'SIGNUP-ADDRESS-ERROR':
       return {
         ...state,
-        addressError: action.payload
+        signUpAddressError: action.payload
       };
     case 'TOKEN-SAVED':
       return {
@@ -154,11 +154,14 @@ export const authReducerFunc = (state, action) => {
         cnfpasswordError: '',
         passwordError: '',
         emailError: '',
-        signupError: '',
+        signUpError: '',
         signinError: '',
-        userNameError: '',
+        firstNameError: '',
+        lastNameError: '',
         signUpEmailError: '',
-        signUpPasswordError: ''
+        signUpPasswordError: '',
+        phoneError: '',
+        signUpAddressError: ''
       };
     case 'REMEMBER-ME':
       return {

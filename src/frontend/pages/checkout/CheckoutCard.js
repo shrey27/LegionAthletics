@@ -1,6 +1,6 @@
 import './checkout.css';
 import { Fragment, useEffect, useState } from 'react';
-import { PROFILE } from '../../routes/routes';
+import { PROFILEADDRESS } from '../../routes/routes';
 import { Link } from 'react-router-dom';
 import { useAuthCtx } from '../../context';
 
@@ -75,7 +75,7 @@ export default function CheckoutCard(props) {
           </h1>
 
           <Link
-            to={PROFILE}
+            to={PROFILEADDRESS}
             className='card__status__mode sm cen sb mg-half xs-s'
           >
             Update Delivery Details

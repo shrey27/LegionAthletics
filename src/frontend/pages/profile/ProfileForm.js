@@ -8,8 +8,8 @@ export default function ProfileForm() {
     phone,
     email,
     signUpEmail,
-    address,
-    addressError,
+    signUpAddress,
+    signUpAddressError,
     phoneError,
     firstNameError,
     lastNameError,
@@ -109,7 +109,7 @@ export default function ProfileForm() {
             name='profile__address'
             id='profile__address'
             autoComplete='off'
-            value={address}
+            value={signUpAddress}
             disabled={disable}
             onChange={(e) =>
               dispatch({ type: 'SIGNUP-ADDRESS', payload: e.target.value })
@@ -117,7 +117,7 @@ export default function ProfileForm() {
             onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
             required
           ></textarea>
-          <h1 className='input__error'>{addressError}</h1>
+          <h1 className='input__error'>{signUpAddressError}</h1>
         </div>
         {disable && (
           <button

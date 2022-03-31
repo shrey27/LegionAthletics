@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
     firstName,
     lastName,
     phone,
-    address,
+    signUpAddress,
     rememberMe,
     signinRememberMe,
     token
@@ -129,7 +129,9 @@ const AuthProvider = ({ children }) => {
             address: storedAddress,
             email: storedEmail
           });
-          navigate(navigateTo ?? HOMEPAGE, { replace: true });
+          navigate(navigateTo === SIGNOUT ? HOMEPAGE : navigateTo, {
+            replace: true
+          });
           ToastMessage('Sign In was Successfull', 'success');
         } else {
           dispatch({
@@ -154,7 +156,7 @@ const AuthProvider = ({ children }) => {
           email: signUpEmail,
           password: signUpPassword,
           phone,
-          signupAddress: address
+          signUpAddress
         });
         const { createdUser, encodedToken } = response.data;
         delete createdUser.password;
@@ -180,6 +182,7 @@ const AuthProvider = ({ children }) => {
     if (!rememberMe && !signinRememberMe) localStorage.clear();
     dispatch({ type: 'SET-DEFAULT' });
     navigate(SIGNOUT);
+    window.location.reload(false);
   };
 
   const profileUpdateCancelled = () => {
@@ -199,14 +202,6 @@ const AuthProvider = ({ children }) => {
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     if (validateUpdateDetails(state, dispatch)) {
-      console.log('details to update', {
-        firstName,
-        lastName,
-        phone,
-        email,
-        signUpEmail,
-        address
-      });
       try {
         const {
           data: { updatedDetails }
@@ -217,7 +212,7 @@ const AuthProvider = ({ children }) => {
             lastName,
             phone,
             email: email ?? signUpEmail,
-            address
+            signUpAddress
           },
           {
             headers: {
@@ -230,7 +225,7 @@ const AuthProvider = ({ children }) => {
         updateLocalStorage('firstName', firstName);
         updateLocalStorage('lastName', lastName);
         updateLocalStorage('phone', phone);
-        updateLocalStorage('address', address);
+        updateLocalStorage('signUpAddress', signUpAddress);
         updateLocalStorage('email', email);
         setDisable(true);
         ToastMessage('Details updated Successfully', 'success');
