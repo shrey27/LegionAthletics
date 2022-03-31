@@ -14,6 +14,7 @@ import Checkout from '../pages/checkout';
 import MockAPI from '../../MockAPI';
 import PrivateRoute from './PrivateRoute';
 import { Routes, Route } from 'react-router-dom';
+import NotFound from '../pages/notfound';
 
 //API endpoints
 export const SIGNUPAPI = '/api/auth/signup';
@@ -56,6 +57,6 @@ export const availableRoutes = (
     <Route path={PROFILEADDRESS} element={<Address />} />
     <Route path={CHECKOUT} element={<Checkout />} />
 
-    <Route path='*' element={<HomePage />} />
+    <Route path='*' element={<NotFound />} />
   </Routes>
 );

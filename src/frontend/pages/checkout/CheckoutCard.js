@@ -1,6 +1,5 @@
 import './checkout.css';
 import { Fragment, useEffect, useState } from 'react';
-import { useLocalStorage } from '../../helpers';
 import { PROFILE } from '../../routes/routes';
 import { Link } from 'react-router-dom';
 import { useAuthCtx } from '../../context';
@@ -16,9 +15,6 @@ export default function CheckoutCard(props) {
     net: 0
   });
   const { totalPrice, discountOnPrice, delivery, netPrice } = priceDetails;
-
-  const { storedName, storedSurname, storedEmail, storedAddress, storedPhone } =
-    useLocalStorage();
 
   useEffect(() => {
     const totalPrice = price * qty;
@@ -53,9 +49,7 @@ export default function CheckoutCard(props) {
           </h1>
           <h1 className='primary sm mg-half'>
             <i className='fa-solid fa-user'></i>
-            <span>{`${primaryDetails?.firstname ?? storedName} ${
-              primaryDetails?.lastname ?? storedSurname
-            }`}</span>
+            <span>{`${primaryDetails?.firstname} ${primaryDetails?.lastname}`}</span>
           </h1>
 
           <div className='address__summary'>
@@ -63,17 +57,21 @@ export default function CheckoutCard(props) {
               <i className='fa-solid fa-location-dot'></i>
             </span>
             <span className='primary sm sb add__align'>
-              <span>{primaryDetails?.address ?? storedAddress}</span>
+              <span>
+                {!primaryDetails.city
+                  ? `${primaryDetails?.address}`
+                  : `${primaryDetails?.address}, ${primaryDetails?.city}, ${primaryDetails?.stateLoc}, ${primaryDetails?.pincode}`}
+              </span>
             </span>
           </div>
 
           <h1 className='primary sm sb mg-half'>
             <i className='fa-solid fa-mobile-screen-button'></i>
-            <span>{primaryDetails?.phone ?? storedPhone}</span>
+            <span>{primaryDetails?.phone}</span>
           </h1>
           <h1 className='primary sm sb'>
             <i className='fa-solid fa-envelope'></i>
-            <span>{primaryDetails?.email ?? storedEmail}</span>
+            <span>{primaryDetails?.email}</span>
           </h1>
 
           <Link

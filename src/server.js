@@ -8,7 +8,8 @@ import {
   addItemToCartHandler,
   getCartItemsHandler,
   removeItemFromCartHandler,
-  updateCartItemHandler
+  updateCartItemHandler,
+  removeAllItemFromCartHandler
 } from './backend/controllers/CartController';
 import {
   getAllCategoriesHandler,
@@ -117,6 +118,7 @@ export function makeServer({ environment = 'development' } = {}) {
         '/user/cart/:productId',
         removeItemFromCartHandler.bind(this)
       );
+      this.delete('/user/cart/all', removeAllItemFromCartHandler.bind(this));
 
       // wishlist routes (private)
       this.get('/user/wishlist', getWishlistItemsHandler.bind(this));

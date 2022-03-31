@@ -46,7 +46,7 @@ export default function Orders() {
       )}
       <Deals
         items={[...homepageItems].slice(-4)}
-        name='Best-Sellers'
+        name='Start Shopping with our Best-Sellers'
         noButton={true}
       />
       <div className='flex-ct-ct xs-s'>

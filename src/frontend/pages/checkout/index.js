@@ -66,7 +66,9 @@ export default function Checkout() {
             name: `${primaryDetails?.firstname} ${primaryDetails?.lastname}`,
             phone: primaryDetails?.phone,
             email: primaryDetails?.email,
-            deliveryAddress: `${primaryDetails?.address}, ${primaryDetails?.city}, ${primaryDetails?.state}, ${primaryDetails?.pincode}`
+            deliveryAddress: !primaryDetails.city
+              ? `${primaryDetails?.address}`
+              : `${primaryDetails?.address}, ${primaryDetails?.city}, ${primaryDetails?.stateLoc}, ${primaryDetails?.pincode}`
           };
           handleOrderPlaced(tempObj);
           navigate(ORDER);
