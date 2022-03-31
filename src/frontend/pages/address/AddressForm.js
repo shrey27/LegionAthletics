@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAddressCtx } from '../../context/addressContext';
+import { useAddressCtx, useAddressApiCtx } from '../../context/addressContext';
 import './address.css';
 import { addressError } from '../../utility/constants';
 
@@ -18,10 +18,11 @@ export default function AddressForm() {
     dispatch,
     validationAddress
   } = useAddressCtx();
+  const { addNewAddress } = useAddressApiCtx();
 
   const handleAddressSubmit = (e) => {
     e.preventDefault();
-    validationAddress({
+    const addObject = {
       firstname,
       lastname,
       phone,
@@ -30,7 +31,10 @@ export default function AddressForm() {
       city,
       stateLoc,
       pincode
-    });
+    };
+    if (validationAddress(addObject)) {
+      addNewAddress(addObject);
+    }
   };
 
   return (

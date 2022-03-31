@@ -21,6 +21,7 @@ export const UPDATEDETAILS = '/api/auth/update';
 export const PRODUCTSAPI = '/api/products';
 export const WISHLISTAPI = '/api/user/wishlist';
 export const CARTAPI = '/api/user/cart';
+export const ADDRESS = '/api/user/address';
 
 //Route paths
 export const HOMEPAGE = '/';

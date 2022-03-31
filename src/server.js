@@ -1,15 +1,13 @@
 import { Server, Model, RestSerializer } from 'miragejs';
 import {
   loginHandler,
-  signupHandler,
-  signupUpdateHandler
+  signupHandler
 } from './backend/controllers/AuthController';
 import {
   addItemToCartHandler,
   getCartItemsHandler,
   removeItemFromCartHandler,
-  updateCartItemHandler,
-  removeAllItemFromCartHandler
+  updateCartItemHandler
 } from './backend/controllers/CartController';
 import {
   getAllCategoriesHandler,
@@ -24,9 +22,16 @@ import {
   getWishlistItemsHandler,
   removeItemFromWishlistHandler
 } from './backend/controllers/WishlistController';
+import {
+  getAddressHandler,
+  addAddressHandler,
+  removeAddressHandler,
+  updateAddressHandler
+} from './backend/controllers/AddressController';
 import { categories } from './backend/db/categories';
 import { products } from './backend/db/products';
 import { users } from './backend/db/users';
+import { v4 as uuid } from 'uuid';
 
 export function makeServer({ environment = 'development' } = {}) {
   return new Server({
@@ -39,7 +44,8 @@ export function makeServer({ environment = 'development' } = {}) {
       category: Model,
       user: Model,
       cart: Model,
-      wishlist: Model
+      wishlist: Model,
+      address: Model
     },
 
     // Runs on the start of the server
@@ -51,7 +57,33 @@ export function makeServer({ environment = 'development' } = {}) {
       });
 
       users.forEach((item) =>
-        server.create('user', { ...item, cart: [], wishlist: [] })
+        server.create('user', {
+          ...item,
+          cart: [],
+          wishlist: [],
+          address: [
+            {
+              _id: uuid(),
+              firstname: 'Shrey',
+              lastname: 'Pandey',
+              street: 'A-98, Gandhi Path, Nehru Nagar',
+              city: 'Ajmer',
+              state: 'Rajasthan ',
+              zipCode: '999000',
+              mobile: '987654321'
+            },
+            {
+              _id: uuid(),
+              firstname: 'Carl',
+              lastname: 'Jones',
+              street: '89, Lincoln Street',
+              city: 'NY',
+              state: 'NY',
+              zipCode: '898989',
+              mobile: '9898989898'
+            }
+          ]
+        })
       );
 
       categories.forEach((item) => server.create('category', { ...item }));
@@ -62,7 +94,6 @@ export function makeServer({ environment = 'development' } = {}) {
       // auth routes (public)
       this.post('/auth/signup', signupHandler.bind(this));
       this.post('/auth/login', loginHandler.bind(this));
-      this.post('/auth/update', signupUpdateHandler.bind(this));
 
       // products routes (public)
       this.get('/products', getAllProductsHandler.bind(this));
@@ -80,7 +111,6 @@ export function makeServer({ environment = 'development' } = {}) {
         '/user/cart/:productId',
         removeItemFromCartHandler.bind(this)
       );
-      this.delete('/user/cart/all', removeAllItemFromCartHandler.bind(this));
 
       // wishlist routes (private)
       this.get('/user/wishlist', getWishlistItemsHandler.bind(this));
@@ -89,6 +119,12 @@ export function makeServer({ environment = 'development' } = {}) {
         '/user/wishlist/:productId',
         removeItemFromWishlistHandler.bind(this)
       );
+
+      // address routes (private)
+      this.get('/user/address', getAddressHandler.bind(this));
+      this.post('/user/address', addAddressHandler.bind(this));
+      this.post('/user/address/:addressId', updateAddressHandler.bind(this));
+      this.delete('/user/address/:addressId', removeAddressHandler.bind(this));
     }
   });
 }
