@@ -1,4 +1,10 @@
-import { createContext, useContext, useReducer, useEffect } from 'react';
+import {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  useState
+} from 'react';
 import { ToastMessage } from '../components';
 import axios from 'axios';
 import { ADDRESS } from '../routes/routes';
@@ -87,6 +93,12 @@ const addressReducerFunction = (state, action) => {
 
 const AddressContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(addressReducerFunction, addressState);
+  const [slide, setSlide] = useState(false);
+
+  const handleFormCancel = () => {
+    setSlide(false);
+    dispatch({ type: 'CLEAR_FORM' });
+  };
 
   const validationAddress = (addressObject) => {
     const {
@@ -117,7 +129,16 @@ const AddressContextProvider = ({ children }) => {
   };
 
   return (
-    <AddressContext.Provider value={{ ...state, dispatch, validationAddress }}>
+    <AddressContext.Provider
+      value={{
+        ...state,
+        dispatch,
+        validationAddress,
+        handleFormCancel,
+        slide,
+        setSlide
+      }}
+    >
       {children}
     </AddressContext.Provider>
   );
@@ -230,7 +251,11 @@ const AddressApiContextProvider = ({ children }) => {
 
   return (
     <AddressAPIContext.Provider
-      value={{ state, addNewAddress, deleteAddress }}
+      value={{
+        ...state,
+        addNewAddress,
+        deleteAddress
+      }}
     >
       <AddressContextProvider>{children}</AddressContextProvider>
     </AddressAPIContext.Provider>

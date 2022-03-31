@@ -2,8 +2,7 @@ import { useAddressCtx, useAddressApiCtx } from '../../context/addressContext';
 import './address.css';
 import { addressError } from '../../utility/constants';
 
-export default function AddressForm(props) {
-  const { setSlide } = props;
+export default function AddressForm() {
   const {
     firstname,
     lastname,
@@ -15,7 +14,8 @@ export default function AddressForm(props) {
     pincode,
     errorFields,
     dispatch,
-    validationAddress
+    validationAddress,
+    handleFormCancel
   } = useAddressCtx();
   const { addressForm, addNewAddress } = useAddressApiCtx();
 
@@ -33,12 +33,8 @@ export default function AddressForm(props) {
     };
     if (validationAddress(addObject)) {
       addNewAddress(addObject);
+      handleFormCancel();
     }
-  };
-
-  const handleFormCancel = () => {
-    setSlide(false);
-    dispatch({ type: 'CLEAR_FORM' });
   };
 
   return (
