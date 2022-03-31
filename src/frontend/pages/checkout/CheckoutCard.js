@@ -1,7 +1,6 @@
 import './checkout.css';
 import { Fragment, useEffect, useState } from 'react';
-import { PROFILEADDRESS } from '../../routes/routes';
-import { Link } from 'react-router-dom';
+
 import { useAuthCtx } from '../../context';
 
 export default function CheckoutCard(props) {
@@ -73,16 +72,12 @@ export default function CheckoutCard(props) {
             <i className='fa-solid fa-envelope'></i>
             <span>{primaryDetails?.email}</span>
           </h1>
-
-          <Link
-            to={PROFILEADDRESS}
-            className='card__status__mode sm cen sb mg-half xs-s'
-          >
-            Update Delivery Details
-          </Link>
+          <span className='card__status__tag sm cen sb mg-half xs-s'>
+            <i class='fa-solid fa-tags'></i> Applied Coupon ATHLETICS200
+          </span>
         </section>
 
-        <section className='card__payment'>
+        <section className='card__payment sm-s'>
           <h1 className='text--decoration price cen md sb'>Payment Summary</h1>
           <div className='align'>
             <p className='mg-half'>
@@ -97,7 +92,10 @@ export default function CheckoutCard(props) {
               <span className='sm sb'>Delivery</span>
               <span className='sm sb fl-rt'>₹{delivery}</span>
             </p>
-
+            <p className='mg-half'>
+              <span className='tag sm bl'>Coupon Discount</span>
+              <span className='tag sm bl fl-rt'>₹{200}</span>
+            </p>
             <p className='mg-half'>
               <span className='md sb'>TOTAL</span>
               <span className='md sb fl-rt'>₹{netPrice}</span>

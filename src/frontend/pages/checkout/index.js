@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import CheckoutCard from './CheckoutCard';
 import { useCartAPICtx, useAuthCtx } from '../../context';
 import { Loader, Navbar, Footer, ToastMessage } from '../../components';
-import { CART, ORDER } from '../../routes/routes';
+import { CART, ORDER, PROFILEADDRESS } from '../../routes/routes';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/lalogo.jpg';
 
@@ -103,6 +103,20 @@ export default function Checkout() {
           <h1 className='primary lg sb cen mg-full'>CHECKOUT SUMMARY</h1>
           <hr />
           <hr />
+          <div className='flex-ct-ct mg-full'>
+            <Link
+              to={CART}
+              className='card__status__cart sm cen sb mg-half xs-s'
+            >
+              Update Cart Items
+            </Link>
+            <Link
+              to={PROFILEADDRESS}
+              className='card__status__address sm cen sb mg-half xs-s'
+            >
+              Update Delivery Details
+            </Link>
+          </div>
           <div className='card--container'>
             {cartLoading ? (
               <Loader />
@@ -112,19 +126,16 @@ export default function Checkout() {
               })
             )}
           </div>
-          <div className='flex-ct-ct mg-full'>
-            <Link to={CART} className='btn btn--auth btn--large md sb'>
-              Update Cart Items
-            </Link>
-            <button
-              onClick={() => displayRazorpay()}
-              className='btn btn--auth--solid btn--large md sb'
-            >
-              Proceed To Payment
-            </button>
-          </div>
         </div>
       )}
+      <div className='flex-ct-ct mg-full'>
+        <button
+          onClick={() => displayRazorpay()}
+          className='btn btn--auth--solid btn--large md sb'
+        >
+          Proceed To Payment
+        </button>
+      </div>
       <Footer fixed={!cartList?.length} />
     </Fragment>
   );
