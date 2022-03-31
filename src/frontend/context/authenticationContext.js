@@ -81,6 +81,15 @@ const AuthProvider = ({ children }) => {
       type: 'SIGNIN-EMAIL',
       payload: email
     });
+    dispatch({
+      type: 'PRIMARY-DETAILS',
+      payload: {
+        ...userDetails,
+        firstname: firstName,
+        lastname: lastName,
+        address: signupAddress
+      }
+    });
   };
   const handleSignIn = async () => {
     if (validateSignIn(state, dispatch)) {
@@ -117,7 +126,8 @@ const AuthProvider = ({ children }) => {
             firstName: storedName,
             lastName: storedSurname,
             phone: storedPhone,
-            address: storedAddress
+            address: storedAddress,
+            email: storedEmail
           });
           navigate(HOMEPAGE);
           ToastMessage('Sign In was Successfull', 'success');
@@ -234,6 +244,11 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const handleSetPrimaryAddress = (addressObject) => {
+    dispatch({ type: 'PRIMARY-DETAILS', payload: { ...addressObject } });
+    ToastMessage('Primary details updated', 'success');
+  };
+
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
     if (storedData) {
@@ -255,7 +270,8 @@ const AuthProvider = ({ children }) => {
         handleProfileUpdate,
         profileUpdateCancelled,
         disable,
-        setDisable
+        setDisable,
+        handleSetPrimaryAddress
       }}
     >
       {children}

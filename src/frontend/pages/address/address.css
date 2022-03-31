@@ -66,6 +66,15 @@
   color: var(--tag);
   cursor: pointer;
 }
+.addressbar__btn__primary {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--rating);
+  color: var(--primary);
+  cursor: pointer;
+  margin: 0 0.5rem;
+}
 .addressbar__name,
 .addressbar__address,
 .addressbar__email {

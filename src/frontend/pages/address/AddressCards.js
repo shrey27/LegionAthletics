@@ -1,15 +1,17 @@
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import AddressForm from './AddressForm';
 import './address.css';
-import { useAddressApiCtx, useAddressCtx } from '../../context';
+import { useAddressApiCtx, useAddressCtx, useAuthCtx } from '../../context';
 import { Loader } from '../../components';
 
 export default function AddressCards() {
   const { addressList, addressLoader, deleteAddress } = useAddressApiCtx();
   const { setSlide, slide } = useAddressCtx();
+  const { handleSetPrimaryAddress } = useAuthCtx();
 
   return (
     <Fragment>
+      <h1 className='primary lg cen sb'>SET PRIMARY DELIVERY ADDRESS</h1>
       {addressLoader ? (
         <Loader />
       ) : (
@@ -47,12 +49,20 @@ export default function AddressCards() {
                     <span>
                       <i className='fa-solid fa-location-dot'></i> {type}
                     </span>
-                    <span
-                      className='addressbar__btn'
-                      onClick={() => deleteAddress(_id)}
-                    >
-                      Delete
-                    </span>
+                    <div className='flex-ct-ct'>
+                      <span
+                        className='addressbar__btn__primary'
+                        onClick={handleSetPrimaryAddress.bind(this, elem)}
+                      >
+                        Select
+                      </span>
+                      <span
+                        className='addressbar__btn'
+                        onClick={() => deleteAddress(_id)}
+                      >
+                        Delete
+                      </span>
+                    </div>
                   </div>
                   <h1 className='addressbar__name'>
                     <i className='fa-solid fa-user'></i>

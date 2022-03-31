@@ -1,12 +1,23 @@
 import './summary.css';
 import { Fragment, useEffect, useState } from 'react';
-import { useLocalStorage } from '../../helpers';
 import { HOMEPAGE } from '../../routes/routes';
 import { Link } from 'react-router-dom';
 import { months } from '../../utility/constants';
 
 export default function SummaryCard(props) {
-  const { status, source, title, price, qty, discount } = props;
+  const {
+    status,
+    source,
+    title,
+    price,
+    qty,
+    discount,
+    name,
+    phone,
+    email,
+    amountPaid,
+    deliveryAddress
+  } = props;
 
   const [dateOfOrder, setDateOfOrder] = useState({
     date: 0,
@@ -14,8 +25,6 @@ export default function SummaryCard(props) {
     year: 0
   });
   const [etaDate, setEtaDate] = useState({ date: 0, month: 0, year: 0 });
-  const { storedName, storedSurname, storedEmail, storedAddress, storedPhone } =
-    useLocalStorage();
 
   useEffect(() => {
     const date1 = new Date();
@@ -75,7 +84,7 @@ export default function SummaryCard(props) {
           <h1 className='text--decoration price md sb cen'>Delivery Address</h1>
           <h1 className='primary sm mg-half'>
             <i className='fa-solid fa-user'></i>
-            <span>{`${storedName} ${storedSurname}`}</span>
+            <span>{name}</span>
           </h1>
 
           <div className='address__summary'>
@@ -83,17 +92,17 @@ export default function SummaryCard(props) {
               <i className='fa-solid fa-location-dot'></i>
             </span>
             <span className='primary sm sb add__align'>
-              <span>{storedAddress}</span>
+              <span>{deliveryAddress}</span>
             </span>
           </div>
 
           <h1 className='primary sm sb mg-half'>
             <i className='fa-solid fa-mobile-screen-button'></i>
-            <span>{storedPhone}</span>
+            <span>{phone}</span>
           </h1>
           <h1 className='primary sm sb'>
             <i className='fa-solid fa-envelope'></i>
-            <span>{storedEmail}</span>
+            <span>{email}</span>
           </h1>
 
           <h1 className='card__status__mode sm cen mg-half xs-s'>
@@ -123,9 +132,7 @@ export default function SummaryCard(props) {
 
             <p className='mg-half'>
               <span className='md sb'>TOTAL</span>
-              <span className='md sb fl-rt'>
-                ₹{price * qty * (1 - discount / 100)}
-              </span>
+              <span className='md sb fl-rt'>₹{amountPaid}</span>
             </p>
           </div>
           <div className='flex-ct-ct'>

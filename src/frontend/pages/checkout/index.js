@@ -32,8 +32,8 @@ export default function Checkout() {
     ordercart: { remainingAmount, cartList },
     handleOrderPlaced
   } = useCartAPICtx();
-  const { firstName, lastName, phone, address, email, signUpEmail } =
-    useAuthCtx();
+
+  const { primaryDetails } = useAuthCtx();
   const navigate = useNavigate();
 
   const displayRazorpay = async () => {
@@ -58,13 +58,15 @@ export default function Checkout() {
       image: `${logo}`,
       handler: function (response) {
         const paymentId = response.razorpay_payment_id;
-        console.log('razorpay response', response);
         if (paymentId) {
           const tempObj = {
             cartList,
             amountPaid: remainingAmount,
             paymentId,
-            deliveryAddress: address
+            name: `${primaryDetails?.firstname} ${primaryDetails?.lastname}`,
+            phone: primaryDetails?.phone,
+            email: primaryDetails?.email,
+            deliveryAddress: `${primaryDetails?.address}, ${primaryDetails?.city}, ${primaryDetails?.state}, ${primaryDetails?.pincode}`
           };
           handleOrderPlaced(tempObj);
           navigate(ORDER);
@@ -74,12 +76,12 @@ export default function Checkout() {
         }
       },
       prefill: {
-        name: `${firstName} ${lastName}`,
-        email: `${email?.length ? email : signUpEmail}`,
-        contact: `${phone}`
+        name: `${primaryDetails?.firstname} ${primaryDetails?.lastname}`,
+        email: `${primaryDetails?.email}`,
+        contact: `${primaryDetails?.phone}`
       },
       notes: {
-        address: { address }
+        address: `${primaryDetails?.address}, ${primaryDetails?.city}, ${primaryDetails?.state}, ${primaryDetails?.pincode}`
       },
       theme: {
         color: '#008190'

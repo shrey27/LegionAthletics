@@ -3,9 +3,11 @@ import { Fragment, useEffect, useState } from 'react';
 import { useLocalStorage } from '../../helpers';
 import { PROFILE } from '../../routes/routes';
 import { Link } from 'react-router-dom';
+import { useAuthCtx } from '../../context';
 
 export default function CheckoutCard(props) {
   const { source, title, price, qty, discount } = props;
+  const { primaryDetails } = useAuthCtx();
 
   const [priceDetails, setpriceDetails] = useState({
     totalPrice: 0,
@@ -17,7 +19,7 @@ export default function CheckoutCard(props) {
 
   const { storedName, storedSurname, storedEmail, storedAddress, storedPhone } =
     useLocalStorage();
-  
+
   useEffect(() => {
     const totalPrice = price * qty;
     const discountOnPrice = totalPrice * (discount / 100);
@@ -51,7 +53,9 @@ export default function CheckoutCard(props) {
           </h1>
           <h1 className='primary sm mg-half'>
             <i className='fa-solid fa-user'></i>
-            <span>{`${storedName} ${storedSurname}`}</span>
+            <span>{`${primaryDetails?.firstname ?? storedName} ${
+              primaryDetails?.lastname ?? storedSurname
+            }`}</span>
           </h1>
 
           <div className='address__summary'>
@@ -59,17 +63,17 @@ export default function CheckoutCard(props) {
               <i className='fa-solid fa-location-dot'></i>
             </span>
             <span className='primary sm sb add__align'>
-              <span>{storedAddress}</span>
+              <span>{primaryDetails?.address ?? storedAddress}</span>
             </span>
           </div>
 
           <h1 className='primary sm sb mg-half'>
             <i className='fa-solid fa-mobile-screen-button'></i>
-            <span>{storedPhone}</span>
+            <span>{primaryDetails?.phone ?? storedPhone}</span>
           </h1>
           <h1 className='primary sm sb'>
             <i className='fa-solid fa-envelope'></i>
-            <span>{storedEmail}</span>
+            <span>{primaryDetails?.email ?? storedEmail}</span>
           </h1>
 
           <Link

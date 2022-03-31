@@ -39,16 +39,16 @@ export function Sidebar(props) {
           <div className='mg-full'>
             <h1 className='primary sm reg aside__title'>MY ACCOUNT</h1>
             <ul className='stack'>
-              <li className='stack__item primary sm'>
-                <Link to={PROFILE}>
+              <Link to={PROFILE}>
+                <li className='stack__item primary sm'>
                   Profile Settings <i className='fa-solid fa-chevron-right'></i>
-                </Link>
-              </li>
-              <li className='stack__item primary sm'>
-                <Link to={PROFILEADDRESS}>
+                </li>
+              </Link>
+              <Link to={PROFILEADDRESS}>
+                <li className='stack__item primary sm'>
                   Manage Address <i className='fa-solid fa-chevron-right'></i>
-                </Link>
-              </li>
+                </li>
+              </Link>
             </ul>
           </div>
           <div className='mg-full'>

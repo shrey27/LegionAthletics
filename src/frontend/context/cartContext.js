@@ -51,7 +51,7 @@ const defaultCartState = {
   cartListData: [],
   addedCartPID: [],
   ordercart: {},
-  orders: []
+  orders: {}
 };
 const cartApiReducerFunc = (state, action) => {
   switch (action.type) {

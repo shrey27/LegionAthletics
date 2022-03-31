@@ -10,7 +10,7 @@ import { PRODUCTS } from '../../routes/routes';
 export default function Orders() {
   const {
     cartLoading,
-    orders: { cartList }
+    orders: { cartList, amountPaid, name, phone, email, deliveryAddress }
   } = useCartAPICtx();
 
   return (
@@ -28,7 +28,17 @@ export default function Orders() {
               <Loader />
             ) : (
               cartList?.map((elem, index) => {
-                return <SummaryCard key={elem._id} {...elem} />;
+                return (
+                  <SummaryCard
+                    key={elem._id}
+                    {...elem}
+                    name={name}
+                    phone={phone}
+                    email={email}
+                    amountPaid={amountPaid}
+                    deliveryAddress={deliveryAddress}
+                  />
+                );
               })
             )}
           </div>

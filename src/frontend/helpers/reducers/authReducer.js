@@ -1,3 +1,7 @@
+// Primary details by default are set to sign up form details
+// during address selection they can be temporarily set to the selected address details
+// from /profile/address page
+
 export const defaultState = {
   email: '',
   emailError: '',
@@ -19,6 +23,7 @@ export const defaultState = {
   addressError: '',
   signinError: '',
   signupError: '',
+  primaryDetails: {},
   rememberMe: false,
   signinRememberMe: false,
   token: ''
@@ -164,6 +169,11 @@ export const authReducerFunc = (state, action) => {
       return {
         ...state,
         signinRememberMe: !state.signinRememberMe
+      };
+    case 'PRIMARY-DETAILS':
+      return {
+        ...state,
+        primaryDetails: action.payload
       };
     case 'SET-DEFAULT':
       return {
