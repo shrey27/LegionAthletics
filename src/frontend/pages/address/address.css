@@ -5,6 +5,9 @@
   max-width: 35rem;
   border: none;
 }
+.address.addressform {
+  max-width: 55rem;
+}
 .address__form {
   display: grid;
   grid-template-columns: 1fr;
@@ -61,7 +64,7 @@
   padding: 0.25rem 0.5rem;
   background-color: var(--white);
   color: var(--tag);
-  border-radius: 5px;
+  cursor: pointer;
 }
 .addressbar__name,
 .addressbar__address,

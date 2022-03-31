@@ -7,7 +7,8 @@ import { Loader } from '../../components';
 export default function Address() {
   const [slide, setSlide] = useState(false);
   const {
-    state: { addressList, addressLoader }
+    state: { addressList, addressLoader },
+    deleteAddress
   } = useAddressApiCtx();
 
   return (
@@ -22,7 +23,7 @@ export default function Address() {
           >
             {!slide && (
               <h1>
-                <i class='fa-solid fa-plus'></i> Add new Address
+                <i className='fa-solid fa-plus'></i> Add new Address
               </h1>
             )}
             <div className={`addressform ${slide && 'slide'}`}>
@@ -32,6 +33,7 @@ export default function Address() {
           <div className='card address'>
             {addressList.map((elem) => {
               const {
+                _id,
                 firstname,
                 lastname,
                 phone,
@@ -43,24 +45,29 @@ export default function Address() {
                 type
               } = elem;
               return (
-                <div className='addressbar shdw'>
+                <div className='addressbar shdw' key={_id}>
                   <div className='addressbar__border'>
                     <span>
-                      <i class='fa-solid fa-location-dot'></i> {type}
+                      <i className='fa-solid fa-location-dot'></i> {type}
                     </span>
-                    <span className='addressbar__btn'>Delete</span>
+                    <span
+                      className='addressbar__btn'
+                      onClick={() => deleteAddress(_id)}
+                    >
+                      Delete
+                    </span>
                   </div>
                   <h1 className='addressbar__name'>
-                    <i class='fa-solid fa-user'></i>
+                    <i className='fa-solid fa-user'></i>
                     <span>{`${firstname} ${lastname}`}</span>&nbsp;&nbsp;
                     <span>{`${phone}`}</span>
                   </h1>
                   <h1 className='addressbar__email'>
-                    <i class='fa-solid fa-envelope'></i>
+                    <i className='fa-solid fa-envelope'></i>
                     {`${email}`}
                   </h1>
                   <h1 className='addressbar__address'>
-                    <i class='fa-solid fa-location-dot'></i>
+                    <i className='fa-solid fa-location-dot'></i>
                     {`${address}, ${city}, ${state}, ${pincode}`}
                   </h1>
                 </div>

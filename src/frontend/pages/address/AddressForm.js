@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { useAddressCtx, useAddressApiCtx } from '../../context/addressContext';
 import './address.css';
 import { addressError } from '../../utility/constants';
 
 export default function AddressForm(props) {
-  const [disable, setDisable] = useState(false);
   const { setSlide } = props;
   const {
     firstname,
@@ -19,7 +17,7 @@ export default function AddressForm(props) {
     dispatch,
     validationAddress
   } = useAddressCtx();
-  const { addNewAddress } = useAddressApiCtx();
+  const { addressForm, addNewAddress } = useAddressApiCtx();
 
   const handleAddressSubmit = (e) => {
     e.preventDefault();
@@ -39,15 +37,19 @@ export default function AddressForm(props) {
   };
 
   const handleFormCancel = () => {
-    dispatch({ type: 'CLEAR_FORM' });
     setSlide(false);
+    dispatch({ type: 'CLEAR_FORM' });
   };
 
   return (
-    <div className='card address shdw'>
+    <div className='card addressform shdw'>
       <h1 className='lg sb cen xs-s mg-full'>ADD NEW ADDRESS</h1>
       <hr />
-      <form className='address__form sm-s' onSubmit={handleAddressSubmit}>
+      <form
+        className='address__form sm-s'
+        onSubmit={handleAddressSubmit}
+        onReset={handleFormCancel}
+      >
         <div className='address_input_one'>
           <label htmlFor='firstname' className='label'>
             First Name
@@ -58,7 +60,7 @@ export default function AddressForm(props) {
             name='firstname'
             id='firstname'
             autoComplete='off'
-            value={firstname}
+            value={addressForm?.firstname ?? firstname}
             onChange={(e) =>
               dispatch({ type: 'SET_FIRSTNAME', payload: e.target.value })
             }
@@ -78,7 +80,7 @@ export default function AddressForm(props) {
             name='lastname'
             id='lastname'
             autoComplete='off'
-            value={lastname}
+            value={addressForm?.lastname ?? lastname}
             onChange={(e) =>
               dispatch({ type: 'SET_LASTNAME', payload: e.target.value })
             }
@@ -98,7 +100,7 @@ export default function AddressForm(props) {
             name='addr__email'
             id='addr__email'
             autoComplete='off'
-            value={email}
+            value={addressForm?.email ?? email}
             onChange={(e) =>
               dispatch({ type: 'SET_EMAIL', payload: e.target.value })
             }
@@ -118,7 +120,7 @@ export default function AddressForm(props) {
             name='addr__phone'
             id='addr__phone'
             autoComplete='off'
-            value={phone}
+            value={addressForm?.phone ?? phone}
             onChange={(e) =>
               dispatch({ type: 'SET_PHONE', payload: e.target.value })
             }
@@ -138,7 +140,7 @@ export default function AddressForm(props) {
             name='addr'
             id='addr'
             autoComplete='off'
-            value={address}
+            value={addressForm?.address ?? address}
             onChange={(e) =>
               dispatch({ type: 'SET_ADDRESS', payload: e.target.value })
             }
@@ -158,7 +160,7 @@ export default function AddressForm(props) {
             name='addr__city'
             id='addr__city'
             autoComplete='off'
-            value={city}
+            value={addressForm?.city ?? city}
             onChange={(e) =>
               dispatch({ type: 'SET_CITY', payload: e.target.value })
             }
@@ -178,7 +180,7 @@ export default function AddressForm(props) {
             name='addr__state'
             id='addr__state'
             autoComplete='off'
-            value={stateLoc}
+            value={addressForm?.state ?? stateLoc}
             onChange={(e) =>
               dispatch({ type: 'SET_STATE', payload: e.target.value })
             }
@@ -198,7 +200,7 @@ export default function AddressForm(props) {
             name='addr__pincode'
             id='addr__pincode'
             autoComplete='off'
-            value={pincode}
+            value={addressForm?.pincode ?? pincode}
             onChange={(e) =>
               dispatch({ type: 'SET_PINCODE', payload: e.target.value })
             }
@@ -208,28 +210,12 @@ export default function AddressForm(props) {
             <h1 className='input__error'>{addressError}</h1>
           )}
         </div>
-        {disable && (
-          <button
-            className='btn btn--auth--solid btn--wide sb six'
-            onClick={() => setDisable(false)}
-          >
-            UPDATE
-          </button>
-        )}
-        {!disable && (
-          <button type='submit' className='btn btn--auth--solid sb'>
-            SUBMIT
-          </button>
-        )}
-        {!disable && (
-          <button
-            type='reset'
-            className='btn btn--error--solid sb'
-            onClick={handleFormCancel}
-          >
-            CANCEL
-          </button>
-        )}
+        <button type='submit' className='btn btn--auth--solid sb'>
+          SUBMIT
+        </button>
+        <button type='reset' className='btn btn--error--solid sb'>
+          CANCEL
+        </button>
       </form>
     </div>
   );
