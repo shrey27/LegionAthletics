@@ -1,5 +1,5 @@
 import './authentication.css';
-import { Navbar, Footer,Deals } from '../../components';
+import { Navbar, Footer, Deals } from '../../components';
 import { homepageItems } from '../../utility/constants';
 import { Link } from 'react-router-dom';
 import { HOMEPAGE, PRODUCTS } from '../../routes/routes';
