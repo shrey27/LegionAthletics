@@ -29,7 +29,7 @@ const loadScript = async (url) => {
 export default function Checkout() {
   const {
     cartLoading,
-    ordercart: { remainingAmount, cartList },
+    ordercart: { remainingAmount, cartList, coupon },
     handleOrderPlaced
   } = useCartAPICtx();
 
@@ -62,6 +62,7 @@ export default function Checkout() {
           const tempObj = {
             cartList,
             amountPaid: remainingAmount,
+            coupon,
             paymentId,
             name: `${primaryDetails?.firstname} ${primaryDetails?.lastname}`,
             phone: primaryDetails?.phone,
@@ -122,7 +123,9 @@ export default function Checkout() {
               <Loader />
             ) : (
               cartList?.map((elem, index) => {
-                return <CheckoutCard key={elem._id} {...elem} />;
+                return (
+                  <CheckoutCard key={elem._id} {...elem} coupon={coupon} />
+                );
               })
             )}
           </div>

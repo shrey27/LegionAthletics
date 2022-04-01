@@ -4,7 +4,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { useAuthCtx } from '../../context';
 
 export default function CheckoutCard(props) {
-  const { source, title, price, qty, discount } = props;
+  const { source, title, price, qty, discount, coupon } = props;
   const { primaryDetails } = useAuthCtx();
 
   const [priceDetails, setpriceDetails] = useState({
@@ -73,7 +73,7 @@ export default function CheckoutCard(props) {
             <span>{primaryDetails?.email}</span>
           </h1>
           <span className='card__status__tag sm cen sb mg-half xs-s'>
-            <i class='fa-solid fa-tags'></i> Applied Coupon ATHLETICS200
+            <i className='fa-solid fa-tags'></i> Applied Coupon {coupon.name}
           </span>
         </section>
 
@@ -94,7 +94,7 @@ export default function CheckoutCard(props) {
             </p>
             <p className='mg-half'>
               <span className='tag sm bl'>Coupon Discount</span>
-              <span className='tag sm bl fl-rt'>₹{200}</span>
+              <span className='tag sm bl fl-rt'>₹{coupon.couponDiscount}</span>
             </p>
             <p className='mg-half'>
               <span className='md sb'>TOTAL</span>
