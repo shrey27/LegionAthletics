@@ -126,13 +126,14 @@ export default function SummaryCard(props) {
             <p className='mg-half'>
               <span className='sm sb'>Delivery</span>
               <span className='sm sb fl-rt'>
-                ₹{price * qty < 10000 ? 500 : 0}
+                ₹{amountPaid < 10000 ? 500 : 0}
               </span>
             </p>
-
             <p className='mg-half'>
               <span className='md sb'>TOTAL</span>
-              <span className='md sb fl-rt'>₹{amountPaid}</span>
+              <span className='md sb fl-rt'>
+                ₹{price * qty * (1 - discount / 100)}
+              </span>
             </p>
           </div>
           <div className='flex-ct-ct'>
