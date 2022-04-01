@@ -56,7 +56,8 @@ const AuthProvider = ({ children }) => {
   } = useLocalStorage();
 
   const handleUserDetails = (userDetails) => {
-    const { firstName, lastName, phone, signupAddress, email } = userDetails;
+    const { firstName, lastName, phone, signUpAddress, email, signUpEmail } =
+      userDetails;
     dispatch({
       type: 'SIGNUP-FIRSTNAME',
       payload: firstName
@@ -71,11 +72,11 @@ const AuthProvider = ({ children }) => {
     });
     dispatch({
       type: 'SIGNUP-ADDRESS',
-      payload: signupAddress
+      payload: signUpAddress
     });
     dispatch({
       type: 'SIGNUP-EMAIL',
-      payload: email
+      payload: signUpEmail ?? email
     });
     dispatch({
       type: 'SIGNIN-EMAIL',
@@ -87,7 +88,7 @@ const AuthProvider = ({ children }) => {
         ...userDetails,
         firstname: firstName,
         lastname: lastName,
-        address: signupAddress
+        address: signUpAddress
       }
     });
   };
@@ -159,6 +160,7 @@ const AuthProvider = ({ children }) => {
           signUpAddress
         });
         const { createdUser, encodedToken } = response.data;
+        handleUserDetails(createdUser);
         delete createdUser.password;
         localStorage.setItem('token', encodedToken);
         localStorage.setItem('userData', JSON.stringify(createdUser));
@@ -220,8 +222,7 @@ const AuthProvider = ({ children }) => {
             }
           }
         );
-        console.log('updatedDetails', updatedDetails);
-        // handleUserDetails(updatedDetails);
+        handleUserDetails(updatedDetails);
         updateLocalStorage('firstName', firstName);
         updateLocalStorage('lastName', lastName);
         updateLocalStorage('phone', phone);

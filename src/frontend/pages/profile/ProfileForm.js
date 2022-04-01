@@ -75,7 +75,7 @@ export default function ProfileForm() {
             name='profile__email'
             id='profile__email'
             autoComplete='off'
-            value={signUpEmail.length ? signUpEmail : email}
+            value={signUpEmail?.length ? signUpEmail : email}
             disabled
           />
         </div>

@@ -23,7 +23,7 @@ export const users = [
     email: 'carljones234@gmail.com',
     password: 'carljones234',
     phone: '9876543210',
-    signupAddress: '89, Lincoln Street, NY, USA',
+    signUpAddress: '89, Lincoln Street, NY, USA',
     createdAt: formatDate(),
     updatedAt: formatDate()
   }
