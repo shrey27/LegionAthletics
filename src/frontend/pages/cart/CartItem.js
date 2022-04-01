@@ -5,11 +5,19 @@ export default function CartItem(props) {
   const { _id, source, title, price, mrp, discount, qty } = props;
   const { incQty, decQty } = useCartCtx();
   const { addToWishlist } = useWishlistCtx();
-  const { deleteFromCart } = useCartAPICtx();
-  
+  const { deleteFromCart, cartLoading } = useCartAPICtx();
+
   const handleMoveToWishlist = () => {
     addToWishlist(_id, { ...props });
     deleteFromCart(_id);
+  };
+
+  const decrementhandler = (_id, qty) => {
+    if (!cartLoading) decQty(_id, qty);
+  };
+
+  const incrementhandler = (_id) => {
+    if (!cartLoading) incQty(_id);
   };
 
   return (
@@ -27,20 +35,20 @@ export default function CartItem(props) {
             <i
               className='fa-regular fa-trash-can btn qty--btn'
               name='del'
-              onClick={decQty.bind(this, _id, qty)}
+              onClick={decrementhandler.bind(this, _id, qty)}
             ></i>
           ) : (
             <i
               className='fas fa-minus btn qty--btn'
               name='dec'
-              onClick={decQty.bind(this, _id, qty)}
+              onClick={decrementhandler.bind(this, _id, qty)}
             ></i>
           )}
           <span className='quantity'>{qty}</span>
           <i
             className='fas fa-plus btn qty--btn'
             name='inc'
-            onClick={incQty.bind(this, _id)}
+            onClick={incrementhandler.bind(this, _id)}
           ></i>
         </h1>
         <div className='btn--shift'>

@@ -8,7 +8,7 @@ import { CHECKOUT } from '../../routes/routes';
 import { useNavigate } from 'react-router-dom';
 
 export default function Cart() {
-  const { cartLoading, cartListData, cartError, dispatch } = useCartAPICtx();
+  const { cartListData, cartError, dispatch } = useCartAPICtx();
   const navigate = useNavigate();
   const [cartPrice, setCartPrice] = useState({
     total: 0,
@@ -74,7 +74,7 @@ export default function Cart() {
     <>
       <Navbar />
       <Category />
-      {cartLoading ? (
+      {!cartListData ? (
         <Loader />
       ) : (
         <Fragment>
