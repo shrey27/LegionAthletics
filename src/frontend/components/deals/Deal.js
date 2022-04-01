@@ -46,19 +46,21 @@ export default function Deal(props) {
   }, [addedPID, _id]);
 
   const handleAddToWishlistClick = () => {
-    if (token) {
-      const productToAdd = {
-        _id,
-        source,
-        title,
-        price,
-        discount,
-        rating,
-        nostock
-      };
-      addToWishlist(_id, productToAdd);
-    } else {
-      ToastMessage('You need to sign in first', 'info');
+    if (!wishlistLoading) {
+      if (token) {
+        const productToAdd = {
+          _id,
+          source,
+          title,
+          price,
+          discount,
+          rating,
+          nostock
+        };
+        addToWishlist(_id, productToAdd);
+      } else {
+        ToastMessage('You need to sign in first', 'info');
+      }
     }
   };
 
@@ -87,10 +89,7 @@ export default function Deal(props) {
   return (
     <div className='card ecom'>
       {wishlist && !close && (
-        <span
-          className='card__dismiss'
-          onClick={!wishlistLoading && handleAddToWishlistClick}
-        >
+        <span className='card__dismiss' onClick={handleAddToWishlistClick}>
           {addedToWishlist ? (
             <i className='fa-solid fa-heart tag--clr'></i>
           ) : (

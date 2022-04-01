@@ -1,106 +1,26 @@
-import './checkout.css';
-import { Fragment, useEffect, useState } from 'react';
-
-import { useAuthCtx } from '../../context';
+import '../cart/cart.css';
+import { Fragment } from 'react';
 
 export default function CheckoutCard(props) {
-  const { source, title, price, qty, discount, coupon } = props;
-  const { primaryDetails } = useAuthCtx();
-
-  const [priceDetails, setpriceDetails] = useState({
-    totalPrice: 0,
-    discountOnPrice: 0,
-    delivery: 0,
-    net: 0
-  });
-  const { totalPrice, discountOnPrice, delivery, netPrice } = priceDetails;
-
-  useEffect(() => {
-    const totalPrice = price * qty;
-    const discountOnPrice = totalPrice * (discount / 100);
-    const delivery = totalPrice < 10000 ? 500 : 0;
-    const netPrice = totalPrice + delivery - discountOnPrice;
-    setpriceDetails({
-      totalPrice,
-      discountOnPrice,
-      delivery,
-      netPrice
-    });
-  }, [price, qty, discount]);
-
+  const { source, title, price, mrp, qty, discount } = props;
   return (
     <Fragment>
-      <div className='card card__summary landscape shdw xs-s'>
-        <img src={source} alt='Banner' className='summary card__banner' />
-        <section className='card__status xs-s'>
-          <h1 className='card__status__margin tag lg sb cen'>Order Details</h1>
-          <h1 className='card__status__margin primary md sb cen'>{title}</h1>
-          <h1 className='card__status__margin md sb cen'>Quantity: {qty}</h1>
-          <h1 className='tag sm cen mg-half'>
-            <i className='fa-solid fa-arrow-rotate-left'></i>'7 days Return
-            Policy'
-          </h1>
-        </section>
-
-        <section className='card__address sm-s'>
-          <h1 className='text--decoration price md sb cen'>
-            Delivery Address Details
-          </h1>
-          <h1 className='primary sm mg-half'>
-            <i className='fa-solid fa-user'></i>
-            <span>{`${primaryDetails?.firstname} ${primaryDetails?.lastname}`}</span>
-          </h1>
-
-          <div className='address__summary'>
-            <span className='primary sm sb'>
-              <i className='fa-solid fa-location-dot'></i>
-            </span>
-            <span className='primary sm sb add__align'>
-              <span>
-                {!primaryDetails.city
-                  ? `${primaryDetails?.address}`
-                  : `${primaryDetails?.address}, ${primaryDetails?.city}, ${primaryDetails?.stateLoc}, ${primaryDetails?.pincode}`}
-              </span>
-            </span>
-          </div>
-
-          <h1 className='primary sm sb mg-half'>
-            <i className='fa-solid fa-mobile-screen-button'></i>
-            <span>{primaryDetails?.phone}</span>
-          </h1>
-          <h1 className='primary sm sb'>
-            <i className='fa-solid fa-envelope'></i>
-            <span>{primaryDetails?.email}</span>
-          </h1>
-          <span className='card__status__tag sm cen sb mg-half xs-s'>
-            <i className='fa-solid fa-tags'></i> Applied Coupon {coupon.name}
-          </span>
-        </section>
-
-        <section className='card__payment sm-s'>
-          <h1 className='text--decoration price cen md sb'>Payment Summary</h1>
-          <div className='align'>
-            <p className='mg-half'>
-              <span className='sm sb'>Price</span>
-              <span className='sm sb fl-rt'>₹{totalPrice}</span>
-            </p>
-            <p className='mg-half'>
-              <span className='sm sb'>Discount</span>
-              <span className='sm sb fl-rt'>₹{discountOnPrice}</span>
-            </p>
-            <p className='mg-half'>
-              <span className='sm sb'>Delivery</span>
-              <span className='sm sb fl-rt'>₹{delivery}</span>
-            </p>
-            <p className='mg-half'>
-              <span className='tag sm bl'>Coupon Discount</span>
-              <span className='tag sm bl fl-rt'>₹{coupon.couponDiscount}</span>
-            </p>
-            <p className='mg-half'>
-              <span className='md sb'>TOTAL</span>
-              <span className='md sb fl-rt'>₹{netPrice}</span>
-            </p>
-          </div>
+      <div className='cart__landscape shdw'>
+        <img src={source} alt='Banner' className='card__banner' />
+        <section className='cart__content'>
+          <h1 className='cart__align primary lg sb'>{title}</h1>
+          <p className='cart__align'>
+            <span className='tag md bl'>₹{price}</span>
+            <span className='md xs-s bl price--sec'>₹{mrp}</span>
+            <span className='md bl price'>{discount}% off</span>
+            <h1 className='primary card__status__margin sm sb cen'>
+              Quantity: {qty}
+            </h1>
+            <h1 className='tertiary sm cen mg-half'>
+              <i className='fa-solid fa-arrow-rotate-left'></i>'7 days Return
+              Policy'
+            </h1>
+          </p>
         </section>
       </div>
     </Fragment>

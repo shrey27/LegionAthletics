@@ -60,8 +60,11 @@ export default function Cart() {
       type: 'CHECKOUT_DETAILS',
       payload: {
         remainingAmount: cartPrice.net,
-        cartList: [...cartArray],
-        coupon
+        totalAmount: cartPrice.total,
+        totalDiscount: cartPrice.discount,
+        delivery: cartPrice.delivery,
+        coupon,
+        cartList: [...cartArray]
       }
     });
     navigate(CHECKOUT);
