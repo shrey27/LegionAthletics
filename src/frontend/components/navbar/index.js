@@ -119,7 +119,7 @@ export function Navbar({ noDrawer, showSearchBar }) {
               </section>
               <div>
                 {token ? (
-                  <section className='submenu__btn flex-st-ct'>
+                  <section className='submenu__btn'>
                     <Link className='btn btn--auth--solid sb' to={PROFILE}>
                       Profile
                     </Link>
