@@ -10,7 +10,7 @@ equipments, it caters all your needs. Visit our webpage and checkout all the
 amazing deals, read about each and every product in detail. Its easy to navigate
 and we support all payment options.
 
-## Current available pages:
+## Currently available pages:
 
 - Landing Page
 - Products Page with Filters
