@@ -1,13 +1,13 @@
 import { Fragment } from 'react';
-import './profile.css';
-import ProfileForm from './ProfileForm';
+import './address.css';
 import { Navbar, Footer, Sidebar } from '../../components';
+import AddressCards from './AddressCards';
 
-export default function Profile() {
+export default function Address() {
   return (
     <Fragment>
       <Navbar />
-      <Sidebar component={<ProfileForm />} />
+      <Sidebar component={<AddressCards />} />
       <Footer />
     </Fragment>
   );

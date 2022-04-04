@@ -30,7 +30,7 @@ export function validationSignUp(state, dispatch) {
     signUpPassword,
     cnfPassword,
     phone,
-    address
+    signUpAddress
   } = state;
   const errorArray = [];
   if (!firstName || !firstName.match(/^[a-zA-Z ]+/)) {
@@ -59,7 +59,7 @@ export function validationSignUp(state, dispatch) {
   if (!phone || !phone.match(/^\d{10}$/)) {
     errorArray.push('SIGNUP-PHONE-ERROR');
   }
-  if (!address) {
+  if (!signUpAddress) {
     errorArray.push('SIGNUP-ADDRESS-ERROR');
   }
   if (errorArray.length) {
@@ -72,7 +72,7 @@ export function validationSignUp(state, dispatch) {
 }
 
 export const validateUpdateDetails = (state, dispatch) => {
-  const { firstName, lastName, phone, address } = state;
+  const { firstName, lastName, phone, signUpAddress } = state;
   const errorArray = [];
   if (!firstName || !firstName.match(/^[a-zA-Z ]+/)) {
     errorArray.push('SIGNUP-FIRSTNAME-ERROR');
@@ -83,7 +83,7 @@ export const validateUpdateDetails = (state, dispatch) => {
   if (!phone || !phone.match(/^\d{10}$/)) {
     errorArray.push('SIGNUP-PHONE-ERROR');
   }
-  if (!address) {
+  if (!signUpAddress) {
     errorArray.push('SIGNUP-ADDRESS-ERROR');
   }
   if (errorArray.length) {

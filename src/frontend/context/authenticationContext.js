@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
     firstName,
     lastName,
     phone,
-    address,
+    signUpAddress,
     rememberMe,
     signinRememberMe,
     token
@@ -56,7 +56,8 @@ const AuthProvider = ({ children }) => {
   } = useLocalStorage();
 
   const handleUserDetails = (userDetails) => {
-    const { firstName, lastName, phone, address, email } = userDetails;
+    const { firstName, lastName, phone, signUpAddress, email, signUpEmail } =
+      userDetails;
     dispatch({
       type: 'SIGNUP-FIRSTNAME',
       payload: firstName
@@ -71,18 +72,27 @@ const AuthProvider = ({ children }) => {
     });
     dispatch({
       type: 'SIGNUP-ADDRESS',
-      payload: address
+      payload: signUpAddress
     });
     dispatch({
       type: 'SIGNUP-EMAIL',
-      payload: email
+      payload: signUpEmail ?? email
     });
     dispatch({
       type: 'SIGNIN-EMAIL',
       payload: email
     });
+    dispatch({
+      type: 'PRIMARY-DETAILS',
+      payload: {
+        ...userDetails,
+        firstname: firstName,
+        lastname: lastName,
+        address: signUpAddress
+      }
+    });
   };
-  const handleSignIn = async () => {
+  const handleSignIn = async (navigateTo) => {
     if (validateSignIn(state, dispatch)) {
       if (!rememberMe) {
         try {
@@ -92,13 +102,12 @@ const AuthProvider = ({ children }) => {
             email,
             password
           });
-
           if (foundUser) {
             localStorage.setItem('token', encodedToken);
             localStorage.setItem('userData', JSON.stringify(foundUser));
             dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
             handleUserDetails(foundUser);
-            navigate(HOMEPAGE);
+            navigate(navigateTo ?? HOMEPAGE, { replace: true });
             ToastMessage('Sign In was Successfull', 'success');
           } else {
             throw new Error('User not Found');
@@ -118,9 +127,12 @@ const AuthProvider = ({ children }) => {
             firstName: storedName,
             lastName: storedSurname,
             phone: storedPhone,
-            address: storedAddress
+            address: storedAddress,
+            email: storedEmail
           });
-          navigate(HOMEPAGE);
+          navigate(navigateTo === SIGNOUT ? HOMEPAGE : navigateTo, {
+            replace: true
+          });
           ToastMessage('Sign In was Successfull', 'success');
         } else {
           dispatch({
@@ -145,9 +157,10 @@ const AuthProvider = ({ children }) => {
           email: signUpEmail,
           password: signUpPassword,
           phone,
-          address
+          signUpAddress
         });
         const { createdUser, encodedToken } = response.data;
+        handleUserDetails(createdUser);
         delete createdUser.password;
         localStorage.setItem('token', encodedToken);
         localStorage.setItem('userData', JSON.stringify(createdUser));
@@ -171,6 +184,7 @@ const AuthProvider = ({ children }) => {
     if (!rememberMe && !signinRememberMe) localStorage.clear();
     dispatch({ type: 'SET-DEFAULT' });
     navigate(SIGNOUT);
+    window.location.reload(false);
   };
 
   const profileUpdateCancelled = () => {
@@ -190,14 +204,6 @@ const AuthProvider = ({ children }) => {
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     if (validateUpdateDetails(state, dispatch)) {
-      console.log('details to update', {
-        firstName,
-        lastName,
-        phone,
-        email,
-        signUpEmail,
-        address
-      });
       try {
         const {
           data: { updatedDetails }
@@ -208,7 +214,7 @@ const AuthProvider = ({ children }) => {
             lastName,
             phone,
             email: email ?? signUpEmail,
-            address
+            signUpAddress
           },
           {
             headers: {
@@ -216,12 +222,11 @@ const AuthProvider = ({ children }) => {
             }
           }
         );
-        console.log('updatedDetails', updatedDetails);
-        // handleUserDetails(updatedDetails);
+        handleUserDetails(updatedDetails);
         updateLocalStorage('firstName', firstName);
         updateLocalStorage('lastName', lastName);
         updateLocalStorage('phone', phone);
-        updateLocalStorage('address', address);
+        updateLocalStorage('signUpAddress', signUpAddress);
         updateLocalStorage('email', email);
         setDisable(true);
         ToastMessage('Details updated Successfully', 'success');
@@ -233,6 +238,11 @@ const AuthProvider = ({ children }) => {
     } else {
       ToastMessage('Please enter correct details', 'error');
     }
+  };
+
+  const handleSetPrimaryAddress = (addressObject) => {
+    dispatch({ type: 'PRIMARY-DETAILS', payload: { ...addressObject } });
+    ToastMessage('Primary details updated', 'success');
   };
 
   useEffect(() => {
@@ -256,7 +266,8 @@ const AuthProvider = ({ children }) => {
         handleProfileUpdate,
         profileUpdateCancelled,
         disable,
-        setDisable
+        setDisable,
+        handleSetPrimaryAddress
       }}
     >
       {children}

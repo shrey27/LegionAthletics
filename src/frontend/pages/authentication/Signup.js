@@ -21,8 +21,8 @@ export default function Signup() {
     lastNameError,
     cnfPassword,
     cnfpasswordError,
-    address,
-    addressError,
+    signUpAddress,
+    signUpAddressError,
     phone,
     phoneError,
     signupError,
@@ -225,14 +225,14 @@ export default function Signup() {
               id='address__signup'
               placeholder='Address Details'
               autoComplete='off'
-              value={address}
+              value={signUpAddress}
               onChange={(e) =>
                 dispatch({ type: 'SIGNUP-ADDRESS', payload: e.target.value })
               }
               onFocus={() => dispatch({ type: 'CLEAR-ALL-ERRORS' })}
               required
             ></textarea>
-            <h1 className='input__error'>{addressError}</h1>
+            <h1 className='input__error'>{signUpAddressError}</h1>
           </div>
 
           <div className='flex-ct-st signin__remember'>

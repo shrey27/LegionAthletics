@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { PRODUCTS } from '../../routes/routes';
+import { HOMEPAGE, PRODUCTS } from '../../routes/routes';
 
 export default function Drawer({ open, setOpen }) {
   return (
@@ -11,7 +11,9 @@ export default function Drawer({ open, setOpen }) {
         ></div>
         <div className='drawer__content' direction='left'>
           <h1 className='btn--float home xs-s'>
-            <i className='fas fa-home'></i>
+            <Link to={HOMEPAGE} className='md sb'>
+              <i className='fas fa-home'></i>
+            </Link>
           </h1>
           <hr />
           <section className='submenu__items flex-st-ct flex-vertical'>

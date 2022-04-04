@@ -51,7 +51,7 @@ const defaultCartState = {
   cartListData: [],
   addedCartPID: [],
   ordercart: {},
-  orders: []
+  orders: {}
 };
 const cartApiReducerFunc = (state, action) => {
   switch (action.type) {
@@ -207,18 +207,6 @@ const CartAPIProvider = ({ children }) => {
     }
   };
 
-  const handleRemoveItem = (id, pricetobeRemoved) => {
-    const {
-      ordercart: { remainingAmount, cartList }
-    } = state;
-    const objectToUpdate = {
-      remainingAmount: remainingAmount - pricetobeRemoved,
-      cartList: cartList.filter((e) => e._id !== id)
-    };
-    dispatch({ type: 'CHECKOUT_DETAILS', payload: objectToUpdate });
-    ToastMessage('Product removed from checkout list', 'info');
-  };
-
   useEffect(() => {
     const getCartList = async () => {
       dispatch({ type: 'API_REQUEST' });
@@ -250,7 +238,6 @@ const CartAPIProvider = ({ children }) => {
         addItemToCart,
         deleteFromCart,
         updateCartItem,
-        handleRemoveItem,
         handleOrderPlaced
       }}
     >

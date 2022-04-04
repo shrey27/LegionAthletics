@@ -124,3 +124,5 @@ export const errorStatements = {
   'SIGN-UP-ERROR':
     'Account already exists! Sign Up again with different credentials'
 };
+
+export const addressError = 'Please give correct input';

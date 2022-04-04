@@ -1,3 +1,7 @@
+// Primary details by default are set to sign up form details
+// during address selection they can be temporarily set to the selected address details
+// from /profile/address page
+
 export const defaultState = {
   email: '',
   emailError: '',
@@ -15,10 +19,11 @@ export const defaultState = {
   lastNameError: '',
   phone: '',
   phoneError: '',
-  address: '',
-  addressError: '',
+  signUpAddress: '',
+  signUpAddressError: '',
   signinError: '',
   signupError: '',
+  primaryDetails: {},
   rememberMe: false,
   signinRememberMe: false,
   token: ''
@@ -113,12 +118,12 @@ export const authReducerFunc = (state, action) => {
     case 'SIGNUP-ADDRESS':
       return {
         ...state,
-        address: action.payload
+        signUpAddress: action.payload
       };
     case 'SIGNUP-ADDRESS-ERROR':
       return {
         ...state,
-        addressError: action.payload
+        signUpAddressError: action.payload
       };
     case 'TOKEN-SAVED':
       return {
@@ -149,11 +154,14 @@ export const authReducerFunc = (state, action) => {
         cnfpasswordError: '',
         passwordError: '',
         emailError: '',
-        signupError: '',
+        signUpError: '',
         signinError: '',
-        userNameError: '',
+        firstNameError: '',
+        lastNameError: '',
         signUpEmailError: '',
-        signUpPasswordError: ''
+        signUpPasswordError: '',
+        phoneError: '',
+        signUpAddressError: ''
       };
     case 'REMEMBER-ME':
       return {
@@ -164,6 +172,11 @@ export const authReducerFunc = (state, action) => {
       return {
         ...state,
         signinRememberMe: !state.signinRememberMe
+      };
+    case 'PRIMARY-DETAILS':
+      return {
+        ...state,
+        primaryDetails: action.payload
       };
     case 'SET-DEFAULT':
       return {
