@@ -41,7 +41,7 @@ export default function Orders() {
                     orderDate.getDate() < 10
                       ? '0' + orderDate.getDate()
                       : orderDate.getDate()
-                  }, ${orderDate.getYear()}`}
+                  }, ${orderDate.getFullYear()}`}
                 </h1>
                 <hr />
                 <hr />

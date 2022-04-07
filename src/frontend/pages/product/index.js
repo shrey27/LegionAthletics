@@ -35,7 +35,7 @@ export default function Product() {
   }, [addedCartPID, addedPID, product]);
 
   const handleAddToWishlistClick = () => {
-    if (!addedToWishlist && !addedToCart) {
+    if (!addedToWishlist) {
       const productToAdd = {
         ...product,
         _id: product?._id
