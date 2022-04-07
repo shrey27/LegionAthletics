@@ -81,12 +81,12 @@ export const months = [
 ];
 
 export const categoryList = [
-  'Protein',
-  'Gym Gear',
-  'Athletics',
-  'Nutrition',
-  'Vegan',
-  'Clothing'
+  { name: 'Protein', category: 'supplements' },
+  { name: 'Gym Gear', category: 'combo' },
+  { name: 'Athletics', category: 'clothing' },
+  { name: 'Nutrition', category: 'combo' },
+  { name: 'Vegan', category: 'snacks' },
+  { name: 'Clothing', category: 'clothing' }
 ];
 
 export const guestCredentials = {

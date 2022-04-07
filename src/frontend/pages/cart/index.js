@@ -129,7 +129,7 @@ export default function Cart() {
                 <div>
                   <span className='coupon__title'>Apply a Coupon</span>
                   <ul className='stack coupon__list'>
-                    <li className='stack__item coupon__item'>
+                    <li className=' coupon__item'>
                       <label>
                         <h1>ATHLETICS200</h1>
                         <p>Get flat ₹200 off on shopping above ₹1000</p>
@@ -142,7 +142,7 @@ export default function Cart() {
                         />
                       </label>
                     </li>
-                    <li className='stack__item coupon__item'>
+                    <li className=' coupon__item'>
                       <label>
                         <h1>LEGION100</h1>
                         <p>Get flat ₹100 off on shopping above ₹500</p>
@@ -155,7 +155,7 @@ export default function Cart() {
                         />
                       </label>
                     </li>
-                    <li className='stack__item coupon__item'>
+                    <li className=' coupon__item'>
                       <label>
                         <h1>FIT50</h1>
                         <p>Get ₹50 off on your total price</p>

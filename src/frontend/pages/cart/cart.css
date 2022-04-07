@@ -85,13 +85,19 @@
   color: var(--price);
   cursor: pointer;
 }
+.coupon__item:hover {
+  background-color: var(--tertiary);
+  color: var(--white);
+}
 .coupon__item h1 {
   font-size: 1rem;
   margin: 0.25rem 0;
+  cursor: pointer;
 }
 .coupon__item p {
   font-size: 0.85rem;
   font-weight: 500;
+  cursor: pointer;
 }
 .coupon__item > label > input {
   display: none;

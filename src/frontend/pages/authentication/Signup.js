@@ -26,7 +26,6 @@ export default function Signup() {
     phone,
     phoneError,
     signupError,
-    rememberMe,
     dispatch,
     handleSignUp
   } = useAuthCtx();
@@ -233,20 +232,6 @@ export default function Signup() {
               required
             ></textarea>
             <h1 className='input__error'>{signUpAddressError}</h1>
-          </div>
-
-          <div className='flex-ct-st signin__remember'>
-            <input
-              className='sm-s'
-              type='checkbox'
-              name='remember__signup'
-              id='remember__signup'
-              checked={rememberMe}
-              onChange={(e) => dispatch({ type: 'REMEMBER-ME' })}
-            />
-            <label htmlFor='remember__signup' className='label'>
-              Remember me
-            </label>
           </div>
           <button
             type='submit'

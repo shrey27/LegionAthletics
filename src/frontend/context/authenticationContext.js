@@ -181,7 +181,7 @@ const AuthProvider = ({ children }) => {
 
   const handleSignOut = () => {
     dispatch({ type: 'TOKEN-REMOVED' });
-    if (!rememberMe && !signinRememberMe) localStorage.clear();
+    localStorage.clear();
     dispatch({ type: 'SET-DEFAULT' });
     navigate(SIGNOUT);
     window.location.reload(false);

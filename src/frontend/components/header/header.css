@@ -1,6 +1,5 @@
 @import '../../utility/styles.css';
 
-
 /* Features */
 .features {
   display: flex;
@@ -40,6 +39,7 @@
   padding: 2rem;
   font-size: 1.25rem;
   font-weight: bold;
+  cursor: pointer;
 }
 
 /* Button */
@@ -94,5 +94,6 @@
     font-size: 1rem;
     font-weight: 600;
     padding: 1rem 0.5rem;
+    cursor: pointer;
   }
 }

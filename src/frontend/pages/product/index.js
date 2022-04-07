@@ -107,24 +107,35 @@ export default function Product() {
               of high-quality nutrition.
             </p>
 
-            <div className='button__ctr'>
-              <button
-                className={`btn ${
-                  addedToCart ? 'btn--auth' : 'btn--auth--solid'
-                }`}
-                onClick={handleAddToCartClick}
-              >
-                {addedToCart ? 'Added To Cart' : 'Add to Cart'}
-              </button>
-              <button
-                className={`btn ${
-                  addedToWishlist ? 'btn--auth' : 'btn--error'
-                }`}
-                onClick={handleAddToWishlistClick}
-              >
-                {addedToWishlist ? 'Added To Wishlist' : 'Add to Wishlist'}
-              </button>
-            </div>
+            {!product?.noStock ? (
+              <div className='button__ctr'>
+                <button
+                  className={`btn ${
+                    addedToCart ? 'btn--auth' : 'btn--auth--solid'
+                  }`}
+                  onClick={handleAddToCartClick}
+                >
+                  {addedToCart ? 'Added To Cart' : 'Add to Cart'}
+                </button>
+                <button
+                  className={`btn ${
+                    addedToWishlist ? 'btn--auth' : 'btn--error'
+                  }`}
+                  onClick={handleAddToWishlistClick}
+                >
+                  {addedToWishlist ? 'Added To Wishlist' : 'Add to Wishlist'}
+                </button>
+              </div>
+            ) : (
+              <div className='button__ctr'>
+                <button
+                  className={`btn--disabled btn btn--wide btn--margin`}
+                  disabled
+                >
+                  Out Of Stock
+                </button>
+              </div>
+            )}
           </section>
         </div>
       </main>

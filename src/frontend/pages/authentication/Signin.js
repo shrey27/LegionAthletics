@@ -13,7 +13,6 @@ export default function Signin() {
     password,
     emailError,
     passwordError,
-    signinRememberMe,
     dispatch,
     handleSignIn
   } = useAuthCtx();
@@ -85,19 +84,6 @@ export default function Signin() {
             </div>
 
             <h1 className='input__error'>{passwordError}</h1>
-          </div>
-          <div className='flex-ct-st signin__remember'>
-            <input
-              className='sm-s'
-              type='checkbox'
-              name='remember__signin'
-              id='remember__signin'
-              checked={signinRememberMe}
-              onChange={(e) => dispatch({ type: 'SIGNIN-REMEMBER-ME' })}
-            />
-            <label htmlFor='remember__signin' className='label'>
-              Remember me
-            </label>
           </div>
           <button
             type='submit'
