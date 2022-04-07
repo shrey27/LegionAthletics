@@ -49,10 +49,7 @@ export default function Checkout() {
     );
 
     if (!res) {
-      ToastMessage(
-        'Razorpay SDK failed to load, check you connection',
-        'error'
-      );
+      ToastMessage('Payment Failed! Try again later', 'error');
       return;
     }
 

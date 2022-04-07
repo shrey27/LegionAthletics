@@ -26,6 +26,10 @@ export default function Cart() {
     setCoupon({ name: e?.target?.id, couponDiscount: e?.target?.value });
   };
 
+  const handleRemoveCoupon = () => {
+    setCoupon({ name: '', couponDiscount: 0 });
+  };
+
   useEffect(() => {
     const calculateTotal = () => {
       const total = cartListData.reduce((acc, curr) => {
@@ -128,6 +132,14 @@ export default function Cart() {
                 <hr />
                 <div>
                   <span className='coupon__title'>Apply a Coupon</span>
+                  {coupon?.name.length > 0 && (
+                    <span
+                      className='coupon__remove'
+                      onClick={handleRemoveCoupon}
+                    >
+                      Remove
+                    </span>
+                  )}
                   <ul className='stack coupon__list'>
                     <li className=' coupon__item'>
                       <label>

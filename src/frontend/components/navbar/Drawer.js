@@ -4,7 +4,7 @@ import { categoryList } from '../../utility/constants';
 
 export default function Drawer({ open, setOpen }) {
   const navigate = useNavigate();
-  
+
   const handleRedirect = (category) => {
     navigate(PRODUCTS, { state: { category } });
     setOpen(false);
@@ -31,6 +31,7 @@ export default function Drawer({ open, setOpen }) {
                   to={PRODUCTS}
                   className='submenu__item md sb'
                   onClick={handleRedirect.bind(this, elem.category)}
+                  key={elem.name}
                 >
                   {elem.name}
                 </span>

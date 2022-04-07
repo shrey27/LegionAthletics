@@ -9,7 +9,7 @@ export default function CheckoutCard(props) {
         <img src={source} alt='Banner' className='card__banner' />
         <section className='cart__content'>
           <h1 className='cart__align primary lg sb'>{title}</h1>
-          <p className='cart__align'>
+          <div className='cart__align'>
             <span className='tag md bl'>₹{price}</span>
             <span className='md xs-s bl price--sec'>₹{mrp}</span>
             <span className='md bl price'>{discount}% off</span>
@@ -20,7 +20,7 @@ export default function CheckoutCard(props) {
               <i className='fa-solid fa-arrow-rotate-left'></i>'7 days Return
               Policy'
             </h1>
-          </p>
+          </div>
         </section>
       </div>
     </Fragment>

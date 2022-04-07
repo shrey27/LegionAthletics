@@ -39,15 +39,11 @@ const AuthProvider = ({ children }) => {
     lastName,
     phone,
     signUpAddress,
-    rememberMe,
-    signinRememberMe,
     token
   } = state;
 
   const navigate = useNavigate();
   const {
-    storedEmail,
-    storedToken,
     storedName,
     storedSurname,
     storedPhone,
@@ -94,54 +90,30 @@ const AuthProvider = ({ children }) => {
   };
   const handleSignIn = async (navigateTo) => {
     if (validateSignIn(state, dispatch)) {
-      if (!rememberMe) {
-        try {
-          const {
-            data: { foundUser, encodedToken }
-          } = await axios.post(SIGNINAPI, {
-            email,
-            password
-          });
-          if (foundUser) {
-            localStorage.setItem('token', encodedToken);
-            localStorage.setItem('userData', JSON.stringify(foundUser));
-            dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
-            handleUserDetails(foundUser);
-            navigate(navigateTo ?? HOMEPAGE, { replace: true });
-            ToastMessage('Sign In was Successfull', 'success');
-          } else {
-            throw new Error('User not Found');
-          }
-        } catch (err) {
-          console.log('SIGNIN-ERROR', err);
-          dispatch({
-            type: 'SIGNIN-ERROR',
-            payload: errorStatements['SIGN-IN-ERROR']
-          });
-          ToastMessage(errorStatements['SIGN-IN-ERROR'], 'error');
-        }
-      } else {
-        if (storedEmail === email) {
-          dispatch({ type: 'TOKEN-SAVED', payload: storedToken });
-          handleUserDetails({
-            firstName: storedName,
-            lastName: storedSurname,
-            phone: storedPhone,
-            address: storedAddress,
-            email: storedEmail
-          });
-          navigate(navigateTo === SIGNOUT ? HOMEPAGE : navigateTo, {
-            replace: true
-          });
+      try {
+        const {
+          data: { foundUser, encodedToken }
+        } = await axios.post(SIGNINAPI, {
+          email,
+          password
+        });
+        if (foundUser) {
+          localStorage.setItem('token', encodedToken);
+          localStorage.setItem('userData', JSON.stringify(foundUser));
+          dispatch({ type: 'TOKEN-SAVED', payload: encodedToken });
+          handleUserDetails(foundUser);
+          navigate(navigateTo ?? HOMEPAGE, { replace: true });
           ToastMessage('Sign In was Successfull', 'success');
         } else {
-          dispatch({
-            type: 'SIGNIN-ERROR',
-            payload: errorStatements['SIGN-IN-ERROR']
-          });
-          dispatch({ type: 'SET-DEFAULT' });
-          ToastMessage(errorStatements['SIGN-IN-ERROR'], 'error');
+          throw new Error('User not Found');
         }
+      } catch (err) {
+        console.log('SIGNIN-ERROR', err);
+        dispatch({
+          type: 'SIGNIN-ERROR',
+          payload: errorStatements['SIGN-IN-ERROR']
+        });
+        ToastMessage(errorStatements['SIGN-IN-ERROR'], 'error');
       }
     } else {
       console.log('failed');

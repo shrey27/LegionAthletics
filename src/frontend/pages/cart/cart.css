@@ -70,13 +70,19 @@
 }
 
 /* Coupon */
-.coupon__title {
+.coupon__title,
+.coupon__remove {
   font-size: 1.05rem;
   font-weight: 500;
   color: var(--tag);
   margin: 0.5rem 0;
   display: inline-block;
   text-transform: uppercase;
+}
+.coupon__remove {
+  float: right;
+  text-decoration: underline;
+  cursor: pointer;
 }
 .coupon__item {
   border: 2px solid var(--tertiary);

@@ -87,7 +87,7 @@ const cartApiReducerFunc = (state, action) => {
     case 'UPDATE_ORDERS':
       return {
         ...state,
-        orders: action.payload
+        orders: [...state.orders, action.payload]
       };
     case 'STOP_LOADER':
       return {
