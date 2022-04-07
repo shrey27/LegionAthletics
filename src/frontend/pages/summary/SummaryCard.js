@@ -1,5 +1,5 @@
 import './summary.css';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { HOMEPAGE } from '../../routes/routes';
 import { Link } from 'react-router-dom';
 import { months } from '../../utility/constants';
@@ -16,6 +16,8 @@ export default function SummaryCard(props) {
     phone,
     email,
     amountPaid,
+    orderDate,
+    eta,
     deliveryAddress
   } = props;
 
@@ -24,32 +26,27 @@ export default function SummaryCard(props) {
     month: '',
     year: 0
   });
-  const [etaDate, setEtaDate] = useState({ date: 0, month: 0, year: 0 });
+  const [etaDate, setEtaDate] = useState({ date: 0, month: '', year: 0 });
 
   useEffect(() => {
-    const date1 = new Date();
-    const randomNumber = Number(Math.random() * 10);
-    const date2 = new Date(
-      new Date().setDate(new Date().getDate() + randomNumber)
-    );
     setDateOfOrder({
-      date: date1.getDate(),
-      month: months[date1.getMonth()],
-      year: date1.getFullYear()
+      date: orderDate.getDate(),
+      month: months[orderDate.getMonth()],
+      year: orderDate.getFullYear()
     });
     setEtaDate({
-      date: date2.getDate(),
-      month: months[date2.getMonth()],
-      year: date2.getFullYear()
+      date: eta.getDate(),
+      month: months[eta.getMonth()],
+      year: eta.getFullYear()
     });
-  }, []);
+  }, [orderDate, eta]);
 
   return (
     <Fragment>
       <div className='card card__summary landscape shdw xs-s'>
         <img src={source} alt='Banner' className='summary card__banner' />
         <section className='card__status xs-s'>
-          <h1 className='card__status__margin tag md sb cen'>ORDER SUMMARY</h1>
+          <h1 className='card__status__margin tag md sb cen'>ORDER DETAILS</h1>
           <h1 className='card__status__margin md sb primary cen'>
             OrderId: {Math.trunc(Math.random() * 1000)}
           </h1>
@@ -58,20 +55,16 @@ export default function SummaryCard(props) {
 
           <h1 className='card__status__margin md sb primary cen'>
             Order placed on:&nbsp;
-            {`${
-              dateOfOrder.month < 10
-                ? '0' + dateOfOrder.month
-                : dateOfOrder.month
-            } ${
+            {`${dateOfOrder.month} ${
               dateOfOrder.date < 10 ? '0' + dateOfOrder.date : dateOfOrder.date
             }, ${dateOfOrder.year}`}
           </h1>
           {status !== 'Cancelled' && (
             <h1 className='card__status__margin md sb price cen'>
               {status !== 'Delivered' ? 'ETA' : 'Date of Delivery'}:{' '}
-              {`${etaDate.date < 10 ? '0' + etaDate.date : etaDate.date}-${
-                etaDate.month < 10 ? '0' + etaDate.month : etaDate.month
-              }-${etaDate.year}`}
+              {`${etaDate.month} ${
+                etaDate.date < 10 ? '0' + etaDate.date : etaDate.date
+              }, ${etaDate.year}`}
             </h1>
           )}
           <h1 className='tag sm cen mg-half'>

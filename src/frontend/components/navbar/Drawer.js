@@ -1,7 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { HOMEPAGE, PRODUCTS } from '../../routes/routes';
+import { categoryList } from '../../utility/constants';
 
 export default function Drawer({ open, setOpen }) {
+  const navigate = useNavigate();
+
+  const handleRedirect = (category) => {
+    navigate(PRODUCTS, { state: { category } });
+    setOpen(false);
+  };
+
   return (
     <div>
       <div className={`drawer flex-ct-ct ${open && 'drawer__open'}`}>
@@ -17,27 +25,18 @@ export default function Drawer({ open, setOpen }) {
           </h1>
           <hr />
           <section className='submenu__items flex-st-ct flex-vertical'>
-            <Link to={PRODUCTS} className='submenu__item md sb'>
-              Protein
-            </Link>
-            <Link to={PRODUCTS} className='submenu__item md sb'>
-              Gym Gear
-            </Link>
-            <Link to={PRODUCTS} className='submenu__item md sb'>
-              Athletics
-            </Link>
-            <Link to={PRODUCTS} className='submenu__item md sb'>
-              Nutrition
-            </Link>
-            <Link to={PRODUCTS} className='submenu__item md sb'>
-              Vegan
-            </Link>
-            <Link to={PRODUCTS} className='submenu__item md sb'>
-              Clothing
-            </Link>
-            <Link to={PRODUCTS} className='submenu__item md sb'>
-              Limited-Edition
-            </Link>
+            {categoryList.map((elem, index) => {
+              return (
+                <span
+                  to={PRODUCTS}
+                  className='submenu__item md sb'
+                  onClick={handleRedirect.bind(this, elem.category)}
+                  key={elem.name}
+                >
+                  {elem.name}
+                </span>
+              );
+            })}
           </section>
           <hr />
         </div>

@@ -1,6 +1,6 @@
 import './header.css';
 import Category from './Category';
-import Banner from './Banner';
+import { Banner } from './Banner';
 import { useNavigate } from 'react-router-dom';
 import { PRODUCTS } from '../../routes/routes';
 

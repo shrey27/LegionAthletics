@@ -1,13 +1,16 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
-import { CARTAPI } from '../routes/routes';
+import { CART, CARTAPI } from '../routes/routes';
 import { useAuthCtx } from './authenticationContext';
 import axios from 'axios';
 import { ToastMessage } from '../components/toast';
 import { useLocalStorage } from '../helpers';
+import { v4 as uuid } from 'uuid';
+import { useNavigate } from 'react-router';
 
 const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
+  const navigate = useNavigate();
   const { cartListData, addItemToCart, updateCartItem, deleteFromCart } =
     useCartAPICtx();
 
@@ -16,7 +19,7 @@ const CartProvider = ({ children }) => {
     if (index < 0) {
       addItemToCart(item);
     } else {
-      return;
+      navigate(CART);
     }
   };
 
@@ -51,7 +54,7 @@ const defaultCartState = {
   cartListData: [],
   addedCartPID: [],
   ordercart: {},
-  orders: {}
+  orders: []
 };
 const cartApiReducerFunc = (state, action) => {
   switch (action.type) {
@@ -87,7 +90,7 @@ const cartApiReducerFunc = (state, action) => {
     case 'UPDATE_ORDERS':
       return {
         ...state,
-        orders: action.payload
+        orders: [action.payload, ...state.orders]
       };
     case 'STOP_LOADER':
       return {
@@ -138,7 +141,7 @@ const CartAPIProvider = ({ children }) => {
 
   const handleOrderPlaced = async (tempObj) => {
     dispatch({ type: 'API_REQUEST' });
-    dispatch({ type: 'UPDATE_ORDERS', payload: tempObj });
+    dispatch({ type: 'UPDATE_ORDERS', payload: { _id: uuid(), ...tempObj } });
     try {
       await axios.delete(CARTAPI + '/all', {
         headers: {

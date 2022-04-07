@@ -28,7 +28,7 @@ export default function CartItem(props) {
         <p className='cart__align'>
           <span className='tag sm sb price--pmy'>₹{price}</span>
           <span className='primary sm xs-s sb price--sec'>₹{mrp}</span>
-          <span className='sm sb price--ter'>{discount}% off</span>
+          <span className='sm sb price'>{discount}% off</span>
         </p>
         <h1 className='cart__align'>
           {qty === 1 ? (

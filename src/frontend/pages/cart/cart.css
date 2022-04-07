@@ -70,7 +70,8 @@
 }
 
 /* Coupon */
-.coupon__title {
+.coupon__title,
+.coupon__remove {
   font-size: 1.05rem;
   font-weight: 500;
   color: var(--tag);
@@ -78,20 +79,34 @@
   display: inline-block;
   text-transform: uppercase;
 }
+.coupon__remove {
+  float: right;
+  text-decoration: underline;
+  cursor: pointer;
+  text-transform: none;
+}
 .coupon__item {
-  border: 2px solid var(--tertiary);
-  border-radius: 5px;
   margin: 0.25rem 0;
+  padding: 0.5rem 0;
   color: var(--price);
   cursor: pointer;
+}
+.coupon__item label {
+  margin-left: 0.5rem 0;
+}
+.coupon__item:hover {
+  background-color: var(--tertiary);
+  color: var(--white);
 }
 .coupon__item h1 {
   font-size: 1rem;
   margin: 0.25rem 0;
+  cursor: pointer;
 }
 .coupon__item p {
   font-size: 0.85rem;
   font-weight: 500;
+  cursor: pointer;
 }
 .coupon__item > label > input {
   display: none;

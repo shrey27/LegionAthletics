@@ -87,7 +87,7 @@ export default function Deal(props) {
     navigate(PRODUCTS);
   };
   return (
-    <div className='card ecom'>
+    <div className={`card ecom ${nostock && 'nostock'}`}>
       {wishlist && !close && (
         <span className='card__dismiss' onClick={handleAddToWishlistClick}>
           {addedToWishlist ? (
@@ -162,7 +162,7 @@ export default function Deal(props) {
                 } btn--wide btn--margin`}
                 onClick={handleAddToCartClick}
               >
-                {addedToCart ? 'Added To Cart' : 'Add to Cart'}
+                {addedToCart ? 'Go To Cart' : 'Add to Cart'}
               </button>
             )}
           </>

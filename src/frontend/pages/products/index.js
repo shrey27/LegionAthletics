@@ -103,7 +103,10 @@ export default function Products() {
                 type='checkbox'
                 name='supplements'
                 id='supplements'
-                checked={category.includes('supplements')}
+                checked={
+                  category.includes('supplements') ||
+                  location?.state?.category === 'supplements'
+                }
                 onChange={(e) =>
                   handleChange({
                     type: e.target.checked ? 'ADD_CATEGORY' : 'REMOVE_CATEGORY',
@@ -120,7 +123,10 @@ export default function Products() {
                 type='checkbox'
                 name='clothing'
                 id='clothing'
-                checked={category.includes('clothing')}
+                checked={
+                  category.includes('clothing') ||
+                  location?.state?.category === 'clothing'
+                }
                 onChange={(e) =>
                   handleChange({
                     type: e.target.checked ? 'ADD_CATEGORY' : 'REMOVE_CATEGORY',
@@ -137,7 +143,10 @@ export default function Products() {
                 type='checkbox'
                 name='combo'
                 id='combo'
-                checked={category.includes('combo')}
+                checked={
+                  category.includes('combo') ||
+                  location?.state?.category === 'combo'
+                }
                 onChange={(e) =>
                   handleChange({
                     type: e.target.checked ? 'ADD_CATEGORY' : 'REMOVE_CATEGORY',
@@ -154,7 +163,10 @@ export default function Products() {
                 type='checkbox'
                 name='snacks'
                 id='snacks'
-                checked={category.includes('snacks')}
+                checked={
+                  category.includes('snacks') ||
+                  location?.state?.category === 'snacks'
+                }
                 onChange={(e) =>
                   handleChange({
                     type: e.target.checked ? 'ADD_CATEGORY' : 'REMOVE_CATEGORY',
@@ -163,7 +175,7 @@ export default function Products() {
                   })
                 }
               />{' '}
-              Healthy Snacks
+              Vegan Snacks
             </label>
           </div>
 
