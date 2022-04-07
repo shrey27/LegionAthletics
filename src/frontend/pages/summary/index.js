@@ -6,44 +6,71 @@ import { Loader, Navbar, Footer, Deals } from '../../components';
 import { homepageItems } from '../../utility/constants';
 import { Link } from 'react-router-dom';
 import { PRODUCTS } from '../../routes/routes';
+import { months } from '../../utility/constants';
 
 export default function Orders() {
-  const {
-    cartLoading,
-    orders: { cartList, amountPaid, name, phone, email, deliveryAddress }
-  } = useCartAPICtx();
-
+  const { cartLoading, orders } = useCartAPICtx();
   return (
     <Fragment>
       <Navbar />
-      {!cartList?.length ? (
-        <img src='empty.webp' alt='empty' className='image__empty img--md' />
-      ) : (
-        <div className='mg-full'>
-          <h1 className='primary lg sb cen mg-full'>ORDER SUMMARY</h1>
-          <hr />
-          <hr />
-          <div className='card--container'>
-            {cartLoading ? (
-              <Loader />
+      {orders.map((elem) => {
+        const {
+          cartList,
+          name,
+          phone,
+          email,
+          orderDate,
+          eta,
+          deliveryAddress
+        } = elem;
+        const orderdateMonth = months[orderDate?.getMonth()];
+        return (
+          <div key={elem._id}>
+            {!cartList?.length ? (
+              <img
+                src='empty.webp'
+                alt='empty'
+                className='image__empty img--md'
+              />
             ) : (
-              cartList?.map((elem, index) => {
-                return (
-                  <SummaryCard
-                    key={elem._id}
-                    {...elem}
-                    name={name}
-                    phone={phone}
-                    email={email}
-                    amountPaid={amountPaid}
-                    deliveryAddress={deliveryAddress}
-                  />
-                );
-              })
+              <div className='mg-full'>
+                <h1 className='primary lg sb cen mg-full'>ORDER SUMMARY</h1>
+                <h1 className='primary md sb cen mg-full'>
+                  Date:{' '}
+                  {`${orderdateMonth} ${
+                    orderDate.getDate() < 10
+                      ? '0' + orderDate.getDate()
+                      : orderDate.getDate()
+                  }, ${orderDate.getYear()}`}
+                </h1>
+                <hr />
+                <hr />
+                <div className='card--container'>
+                  {cartLoading ? (
+                    <Loader />
+                  ) : (
+                    cartList?.map((elem, index) => {
+                      return (
+                        <SummaryCard
+                          key={elem._id}
+                          {...elem}
+                          name={name}
+                          phone={phone}
+                          email={email}
+                          orderDate={orderDate}
+                          eta={eta}
+                          deliveryAddress={deliveryAddress}
+                        />
+                      );
+                    })
+                  )}
+                </div>
+              </div>
             )}
           </div>
-        </div>
-      )}
+        );
+      })}
+
       <Deals
         items={[...homepageItems].slice(-4)}
         name='Start Shopping with our Best-Sellers'

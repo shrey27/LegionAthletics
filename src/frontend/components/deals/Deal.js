@@ -162,7 +162,7 @@ export default function Deal(props) {
                 } btn--wide btn--margin`}
                 onClick={handleAddToCartClick}
               >
-                {addedToCart ? 'Added To Cart' : 'Add to Cart'}
+                {addedToCart ? 'Go To Cart' : 'Add to Cart'}
               </button>
             )}
           </>

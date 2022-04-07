@@ -68,6 +68,12 @@ export default function Checkout() {
             amountPaid: remainingAmount,
             coupon,
             paymentId,
+            orderDate: new Date(),
+            eta: new Date(
+              new Date().setDate(
+                new Date().getDate() + Number(Math.random() * 10)
+              )
+            ),
             name: `${primaryDetails?.firstname} ${primaryDetails?.lastname}`,
             phone: primaryDetails?.phone,
             email: primaryDetails?.email,

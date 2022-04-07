@@ -83,13 +83,16 @@
   float: right;
   text-decoration: underline;
   cursor: pointer;
+  text-transform: none;
 }
 .coupon__item {
-  border: 2px solid var(--tertiary);
-  border-radius: 5px;
   margin: 0.25rem 0;
+  padding: 0.5rem 0;
   color: var(--price);
   cursor: pointer;
+}
+.coupon__item label {
+  margin-left: 0.5rem 0;
 }
 .coupon__item:hover {
   background-color: var(--tertiary);

@@ -2,16 +2,18 @@ import { Fragment, useEffect, useState } from 'react';
 import './product.css';
 import { Navbar, Footer } from '../../components';
 import Category from '../../components/header/Category';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   useWishlistCtx,
   useProductId,
   useCartCtx,
   useCartAPICtx
 } from '../../context';
+import { CART } from '../../routes/routes';
 
 export default function Product() {
   const { productId } = useParams();
+  const navigate = useNavigate();
   const product = useProductId(productId);
 
   const { addToCart } = useCartCtx();
@@ -52,6 +54,8 @@ export default function Product() {
       };
       addToCart(productToAdd);
       setAddedToCart(true);
+    } else {
+      navigate(CART);
     }
   };
 
@@ -88,7 +92,7 @@ export default function Product() {
                 </span>
               </li>
               <li className='product__stack__item xs-s'>
-                <span className='type'>{product?.type}</span>
+                {product?.type && <span className='type'>{product?.type}</span>}
                 {product?.size && <span className='size'>{product?.size}</span>}
               </li>
             </ul>
@@ -115,7 +119,7 @@ export default function Product() {
                   }`}
                   onClick={handleAddToCartClick}
                 >
-                  {addedToCart ? 'Added To Cart' : 'Add to Cart'}
+                  {addedToCart ? 'Go To Cart' : 'Add to Cart'}
                 </button>
                 <button
                   className={`btn ${
