@@ -41,6 +41,7 @@ and we support all payment options.
 - order summary page
 - navbar for easy navigation to all the pages
 - drawer to navigate to category wise products page
+- Lazy loading on major pages and images
 
 ## Live preview
 
