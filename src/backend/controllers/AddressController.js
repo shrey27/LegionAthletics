@@ -163,18 +163,29 @@ export const updateAddressHandler = function (schema, request) {
     }).address;
 
     const {
-      address: { name, street, city, state, country, zipCode, mobile }
+      address: {
+        firstname,
+        lastname,
+        phone,
+        email,
+        addressField,
+        city,
+        stateLoc,
+        pincode
+      }
     } = JSON.parse(request.requestBody);
 
     userAddress.forEach((address) => {
       if (address._id === addressId) {
-        address.name = name;
-        address.street = street;
+        address.firstname = firstname;
+        address.lastname = lastname;
+        address.address = address;
         address.city = city;
-        address.state = state;
-        address.country = country;
-        address.zipCode = zipCode;
-        address.mobile = mobile;
+        address.email = email;
+        address.address = addressField;
+        address.stateLoc = stateLoc;
+        address.pincode = pincode;
+        address.phone = phone;
         address.updatedAt = formatDate();
       }
     });

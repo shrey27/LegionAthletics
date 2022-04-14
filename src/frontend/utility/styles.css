@@ -120,6 +120,12 @@ body {
   margin: 1rem auto;
   border-radius: 0;
 }
+.hb--aside {
+  z-index: 3;
+}
+.hb--main {
+  height: 80vh;
+}
 .loader {
   display: block;
   margin: 5rem auto;
@@ -145,7 +151,11 @@ body {
   background: var(--tertiary);
   cursor: pointer;
 }
-
+@media screen and (min-width: 1024px) {
+  .hb--aside {
+    z-index: 2;
+  }
+}
 @media screen and (min-width: 1650px) {
   body {
     width: 1650px;

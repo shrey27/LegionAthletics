@@ -1,12 +1,13 @@
 @import '../../utility/styles.css';
 
 .address {
-  width: 80%;
-  max-width: 35rem;
+  width: 90%;
   border: none;
 }
-.address.addressform {
-  max-width: 55rem;
+.card.addressform {
+  width: 90%;
+  max-width: 40rem;
+  margin: 5rem 0;
 }
 .address__form {
   display: grid;
@@ -85,6 +86,13 @@
 }
 
 @media screen and (min-width: 1024px) {
+  .address {
+    max-width: 40rem;
+    margin-top: 0;
+  }
+  .card.addressform {
+    margin: 0;
+  }
   .address__form {
     display: grid;
     grid-template-columns: 1fr 1fr;

@@ -170,7 +170,6 @@ const reducer = (state, action) => {
         addressLoader: false
       };
     case 'ADDRESS_FORM__DATA':
-      console.log('address form data', action.payload);
       return {
         ...state,
         addressForm: action.payload
@@ -210,6 +209,29 @@ const AddressApiContextProvider = ({ children }) => {
     }
   };
 
+  const editAddress = async (id, addObject) => {
+    try {
+      dispatcher({ type: 'ADDRESS_API_REQUEST' });
+      const {
+        data: { address }
+      } = await axios.post(
+        ADDRESS + '/' + id,
+        { address: { ...addObject, type: 'HOME' } },
+        {
+          headers: {
+            authorization: token
+          }
+        }
+      );
+      dispatcher({ type: 'ADDRESS_API_RESPONSE', payload: [...address] });
+      ToastMessage('Address updated Successfully', 'success');
+    } catch (err) {
+      console.log('Edit address api error', err);
+      dispatcher({ type: 'ADDRESS_API_FAILURE' });
+      ToastMessage('Address not updated', 'error');
+    }
+  };
+
   const deleteAddress = async (id) => {
     try {
       dispatcher({ type: 'ADDRESS_API_REQUEST' });
@@ -240,7 +262,6 @@ const AddressApiContextProvider = ({ children }) => {
             authorization: token
           }
         });
-        console.log('fetched address', address);
         dispatcher({ type: 'ADDRESS_API_RESPONSE', payload: [...address] });
       } catch (err) {
         console.log('GET-ADDRESS-ERROR', err);
@@ -255,7 +276,8 @@ const AddressApiContextProvider = ({ children }) => {
       value={{
         ...state,
         addNewAddress,
-        deleteAddress
+        deleteAddress,
+        editAddress
       }}
     >
       <AddressContextProvider>{children}</AddressContextProvider>

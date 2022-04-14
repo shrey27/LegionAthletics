@@ -6,3 +6,4 @@ export { ToastMessage } from './toast';
 export { Loader } from './Loader';
 export { Sidebar } from './sidebar';
 export { Banner } from './header/Banner';
+export { AddressModal } from './modal';
