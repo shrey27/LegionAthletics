@@ -1,6 +1,8 @@
 import './notfound.css';
 import { Navbar, Footer } from '../../components';
 import pic from '../../assets/notfound.gif';
+import { Link } from 'react-router-dom';
+import { HOMEPAGE } from '../../routes/routes';
 
 export default function NotFound() {
   return (
@@ -13,9 +15,9 @@ export default function NotFound() {
           Check the URL you were trying to visit
         </h1>
         <h1 className='notfound__secondary'>or,</h1>
-        <button className='btn btn--large btn--auth--solid md sb'>
+        <Link to={HOMEPAGE} className='btn btn--large btn--auth--solid md sb'>
           Go back to Homepage
-        </button>
+        </Link>
       </div>
       <Footer fixed={true} />
     </div>
