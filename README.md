@@ -6,9 +6,7 @@
 
 Legion Athletics is an e-commerce portal for buying all athletics related
 products. From protein supplements and consumables to wearables and gymming
-equipments, it caters all your needs. Visit our webpage and checkout all the
-amazing deals, read about each and every product in detail. Its easy to navigate
-and we support all payment options.
+equipments, it caters all your needs. Some of the notable features of the project are wishlist management, cart management, option to apply coupon, address management , profile page of user, authentication based routing and payment option using razorpay API.
 
 ## Currently available pages:
 
