@@ -4,49 +4,18 @@ import { WISHLISTAPI } from '../routes/routes';
 import { useAuthCtx } from './authenticationContext';
 import { ToastMessage } from '../components/toast';
 import { useLocalStorage } from '../helpers';
+import {
+  wishlistApiReducerFunc,
+  wishlistDefaultState
+} from '../helpers/reducers';
 
 const WishListContext = createContext();
 
-const defaultState = {
-  wishlistLoading: false,
-  wishlistData: [],
-  addedPID: []
-};
-const wishlistApiReducerFunc = (state, action) => {
-  switch (action.type) {
-    case 'API_REQUEST':
-      return {
-        ...state,
-        wishlistLoading: true
-      };
-    case 'API_RESPONSE':
-      return {
-        ...state,
-        wishlistLoading: false,
-        wishlistData: action.payload
-      };
-    case 'API_FAILURE':
-      return {
-        ...state,
-        wishlistLoading: false
-      };
-    case 'UPDATE_WISHLIST_PID':
-      return {
-        ...state,
-        addedPID: action.payload
-      };
-    case 'STOP_LOADER':
-      return {
-        ...state,
-        wishlistLoading: false
-      };
-    default:
-      return { ...defaultState };
-  }
-};
-
 const WishlistProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(wishlistApiReducerFunc, defaultState);
+  const [state, dispatch] = useReducer(
+    wishlistApiReducerFunc,
+    wishlistDefaultState
+  );
   const { wishlistLoading, wishlistData, addedPID, wishListError } = state;
   const { token } = useAuthCtx();
   const { updateLocalStorage } = useLocalStorage();

@@ -6,6 +6,7 @@ import { ToastMessage } from '../components/toast';
 import { useLocalStorage } from '../helpers';
 import { v4 as uuid } from 'uuid';
 import { useNavigate } from 'react-router';
+import { cartApiReducerFunc, defaultCartState } from '../helpers/reducers';
 
 const CartContext = createContext();
 
@@ -47,60 +48,6 @@ const useCartCtx = () => useContext(CartContext);
 
 // Cart API context
 const CartAPIContext = createContext();
-
-const defaultCartState = {
-  cartLoading: false,
-  cartError: '',
-  cartListData: [],
-  addedCartPID: [],
-  ordercart: {},
-  orders: []
-};
-const cartApiReducerFunc = (state, action) => {
-  switch (action.type) {
-    case 'API_REQUEST':
-      return {
-        ...state,
-        cartLoading: true,
-        cartError: ''
-      };
-    case 'API_RESPONSE':
-      return {
-        ...state,
-        cartLoading: false,
-        cartError: '',
-        cartListData: action.payload
-      };
-    case 'API_FAILURE':
-      return {
-        ...state,
-        cartLoading: false,
-        cartError: 'TECHNICAL ISSUE. PLEASE TRY AGAIN AFTER SOME TIME'
-      };
-    case 'UPDATE_CART_PID':
-      return {
-        ...state,
-        addedCartPID: action.payload
-      };
-    case 'CHECKOUT_DETAILS':
-      return {
-        ...state,
-        ordercart: action.payload
-      };
-    case 'UPDATE_ORDERS':
-      return {
-        ...state,
-        orders: [action.payload, ...state.orders]
-      };
-    case 'STOP_LOADER':
-      return {
-        ...state,
-        cartLoading: false
-      };
-    default:
-      return { ...defaultCartState };
-  }
-};
 
 const CartAPIProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartApiReducerFunc, defaultCartState);
@@ -171,7 +118,6 @@ const CartAPIProvider = ({ children }) => {
       dispatch({ type: 'API_RESPONSE', payload: [...cart] });
       const idArray = cart.map((elem) => elem._id);
       dispatch({ type: 'UPDATE_CART_PID', payload: idArray });
-      ToastMessage('Product was deleted from cart', 'info');
     } catch (err) {
       dispatch({ type: 'API_FAILURE' });
       console.log('DELETE-WISHLIST-ERROR', err);

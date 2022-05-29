@@ -8,7 +8,8 @@ import { useLocation } from 'react-router-dom';
 export default function Products() {
   const location = useLocation();
   const [filterOpen, setFilterOpen] = useState(false);
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
+
   const {
     productListing,
     priceLimit,
@@ -31,16 +32,11 @@ export default function Products() {
   };
 
   useEffect(() => {
-    if (productListing) {
-      if (!location?.state?.category) {
-        setProducts([...productListing]);
-      } else {
-        setProducts(
-          productListing.filter((e) => e.category === location.state.category)
-        );
-      }
+    if (location?.state?.category) {
+      dispatch({ type: 'ADD_CATEGORY', payload: location?.state?.category });
     }
-  }, [location?.state?.category, productListing]);
+    return () => dispatch({ type: 'CLEAR_ALL' });
+  }, [location, dispatch]);
 
   return (
     <div className='container'>
@@ -103,10 +99,7 @@ export default function Products() {
                 type='checkbox'
                 name='supplements'
                 id='supplements'
-                checked={
-                  category.includes('supplements') ||
-                  location?.state?.category === 'supplements'
-                }
+                checked={category.includes('supplements')}
                 onChange={(e) =>
                   handleChange({
                     type: e.target.checked ? 'ADD_CATEGORY' : 'REMOVE_CATEGORY',
@@ -123,10 +116,7 @@ export default function Products() {
                 type='checkbox'
                 name='clothing'
                 id='clothing'
-                checked={
-                  category.includes('clothing') ||
-                  location?.state?.category === 'clothing'
-                }
+                checked={category.includes('clothing')}
                 onChange={(e) =>
                   handleChange({
                     type: e.target.checked ? 'ADD_CATEGORY' : 'REMOVE_CATEGORY',
@@ -143,10 +133,7 @@ export default function Products() {
                 type='checkbox'
                 name='combo'
                 id='combo'
-                checked={
-                  category.includes('combo') ||
-                  location?.state?.category === 'combo'
-                }
+                checked={category.includes('combo')}
                 onChange={(e) =>
                   handleChange({
                     type: e.target.checked ? 'ADD_CATEGORY' : 'REMOVE_CATEGORY',
@@ -163,10 +150,7 @@ export default function Products() {
                 type='checkbox'
                 name='snacks'
                 id='snacks'
-                checked={
-                  category.includes('snacks') ||
-                  location?.state?.category === 'snacks'
-                }
+                checked={category.includes('snacks')}
                 onChange={(e) =>
                   handleChange({
                     type: e.target.checked ? 'ADD_CATEGORY' : 'REMOVE_CATEGORY',
@@ -334,14 +318,19 @@ export default function Products() {
             <Loader />
           ) : (
             <div>
-              {/* {wishListError && (
-                <h1 className='tag cen md sb'>{wishListError}</h1>
-              )} */}
-              <Deals
-                items={products}
-                name={location?.state?.category ?? 'Products'}
-                wishlist={true}
-              />
+              {productListing?.length ? (
+                <Deals
+                  items={productListing}
+                  name={location?.state?.category ?? 'Products'}
+                  wishlist={true}
+                />
+              ) : (
+                <img
+                  src='empty.webp'
+                  alt='empty'
+                  className='image__empty img--md'
+                />
+              )}
             </div>
           )}
         </main>

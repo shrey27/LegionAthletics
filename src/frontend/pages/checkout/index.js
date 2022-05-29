@@ -43,6 +43,11 @@ export default function Checkout() {
   const { primaryDetails } = useAuthCtx();
   const navigate = useNavigate();
 
+  const handleNavigation = () => {
+    localStorage.setItem('checkout', true);
+    navigate(PROFILEADDRESS);
+  };
+
   const displayRazorpay = async () => {
     const res = await loadScript(
       'https://checkout.razorpay.com/v1/checkout.js'
@@ -121,12 +126,12 @@ export default function Checkout() {
             >
               Update Cart Items
             </Link>
-            <Link
-              to={PROFILEADDRESS}
+            <span
+              onClick={handleNavigation}
               className='card__status__address sm cen sb mg-half xs-s'
             >
               Update Delivery Details
-            </Link>
+            </span>
           </div>
           {cartLoading ? (
             <Loader />
@@ -188,7 +193,7 @@ export default function Checkout() {
                     <span className='primary sm sb'>
                       <i className='fa-solid fa-location-dot'></i>
                     </span>
-                    <span className='primary sm sb add__align'>
+                    <span className='primary sm sb'>
                       <span>
                         {!primaryDetails.city
                           ? `${primaryDetails?.address}`

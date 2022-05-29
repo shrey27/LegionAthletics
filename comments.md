@@ -1,0 +1,7 @@
+- Shifted all the reducers to helper floder for better readability
+- Added empty gif if no products are shown on products page
+- removed 'delete from cart' toast
+- navigation added to set primary address
+- UI fix on products page (items aligned as flex-start instead of center)
+- UI fix on checkout page (address was center aligned in mobile view)
+- fixed the filters issue (category filter was not getting un-checked)

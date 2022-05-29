@@ -7,87 +7,11 @@ import {
 } from 'react';
 import { PRODUCTSAPI } from '../routes/routes';
 import axios from 'axios';
+import { reducerFunction, productsDefaultState } from '../helpers/reducers';
 
 const ProductsContext = createContext();
 
 const useProductsCtx = () => useContext(ProductsContext);
-const defaultState = {
-  includeOutOfStock: false,
-  onlyFastDelivery: false,
-  category: [],
-  sortingDirection: '',
-  rating: 0,
-  priceLimit: 10000,
-  search: '',
-  selectedInputs: []
-};
-
-const reducerFunction = (state, action) => {
-  switch (action.type) {
-    case 'TOGGLE_OUT_OF_STOCK':
-      return {
-        ...state,
-        includeOutOfStock: !state.includeOutOfStock,
-        selectedInputs: [...state.selectedInputs, action.target]
-      };
-    case 'TOGGLE_ONLY_FAST_DELIVERY':
-      return {
-        ...state,
-        onlyFastDelivery: !state.onlyFastDelivery,
-        selectedInputs: [...state.selectedInputs, action.target]
-      };
-    case 'ADD_CATEGORY':
-      return {
-        ...state,
-        category: action.payload && [...state.category, action.payload],
-        selectedInputs: [...state.selectedInputs, action.target]
-      };
-    case 'REMOVE_CATEGORY':
-      return {
-        ...state,
-        category:
-          action.payload &&
-          [...state.category].filter((e) => e !== action.payload),
-        selectedInputs: [...state.selectedInputs, action.target]
-      };
-    case 'SET_SORTING_DIRECTION':
-      return {
-        ...state,
-        sortingDirection: action.payload,
-        selectedInputs: [...state.selectedInputs, action.target]
-      };
-    case 'SET_RATING':
-      return {
-        ...state,
-        rating: action.payload,
-        selectedInputs: [...state.selectedInputs, action.target]
-      };
-    case 'SET_PRICE_LIMIT':
-      return {
-        ...state,
-        priceLimit: action.payload,
-        selectedInputs: [...state.selectedInputs, action.target]
-      };
-    case 'NAVBAR_ITEM_SEARCH':
-      return {
-        ...state,
-        search: action.payload
-      };
-    case 'NAVBAR_SEARCH_CLEAR':
-      return {
-        ...state,
-        search: ''
-      };
-    case 'CLEAR_ALL':
-      return {
-        ...defaultState
-      };
-    default:
-      return {
-        ...state
-      };
-  }
-};
 
 const sortAndFilterItems = (
   list,
@@ -119,7 +43,7 @@ const sortAndFilterItems = (
   if (priceLimit) {
     tempList = [...tempList.filter((elem) => elem.price <= priceLimit)];
   }
-  if (category.length !== 0) {
+  if (category.length > 0) {
     tempList = [...tempList.filter((elem) => category.includes(elem.category))];
   }
 
@@ -133,7 +57,7 @@ const sortAndFilterItems = (
 };
 
 const ProductsContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducerFunction, defaultState);
+  const [state, dispatch] = useReducer(reducerFunction, productsDefaultState);
   const [productList, setProductList] = useState([]);
 
   const {

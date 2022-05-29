@@ -1,13 +1,28 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import AddressForm from './AddressForm';
 import './address.css';
 import { useAddressApiCtx, useAddressCtx, useAuthCtx } from '../../context';
 import { Loader } from '../../components';
+import { useNavigate } from 'react-router';
+import { CHECKOUT } from '../../routes/routes';
 
 export default function AddressCards() {
   const { addressList, addressLoader, deleteAddress } = useAddressApiCtx();
   const { setSlide, slide } = useAddressCtx();
   const { handleSetPrimaryAddress } = useAuthCtx();
+  const navigate = useNavigate();
+
+  const handleAddress = (elem) => {
+    handleSetPrimaryAddress(elem);
+    if (localStorage.getItem('checkout')) {
+      navigate(CHECKOUT);
+      localStorage.removeItem('checkout');
+    }
+  };
+
+  useEffect(() => {
+    return () => localStorage.removeItem('checkout');
+  }, []);
 
   return (
     <Fragment>
@@ -50,12 +65,16 @@ export default function AddressCards() {
                       <i className='fa-solid fa-location-dot'></i> {type}
                     </span>
                     <div className='flex-ct-ct'>
-                      <span
-                        className='addressbar__btn__primary'
-                        onClick={handleSetPrimaryAddress.bind(this, elem)}
-                      >
-                        Select
-                      </span>
+                      {localStorage.getItem('checkout') ? (
+                        <span
+                          className='addressbar__btn__primary'
+                          onClick={handleAddress.bind(this, elem)}
+                        >
+                          Select
+                        </span>
+                      ) : (
+                        <></>
+                      )}
                       <span
                         className='addressbar__btn'
                         onClick={() => deleteAddress(_id)}
